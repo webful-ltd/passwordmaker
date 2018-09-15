@@ -21,7 +21,7 @@ export class SettingsPage {
   ) {
     this.settingsForm = this.formBuilder.group({
       output_character_set: ['nlb'],
-      output_length: [12, Validators.pattern('[0-9]+')],
+      output_length: [15, Validators.pattern('[0-9]+')],
     });
   }
 

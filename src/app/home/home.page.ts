@@ -1,5 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import { Component } from '@angular/core';
 import makePassword from '@webful/passwordmaker-lib';
 
 import { Input } from '../../models/Input';
@@ -11,7 +10,7 @@ import { SettingsService } from '../settings.service';
   templateUrl: 'home.page.html',
 })
 export class HomePage {
-  public theinput: Input = new Input('', '');
+  public input: Input = new Input('', '');
   public output_password: string;
 
   constructor(
@@ -20,7 +19,7 @@ export class HomePage {
 
   public updatePassword() {
     return this.settingsService.getCurrentSettings().then(settings => {
-      this.output_password = this.makePassword(this.theinput.master_password, this.theinput.domain, settings);
+      this.output_password = this.makePassword(this.input.master_password, this.input.domain, settings);
     });
   }
 

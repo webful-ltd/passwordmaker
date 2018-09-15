@@ -31,7 +31,7 @@ export class SettingsService {
     this.currentPromise = this.storage.get('settings').then(settings => {
       if (settings === null) {
         // Initialise with some default settings
-        settingsService.currentSettings = new Settings('nlb', 12);
+        settingsService.currentSettings = new Settings('nlb', 15);
       } else {
         settingsService.currentSettings = settings;
       }

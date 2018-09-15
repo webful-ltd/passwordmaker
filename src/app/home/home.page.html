@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-border>
   <ion-toolbar>
     <ion-title>Home</ion-title>
   </ion-toolbar>
@@ -8,11 +8,11 @@
   <form>
     <ion-item>
       <ion-label>Domain</ion-label>
-      <ion-input name="domain" [(ngModel)]="theinput.domain" type="text" (ionChange)="updatePassword()"></ion-input>
+      <ion-input name="domain" [(ngModel)]="input.domain" type="text" (ionChange)="updatePassword()"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Master password</ion-label>
-      <ion-input name="master_password" [(ngModel)]="theinput.master_password" inputmode="password" type="password" (ionChange)="updatePassword()"></ion-input>
+      <ion-input name="master_password" [(ngModel)]="input.master_password" inputmode="password" type="password" (ionChange)="updatePassword()"></ion-input>
     </ion-item>
   </form>
 

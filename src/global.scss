@@ -13,3 +13,7 @@
 ion-toast.error > .toast-wrapper {
   background: var(--ion-color-danger);
 }
+
+ion-title {
+  color: var(--ion-color-primary-contrast);
+}
