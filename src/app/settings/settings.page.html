@@ -4,6 +4,30 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  
+<ion-content padding>
+  <form [formGroup]="settingsForm" (ngSubmit)="save()">
+    <ion-item>
+      <ion-label>Output length</ion-label>
+      <ion-input [(ngModel)]="settings.output_length" formControlName="output_length" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Character set</ion-label>
+      <ion-select
+        [(ngModel)]="settings.output_character_set"
+        formControlName="output_character_set"
+        ok-text="OK"
+        cancel-text="Dismiss"
+      >
+        <ion-select-option value="nls">Numbers, letters, symbols</ion-select-option>
+        <ion-select-option value="something-else">Other thing</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button
+      type="submit"
+      color="primary"
+      expand="block"
+      [disabled]="!settingsForm.valid"
+    >Save</ion-button>
+  </form>
 </ion-content>

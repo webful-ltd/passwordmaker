@@ -1,0 +1,48 @@
+import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
+
+import { Settings } from '../models/Settings';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SettingsService {
+  private currentSettings: Settings;
+  private currentPromise?: Promise<any>;
+
+  constructor(private storage: Storage) {}
+
+  public save(settings: Settings): Promise<any> {
+    return this.storage.set('settings', settings);
+    this.currentSettings = settings;
+  }
+
+  public getCurrentSettings(): Promise<Settings> {
+    if (this.currentPromise instanceof Promise) {
+      console.log('returning existing promise');
+      return this.currentPromise;
+    }
+
+    if (this.currentSettings) {
+      console.log('resolving with existing settings', this.currentSettings);
+      return Promise.resolve(this.currentSettings);
+    }
+
+    const settingsService = this;
+
+    console.log('loading settings afresh');
+    this.currentPromise = this.storage.get('settings').then(settings => {
+      console.log('loaded settings!', settings);
+      if (settings === null) {
+        // Initialise with some default settings
+        settingsService.currentSettings = new Settings('nlb', 12);
+      } else {
+        settingsService.currentSettings = settings;
+      }
+
+      return settingsService.currentSettings;
+    });
+
+    return this.currentPromise;
+  }
+}
