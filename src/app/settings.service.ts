@@ -19,20 +19,16 @@ export class SettingsService {
 
   public getCurrentSettings(): Promise<Settings> {
     if (this.currentPromise instanceof Promise) {
-      console.log('returning existing promise');
       return this.currentPromise;
     }
 
     if (this.currentSettings) {
-      console.log('resolving with existing settings', this.currentSettings);
       return Promise.resolve(this.currentSettings);
     }
 
     const settingsService = this;
 
-    console.log('loading settings afresh');
     this.currentPromise = this.storage.get('settings').then(settings => {
-      console.log('loaded settings!', settings);
       if (settings === null) {
         // Initialise with some default settings
         settingsService.currentSettings = new Settings('nlb', 12);

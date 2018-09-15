@@ -5,7 +5,18 @@
 </ion-header>
 
 <ion-content padding>
-  <p>Proof of concept password is: {{ password }}.</p>
+  <form>
+    <ion-item>
+      <ion-label>Domain</ion-label>
+      <ion-input name="domain" [(ngModel)]="theinput.domain" type="text" (ionChange)="updatePassword()"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Master password</ion-label>
+      <ion-input name="master_password" [(ngModel)]="theinput.master_password" inputmode="password" type="password" (ionChange)="updatePassword()"></ion-input>
+    </ion-item>
+  </form>
+
+  <p>Password is: {{ output_password }}.</p>
 
   <p>Note that this does not update from your settings without a refresh yet.</p>
 </ion-content>

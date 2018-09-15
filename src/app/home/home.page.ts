@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import makePassword from '@webful/passwordmaker-lib';
 
+import { Input } from '../../models/Input';
 import { Settings } from '../../models/Settings';
 import { SettingsService } from '../settings.service';
 
@@ -9,32 +10,17 @@ import { SettingsService } from '../settings.service';
   selector: 'app-home',
   templateUrl: 'home.page.html',
 })
-export class HomePage implements AfterViewInit {
-  public password: string;
-  public ready = false;
+export class HomePage {
+  public theinput: Input = new Input('', '');
+  public output_password: string;
 
   constructor(
     private settingsService: SettingsService,
   ) {}
 
-  ngAfterViewInit() {
-    console.log('after view init');
-    this.ready = true;
-
-    this.updatePassword();
-  }
-
   public updatePassword() {
-    console.log('gP called');
-
-    if (!this.ready) {
-      console.log('gP not ready yet');
-      return null;
-    }
-
-    console.log('getting password');
     return this.settingsService.getCurrentSettings().then(settings => {
-      this.password = this.makePassword('AsdAsdSecret', 'google.com', settings);
+      this.output_password = this.makePassword(this.theinput.master_password, this.theinput.domain, settings);
     });
   }
 
