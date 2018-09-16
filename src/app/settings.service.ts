@@ -14,7 +14,6 @@ export class SettingsService {
 
   public save(settings: Settings): Promise<any> {
     return this.storage.set('settings', settings);
-    this.currentSettings = settings;
   }
 
   public getCurrentSettings(): Promise<Settings> {
