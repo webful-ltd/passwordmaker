@@ -6,8 +6,8 @@
 
 A modern mobile app supporting [Password Maker](https://passwordmaker.org/).
 
-Built with [Ionic](https://ionicframework.com/).
+Built with [Ionic](https://ionicframework.com/) and [Angular](https://angular.io/).
 
-## Key icon & splash screen
+## Icon & splash screen
 
 These use [Ionicons](https://ionicons.com/)' iOS-style key SVG (MIT licensed).
