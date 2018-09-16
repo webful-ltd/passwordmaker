@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="settingsForm" (ngSubmit)="save()">
+  <form *ngIf="settings" [formGroup]="settingsForm" (ngSubmit)="save()">
     <ion-item>
       <ion-label>Output length</ion-label>
       <ion-input [(ngModel)]="settings.output_length" formControlName="output_length" type="number"></ion-input>

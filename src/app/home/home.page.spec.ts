@@ -1,15 +1,29 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ToastControllerMock } from 'ionic-mocks';
+
+import { ToastController } from '@ionic/angular';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { HomePage } from './home.page';
 
 describe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
+  let clipboardSpy: Clipboard;
 
   beforeEach(async(() => {
+    clipboardSpy = jasmine.createSpyObj('Clipboard', ['copy']);
     TestBed.configureTestingModule({
       declarations: [HomePage],
+      imports: [
+        IonicStorageModule.forRoot(),
+      ],
+      providers: [
+        { provide: Clipboard, useValue: clipboardSpy },
+        { provide: ToastController, useValue: ToastControllerMock },
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));

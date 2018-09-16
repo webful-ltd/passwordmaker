@@ -1,11 +1,21 @@
 import { TestBed, inject } from '@angular/core/testing';
 
+import { Storage } from '@ionic/storage';
+
 import { SettingsService } from './settings.service';
+import { Settings } from '../models/Settings';
 
 describe('SettingsService', () => {
+  let storageSpy: Storage;
+  const mockSettings = new Settings('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 15);
+
   beforeEach(() => {
+    storageSpy = jasmine.createSpyObj('Storage', { get: () => mockSettings, set: () => true});
     TestBed.configureTestingModule({
-      providers: [SettingsService]
+      providers: [
+        SettingsService,
+        { provide: Storage, useValue: storageSpy },
+      ]
     });
   });
 
