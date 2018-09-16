@@ -4,7 +4,9 @@
 
 ![Icon](./resources/android/icon/drawable-xhdpi-icon.png)
 
-A modern, mobile-first interface supporting [Password Maker](https://passwordmaker.org/).
+A modern mobile app supporting [Password Maker](https://passwordmaker.org/).
+
+Built with [Ionic](https://ionicframework.com/).
 
 ## Key icon & splash screen
 
