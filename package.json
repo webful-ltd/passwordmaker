@@ -8,8 +8,10 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "test:once": "ng test --watch=false",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "ci": "npm run lint && npm run test:once && npm run e2e"
   },
   "private": false,
   "dependencies": {
