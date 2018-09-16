@@ -2,4 +2,6 @@
 
 A modern, mobile-first interface supporting [Password Maker](https://passwordmaker.org/).
 
-Work in progress. Android and iOS builds coming soon.
+## Key icon & splash screen
+
+These use [Ionicons](https://ionicons.com/)' iOS-style key SVG (MIT licensed).
