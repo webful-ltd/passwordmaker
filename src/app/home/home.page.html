@@ -7,21 +7,24 @@
 <ion-content padding>
   <form>
     <ion-item>
-      <ion-label>Domain</ion-label>
+      <ion-label position="floating">Domain</ion-label>
       <ion-input name="domain" [(ngModel)]="input.domain" type="text" (ionChange)="updatePassword()"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Master password</ion-label>
+      <ion-label position="floating">Master password</ion-label>
       <ion-input name="master_password" [(ngModel)]="input.master_password" inputmode="password" type="password" (ionChange)="updatePassword()"></ion-input>
     </ion-item>
+
+    <div *ngIf="output_password">
+      <p>Per-site password: <span class="output_password">{{ output_password }}</span></p>
+
+      <p>Note that this does not update from your settings without a refresh yet.</p>
+
+      <ion-button *ngIf="clipboard_available" icon-start (click)="copy()">
+        <ion-icon name="copy"></ion-icon>
+        Copy
+      </ion-button>
+    </div>
+    <p *ngIf="!output_password">Complete the two input fields to generate a unique-per-site password.</p>
   </form>
-
-  <p>Password is: {{ output_password }}.</p>
-
-  <ion-button *ngIf="clipboard_available" icon-start (click)="copy()">
-    <ion-icon name="copy"></ion-icon>
-    Copy
-  </ion-button>
-
-  <p>Note that this does not update from your settings without a refresh yet.</p>
 </ion-content>

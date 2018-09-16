@@ -9,12 +9,13 @@ import { SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-home',
+  styleUrls: ['./home.page.scss'],
   templateUrl: 'home.page.html',
 })
 export class HomePage implements OnInit {
   public clipboard_available = false;
   public input: Input = new Input('', '');
-  public output_password: string;
+  public output_password?: string;
 
   constructor(
     private clipboard: Clipboard,
@@ -29,6 +30,10 @@ export class HomePage implements OnInit {
   }
 
   public updatePassword() {
+    if (this.input.master_password.length === 0 || this.input.domain.length === 0) {
+      this.output_password = null;
+    }
+
     return this.settingsService.getCurrentSettings().then(settings => {
       this.output_password = this.makePassword(this.input.master_password, this.input.domain, settings);
     });
