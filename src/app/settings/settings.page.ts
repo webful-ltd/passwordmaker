@@ -20,7 +20,7 @@ export class SettingsPage {
     public toast: ToastController,
   ) {
     this.settingsForm = this.formBuilder.group({
-      output_character_set: ['nlb'],
+      output_character_set: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\\:";\'<>?,./'],
       output_length: [15, Validators.pattern('[0-9]+')],
     });
   }

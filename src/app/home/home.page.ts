@@ -51,7 +51,7 @@ export class HomePage implements OnInit {
       masterPassword: masterPassword,
       data: domain,
       length: settings.output_length,
-      charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\\:";\'<>?,./'
+      charset: settings.output_character_set,
     });
   }
 }

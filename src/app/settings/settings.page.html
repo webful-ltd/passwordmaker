@@ -18,8 +18,12 @@
         ok-text="OK"
         cancel-text="Dismiss"
       >
-        <ion-select-option value="nls">Numbers, letters, symbols</ion-select-option>
-        <ion-select-option value="something-else">Other thing</ion-select-option>
+        <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Alphanum + symbols</ion-select-option>
+        <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789">Alphanumeric</ion-select-option>
+        <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz">Letters</ion-select-option>
+        <ion-select-option value="0123456789">Numbers</ion-select-option>
+        <ion-select-option value="0123456789abcdef">Numbers + a-f</ion-select-option>
+        <ion-select-option value="`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Symbols</ion-select-option>
       </ion-select>
     </ion-item>
 
