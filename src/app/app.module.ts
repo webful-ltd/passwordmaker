@@ -4,7 +4,7 @@ import { RouterModule, RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
-import { Clipboard } from '@ionic-native/clipboard';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -16,12 +16,12 @@ import { AppComponent } from './app.component';
   entryComponents: [],
   imports: [
     BrowserModule,
-    Clipboard,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
   ],
   providers: [
+    Clipboard,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
