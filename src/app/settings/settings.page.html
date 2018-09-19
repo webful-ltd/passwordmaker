@@ -7,11 +7,11 @@
 <ion-content padding>
   <form *ngIf="settings" [formGroup]="settingsForm" (ngSubmit)="save()">
     <ion-item>
-      <ion-label position="floating">Output length</ion-label>
+      <ion-label position="stacked">Output length</ion-label>
       <ion-input [(ngModel)]="settings.output_length" formControlName="output_length" type="number"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Character set</ion-label>
+      <ion-label position="stacked">Character set</ion-label>
       <ion-select
         [(ngModel)]="settings.output_character_set"
         formControlName="output_character_set"
@@ -23,6 +23,18 @@
         <ion-select-option value="0123456789abcdef">Numbers + a-f</ion-select-option>
         <ion-select-option value="`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Symbols</ion-select-option>
       </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Minutes to keep master password</ion-label>
+        <ion-range
+          [(ngModel)]="settings.remember_minutes"
+          formControlName="remember_minutes"
+          min="0"
+          max="10"
+          color="primary"
+          snaps="true"
+          pin="true"
+        ></ion-range>
     </ion-item>
 
     <ion-button
