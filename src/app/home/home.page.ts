@@ -25,19 +25,24 @@ export class HomePage implements OnInit {
     private platform: Platform,
     private settingsService: SettingsService,
     public toast: ToastController,
-  ) {
-    this.platform.pause.subscribe(() => {
-      this.contextChange();
-    });
-    this.platform.resume.subscribe(() => {
-      this.contextChange();
-      this.updateView();
-    });
-  }
+  ) {}
 
   public ngOnInit() {
-    if (window.cordova && this.clipboard) { // no clipboard in-browser for now
-      this.clipboard_available = true;
+    if (window.cordova) {
+      // For now, no clipboard in-browser - API support not wide + no plugin support
+      if (this.clipboard) {
+        this.clipboard_available = true;
+      }
+
+      // And no clearing master password in-browser as context switching events are
+      // less usable, and we don't officially target a web build as yet
+      this.platform.pause.subscribe(() => {
+        this.contextChange();
+      });
+      this.platform.resume.subscribe(() => {
+        this.contextChange();
+        this.updateView();
+      });
     }
   }
 
