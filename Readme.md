@@ -6,29 +6,18 @@
 
 A modern mobile app supporting [Password Maker](https://passwordmaker.org/).
 
+Make secure, unique-per-site passwords.
+
 Built with [Ionic](https://ionicframework.com/) and [Angular](https://angular.io/).
 
-## Run locally
+## What is this?
 
-* `ionic serve`
-* Note that the clipboard feature is currently not available in browser.
+See [the hype page](https://passwordmaker.webful.uk) for a more complete intro to
+what the app does and why you want it.
 
-## Build
+## Dev info
 
-### Android
-
-* Configure your local `.env` - copy from `.env.example` if missing.
-* Run: `./build-helpers/android.sh`
-* Enter signing key's password if prompted.
-* Signed `PasswordMaker.apk` is created in the project root.
-
-### iOS
-
-* `ionic cordova build ios --prod`
-* Open `platforms/ios/Webful PasswordMaker.xcworkspace` in Xcode.
-* Change target at the top to _Generic iOS Device_
-* _Product > Archive_
-* _Upload to App Store_ from the Organizer dialogue.
+See [the Development doc](doc/Development.md) for local dev & build details.
 
 ## Icon & splash screen
 
