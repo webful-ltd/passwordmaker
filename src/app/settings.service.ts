@@ -29,8 +29,8 @@ export class SettingsService {
 
     this.currentPromise = this.storage.get('settings').then(settings => {
       if (settings === null) {
-        // Initialise with some default settings
-        settingsService.currentSettings = new Settings('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 15, 5);
+        // Initialise with default settings
+        settingsService.currentSettings = new Settings();
       } else {
         settingsService.currentSettings = settings;
       }

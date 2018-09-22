@@ -23,6 +23,8 @@ export class SettingsPage {
       output_character_set: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\\:";\'<>?,./'],
       output_length: [15, Validators.pattern('[0-9]+')],
       remember_minutes: [5, Validators.required],
+      algorithm: ['hmac-sha256', Validators.required],
+      domain_only: [true],
     });
   }
 

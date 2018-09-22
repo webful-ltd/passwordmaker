@@ -17,3 +17,10 @@ ion-toast.error > .toast-wrapper {
 ion-title {
   color: var(--ion-color-primary-contrast);
 }
+
+.warning {
+  background: var(--ion-color-danger);
+  color: var(--ion-color-primary-contrast);
+  border: solid 1px var(--ion-color-danger-shade);
+  padding: 1em;
+}

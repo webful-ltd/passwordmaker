@@ -36,6 +36,30 @@
           pin="true"
         ></ion-range>
     </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Hash algorithm</ion-label>
+      <ion-select
+        [(ngModel)]="settings.algorithm"
+        formControlName="algorithm"
+      >
+        <ion-select-option value="hmac-sha256">HMAC-SHA256</ion-select-option>
+        <ion-select-option value="sha256">SHA256</ion-select-option>
+        <ion-select-option value="hmac-sha1">HMAC-SHA1</ion-select-option>
+        <ion-select-option value="sha1">SHA1</ion-select-option>
+        <ion-select-option value="hmac-md5">HMAC-MD5</ion-select-option>
+        <ion-select-option value="md5">MD5</ion-select-option>
+        <ion-select-option value="hmac-ripemd160">HMAC-RIPEMD160</ion-select-option>
+        <ion-select-option value="ripemd160">RIPEMD160</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Domain only?</ion-label>
+      <ion-toggle
+        [(ngModel)]="settings.domain_only"
+        formControlName="domain_only"
+      ></ion-toggle>
+    </ion-item>
 
     <ion-button
       type="submit"

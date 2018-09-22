@@ -7,7 +7,7 @@ import { Settings } from '../models/Settings';
 
 describe('SettingsService', () => {
   let storageSpy: Storage;
-  const mockSettings = new Settings('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 15, 0);
+  const mockSettings = new Settings();
 
   beforeEach(() => {
     storageSpy = jasmine.createSpyObj('Storage', { get: () => mockSettings, set: () => true});
