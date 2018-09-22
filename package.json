@@ -12,6 +12,7 @@
     "e2e": "ng e2e",
     "ci": "npm run lint && npm run test:once && npm run e2e"
   },
+  "license": "MIT",
   "private": false,
   "dependencies": {
     "@angular/common": "~6.1.1",
