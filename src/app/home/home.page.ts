@@ -51,11 +51,13 @@ export class HomePage implements OnInit {
   }
 
   public updatePassword() {
-    this.updateExpiryTimer();
-
     if (this.input.master_password.length === 0 || this.input.host.length === 0) {
       this.output_password = null;
       return;
+    }
+
+    if (this.input.master_password.length > 0) {
+      this.updateExpiryTimer();
     }
 
     this.settingsService.getCurrentSettings().then(settings => {
@@ -137,8 +139,6 @@ export class HomePage implements OnInit {
         return host.split('.').slice(-3).join('.');
       }
     }
-
-    console.log('using normal logic - returning', host.split('.').slice(-2).join('.'));
 
     return host.split('.').slice(-2).join('.');
   }
