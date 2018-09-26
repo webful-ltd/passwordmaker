@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import * as urlParse from 'url-parse/dist/url-parse'; // https://github.com/unshiftio/url-parse/issues/150#issuecomment-403150854
@@ -27,6 +27,7 @@ export class HomePage implements OnInit {
     private platform: Platform,
     private settingsService: SettingsService,
     public toast: ToastController,
+    private zone: NgZone,
   ) {}
 
   public ngOnInit() {
@@ -153,9 +154,15 @@ export class HomePage implements OnInit {
 
     this.settingsService.getCurrentSettings().then(settings => {
       if (settings.remember_minutes > 0) {
-        this.expiry_timer_id = window.setTimeout(() => {
-          this.expire_password_on_context_change = true;
-        }, settings.remember_minutes * 60000);
+        // "Don't let me into my zone": Because the expire flag is always used in conjunction with
+        // other UI events, we don't need Angular to be tracking for this timeout. And if we allow
+        // it to do so, e2e tests break with default values (non-zero save password minutes) because
+        // they're always waiting several minutes for Angular to finish resolving this event.
+        this.zone.runOutsideAngular(() => {
+          this.expiry_timer_id = window.setTimeout(() => {
+            this.expire_password_on_context_change = true;
+          }, settings.remember_minutes * 60000);
+        });
       } else {
         this.expire_password_on_context_change = true;
       }
