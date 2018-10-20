@@ -1,18 +1,19 @@
 <ion-header no-border>
   <ion-toolbar>
-    <ion-title>Settings</ion-title>
+    <ion-title color="light">Settings</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
   <form *ngIf="settings" [formGroup]="settingsForm" (ngSubmit)="save()">
     <ion-item>
-      <ion-label position="stacked">Output length</ion-label>
-      <ion-input [(ngModel)]="settings.output_length" formControlName="output_length" type="number"></ion-input>
+      <ion-label position="stacked">Length of passwords</ion-label>
+      <ion-input name="output_length" [(ngModel)]="settings.output_length" formControlName="output_length" type="number"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Character set</ion-label>
+      <ion-label position="stacked">Possible characters</ion-label>
       <ion-select
+        name="output_character_set"
         [(ngModel)]="settings.output_character_set"
         formControlName="output_character_set"
       >
@@ -25,8 +26,9 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Minutes to keep master password</ion-label>
+      <ion-label position="stacked">Minutes to remember master password</ion-label>
         <ion-range
+          name="remember_minutes"
           [(ngModel)]="settings.remember_minutes"
           formControlName="remember_minutes"
           min="0"
@@ -39,6 +41,7 @@
     <ion-item>
       <ion-label position="stacked">Hash algorithm</ion-label>
       <ion-select
+        name="algorithm"
         [(ngModel)]="settings.algorithm"
         formControlName="algorithm"
       >
@@ -54,14 +57,16 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Domain only?</ion-label>
+      <ion-label>Use just domain name?</ion-label>
       <ion-toggle
+        name="domain_only"
         [(ngModel)]="settings.domain_only"
         formControlName="domain_only"
       ></ion-toggle>
     </ion-item>
 
     <ion-button
+      name="save"
       type="submit"
       color="primary"
       expand="block"
