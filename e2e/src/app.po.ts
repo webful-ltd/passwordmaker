@@ -7,7 +7,7 @@ export class AppPage {
 
   public navigateToSettings() {
     browser.get('/tabs/(settings:settings)');
-    browser.sleep(400);
+    browser.sleep(2500);
   }
 
   public getParagraphText() {
