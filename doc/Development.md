@@ -21,4 +21,4 @@
 * Open `platforms/ios/Webful PasswordMaker.xcworkspace` in Xcode.
 * Change target at the top to _Generic iOS Device_
 * _Product > Archive_
-* _Upload to App Store_ from the Organizer dialogue.
+* _Distribute App_ from the Organizer dialogue.
