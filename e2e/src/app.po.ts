@@ -3,6 +3,7 @@ import { browser, by, element } from 'protractor';
 export class AppPage {
   public navigateToHome() {
     browser.get('/');
+    browser.sleep(2500);
   }
 
   public navigateToSettings() {
