@@ -55,7 +55,7 @@ describe('new App', () => {
     });
   });
 
-  it('should generate the right password with an altered length, characters, algorithm and literal text handling', () => {
+  it('should generate the right password with an altered length, characters, algorithm and domain_only off', () => {
     page.navigateToSettings();
     page.populateIonicInput('output_length', 25);
     page.populateIonicSelect('output_character_set', 'Letters').then(() => {

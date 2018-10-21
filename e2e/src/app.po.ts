@@ -2,11 +2,12 @@ import { browser, by, element } from 'protractor';
 
 export class AppPage {
   public navigateToHome() {
-    return browser.get('/');
+    browser.get('/');
   }
 
   public navigateToSettings() {
-    return browser.get('/tabs/(settings:settings)');
+    browser.get('/tabs/(settings:settings)');
+    browser.sleep(400);
   }
 
   public getParagraphText() {
@@ -26,6 +27,7 @@ export class AppPage {
 
   public populateIonicSelect(elementName: string, valueLabel: string) {
     const ionicSelect = element(by.css(`ion-select[name="${elementName}"]`));
+    browser.waitForAngular();
     ionicSelect.click();
     browser.sleep(400); // Wait for elements to be available and visible
 
