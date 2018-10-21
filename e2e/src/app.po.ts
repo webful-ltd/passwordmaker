@@ -2,7 +2,7 @@ import { browser, by, element } from 'protractor';
 
 export class AppPage {
   /** This worked OK locally with 0, but Travis seems to need time to catch up */
-  private postNavigationSleepMs = 0;
+  private postNavigationSleepMs = 3000;
 
   public navigateToHome() {
     browser.get('/');
@@ -22,7 +22,7 @@ export class AppPage {
     const ionicInput = element(by.css(`ion-input[name="${elementName}"]`));
 
     // Because some fields use floating input labels, we need to click & wait for a UI update before interacting.
-    browser.sleep(2000);
+    browser.sleep(this.postNavigationSleepMs);
     ionicInput.click();
     browser.waitForAngular();
 
@@ -59,6 +59,7 @@ export class AppPage {
       const isChecked: boolean = (currentValue === 'true');
       if (isChecked !== shouldBeChecked) {
         browser.waitForAngular();
+        browser.sleep(this.postNavigationSleepMs);
         ionicInput.click();
       }
     });
@@ -67,7 +68,7 @@ export class AppPage {
   public save() {
     const ionicSaveButton = element(by.css(`ion-button[name="save"]`));
     browser.waitForAngular();
-    browser.sleep(2000);
+    browser.sleep(this.postNavigationSleepMs);
     ionicSaveButton.click();
   }
 
