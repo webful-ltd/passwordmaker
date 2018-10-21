@@ -5,6 +5,7 @@ describe('new App', () => {
 
   beforeEach(() => {
     page = new AppPage();
+    page.maximise();
   });
 
   it('should display the master password field label', () => {
