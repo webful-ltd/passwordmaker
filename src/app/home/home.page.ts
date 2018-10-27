@@ -60,10 +60,7 @@ export class HomePage implements OnInit {
     }
 
     this.settingsService.getCurrentSettings().then(settings => {
-      if (!settings.domain_only) {
-        this.literal_input_warning = true;
-      }
-
+      this.literal_input_warning = !settings.domain_only;
       this.output_password = this.passwordsService.getPassword(this.input.master_password, this.input.host, settings);
     });
   }
