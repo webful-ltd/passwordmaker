@@ -9,6 +9,7 @@ addons:
 language: node_js
 node_js:
   - 8
+cache: npm
 install:
   - npm install
 script:
