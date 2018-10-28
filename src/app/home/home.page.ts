@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import { Platform, ToastController } from '@ionic/angular';
+import { Events, Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+
 import { Input } from '../../models/Input';
 import { PasswordsService } from '../passwords.service';
 import { SettingsService } from '../settings.service';
@@ -21,6 +22,7 @@ export class HomePage implements OnInit {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private clipboard: Clipboard,
+    private events: Events,
     private platform: Platform,
     private passwordsService: PasswordsService,
     private settingsService: SettingsService,
@@ -47,6 +49,8 @@ export class HomePage implements OnInit {
     }
 
     this.updatePassword();
+
+    this.events.subscribe('settingsSaved', () => { this.updatePassword(); });
   }
 
   public updatePassword() {

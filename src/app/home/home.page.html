@@ -24,8 +24,6 @@
     <div *ngIf="output_password">
       <p>Per-site password: <span class="output_password">{{ output_password }}</span></p>
 
-      <p>Note that this does not update from your settings without a refresh yet.</p>
-
       <ion-button *ngIf="clipboard_available" icon-start (click)="copy()">
         <ion-icon name="copy"></ion-icon>
         Copy

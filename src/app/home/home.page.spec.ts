@@ -1,8 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { PlatformMock, ToastControllerMock } from 'ionic-mocks';
+import { EventsMock, PlatformMock, ToastControllerMock } from 'ionic-mocks';
 
-import { Platform, ToastController } from '@ionic/angular';
+import { Events, Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -22,6 +22,7 @@ describe('HomePage', () => {
       ],
       providers: [
         { provide: Clipboard, useValue: clipboardSpy },
+        { provide: Events, useValue: EventsMock.instance() },
         { provide: Platform, useValue: PlatformMock },
         { provide: ToastController, useValue: ToastControllerMock },
       ],

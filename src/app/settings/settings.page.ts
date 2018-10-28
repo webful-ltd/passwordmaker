@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
+import { Events, ToastController } from '@ionic/angular';
 
 import { Settings } from '../../models/Settings';
 import { SettingsService } from '../settings.service';
@@ -15,6 +15,7 @@ export class SettingsPage {
   public settingsForm: FormGroup;
 
   constructor(
+    private events: Events,
     private formBuilder: FormBuilder,
     private settingsService: SettingsService,
     public toast: ToastController,
@@ -37,6 +38,7 @@ export class SettingsPage {
     this.settingsService.save(this.settings)
       .then(
         () => {
+          this.events.publish('settingsSaved');
           this.toast.create({
             message: (`Settings saved!`),
             duration: 2000,
