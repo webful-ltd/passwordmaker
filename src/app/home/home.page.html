@@ -1,6 +1,6 @@
 <ion-header no-border>
   <ion-toolbar>
-    <ion-title color="light">Make a Password</ion-title>
+    <ion-title>Make a Password</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,11 +8,22 @@
   <form>
     <ion-item>
       <ion-label position="floating">URL or domain</ion-label>
-      <ion-input name="host" [(ngModel)]="input.host" type="text" (ionChange)="updatePassword()"></ion-input>
+      <ion-input
+        name="host"
+        [(ngModel)]="input.host"
+        type="text"
+        (ionChange)="updatePassword()"
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Master password</ion-label>
-      <ion-input name="master_password" [(ngModel)]="input.master_password" inputmode="password" type="password" (ionChange)="updatePassword()"></ion-input>
+      <ion-input
+        name="master_password"
+        [(ngModel)]="input.master_password"
+        inputmode="password"
+        type="password"
+        (ionChange)="updatePassword()"
+      ></ion-input>
     </ion-item>
 
     <p *ngIf="literal_input_warning" class="warning">
