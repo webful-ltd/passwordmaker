@@ -18,6 +18,7 @@ export class AppPage {
     const tab = element(by.css(`ion-tab-button[tab="${tabName}"]`));
     tab.click();
     browser.waitForAngular();
+    browser.pause(500); // Travis builds had intermittent trouble on next step without a fixed pause
   }
 
   public getParagraphText() {
