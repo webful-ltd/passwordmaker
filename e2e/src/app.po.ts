@@ -80,6 +80,6 @@ export class AppPage {
 
   public getOutputPassword() {
     browser.waitForAngular();
-    return element(by.css('span.output_password')).getText();
+    return element(by.css('div.output_password')).getText();
   }
 }
