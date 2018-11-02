@@ -5,47 +5,56 @@ export class AppPage {
     browser.driver.manage().window().setSize(900, 900);
   }
 
-  public navigateToHome() {
+  public startOnHomePath() {
     browser.get('/');
   }
 
-  public navigateToSettings() {
-    browser.get('/tabs/(settings:settings)');
+  /**
+   * Navigate to a tab in the same way a user would.
+   *
+   * @param tab Label for the destination tab
+   */
+  public navigateToTab(tabName: string) {
+    const tab = element(by.css(`ion-tab-button[tab="${tabName}"]`));
+    tab.click();
+    browser.waitForAngular();
   }
 
   public getParagraphText() {
+    browser.waitForAngular();
     return element(by.deepCss('app-root ion-content')).getText();
   }
 
   public populateIonicInput(elementName: string, value: (string|number)) {
-    const ionicInput = element(by.css(`ion-input[name="${elementName}"]`));
-
-    // Because some fields use floating input labels, we need to click & wait for a UI update before interacting.
-    ionicInput.click();
     browser.waitForAngular();
+    const ionicInput = element(by.css(`ion-input[ng-reflect-name="${elementName}"]`));
+    ionicInput.click();
 
     // `clear()` wasn't allowed on `ion-input` or the native field, so backspace x20 to remove existing value.
     ionicInput.sendKeys('\b'.repeat(20) + value);
   }
 
-  public populateIonicSelect(elementName: string, valueLabel: string) {
-    const ionicSelect = element(by.css(`ion-select[name="${elementName}"]`));
-    browser.waitForAngular();
-    ionicSelect.click();
-    browser.sleep(400); // Wait for elements to be available and visible
+  public populateIonicSelect(elementName: string, valueLabel: string): Promise<boolean> {
+    return new Promise(resolve => {
+      const ionicSelect = element(by.css(`ion-select[name="${elementName}"]`));
+      browser.waitForAngular();
+      ionicSelect.click();
+      browser.sleep(400); // Wait for elements to be available and visible
 
-    return element.all(by.css('div.alert-radio-group > button')).map(possibleRadio => {
-      possibleRadio.getText().then(possibleRadioText => {
-        if (possibleRadioText === valueLabel) {
-          possibleRadio.click();
-          element(by.buttonText('OK')).click();
+      return element.all(by.css('div.alert-radio-group > button')).map(possibleRadio => {
+        possibleRadio.getText().then(possibleRadioText => {
+          if (possibleRadioText === valueLabel) {
+            possibleRadio.click();
+            element(by.buttonText('OK')).click();
 
-          browser.sleep(200); // Wait for overlay's close animation so it doesn't steal focus
-        }
-      }).catch(error => {
-        // If we already found the desired radio button in another elements from the `map` and
-        // clicked OK, this one won't have an element to `getText()` from any more. This is fine
-        // and we just need to catch the WebDriver error so the test can proceed.
+            browser.sleep(200); // Wait for overlay's close animation so it doesn't steal focus
+            resolve(true);
+          }
+        }).catch(error => {
+          // If we already found the desired radio button in another elements from the `map` and
+          // clicked OK, this one won't have an element to `getText()` from any more. This is fine
+          // and we just need to catch the WebDriver error so the test can proceed.
+        });
       });
     });
   }
