@@ -33,8 +33,10 @@
     </p>
 
     <div *ngIf="output_password">
-      <p>Per-site password: <span class="output_password">{{ output_password }}</span></p>
-
+      <ion-item class="output_password_item">
+        <ion-label position="stacked">Per-site password</ion-label>
+        <div class="output_password">{{ output_password }}</div>
+      </ion-item>
       <ion-button *ngIf="clipboard_available" icon-start (click)="copy()">
         <ion-icon name="copy"></ion-icon>
         Copy
