@@ -15,6 +15,7 @@
   "license": "GPL-3.0-or-later",
   "private": false,
   "dependencies": {
+    "2ldcheck": "0.0.3",
     "@angular/common": "^6.1.10",
     "@angular/core": "^6.1.10",
     "@angular/forms": "^6.1.10",

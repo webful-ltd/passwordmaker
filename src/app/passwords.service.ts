@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as urlParse from 'url-parse/dist/url-parse'; // https://github.com/unshiftio/url-parse/issues/150#issuecomment-403150854
 import * as makePassword from '@webful/passwordmaker-lib';
+import * as isSecondLevelDomain from '2ldcheck';
 
 import { Settings } from '../models/Settings';
 
@@ -57,16 +58,8 @@ export class PasswordsService {
    * Get the main part of the domain, factoring in very common 2-level 'TLDs' where we need 3 rather than 2 parts.
    */
   private extractMainDomain(host: string): string {
-    /**
-     * @type {string[]} Define common reserved 2nd-level domains ONLY used at the 3rd and below level.
-     */
-    const commonTwoLevels = ['com.au', 'co.uk', 'ltd.uk', 'me.uk', 'net.uk', 'org.uk', 'plc.uk', 'sch.uk'];
-    for (const index in commonTwoLevels) {
-      if (host.endsWith('.' + commonTwoLevels[index])) {
-        return host.split('.').slice(-3).join('.');
-      }
-    }
+    const numPieces = isSecondLevelDomain(host) ? 3 : 2;
 
-    return host.split('.').slice(-2).join('.');
+    return host.split('.').slice(-numPieces).join('.');
   }
 }
