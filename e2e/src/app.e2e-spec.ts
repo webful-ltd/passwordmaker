@@ -10,7 +10,7 @@ describe('new App', () => {
   });
 
   it('should display the master password field label', () => {
-    expect(page.getParagraphText()).toContain('Master password');
+    expect(page.getHomeText()).toContain('Master password');
   });
 
   it('should generate the right password for the default settings', () => {
@@ -64,7 +64,7 @@ describe('new App', () => {
 
     // Check for correct output for "my.example.com" with letters charset, 25 length, SHA1.
     expect(page.getOutputPassword()).toEqual('PSZKuWvFAtVWNoIqfBsAHnEOr');
-    expect(page.getParagraphText()).toContain(`If you didn't change this on purpose`); // non-domain_only warning
+    expect(page.getHomeText()).toContain(`If you didn't change this on purpose`); // non-domain_only warning
   });
 
   it('should update output password with new settings automatically', () => {
@@ -81,6 +81,6 @@ describe('new App', () => {
     page.navigateToTab('home');
     // Check for correct output for "example.com" with alphanumeric charset, 30 length, HMAC-SHA256.
     expect(page.getOutputPassword()).toEqual('rJeGcpSWpH36PMn706JrNR9vNzr9Wj');
-    expect(page.getParagraphText()).not.toContain(`If you didn't change this on purpose`); // no non-domain_only warning
+    expect(page.getHomeText()).not.toContain(`If you didn't change this on purpose`); // no non-domain_only warning
   });
 });

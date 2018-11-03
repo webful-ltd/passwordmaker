@@ -21,9 +21,9 @@ export class AppPage {
     browser.pause(500); // Travis builds had intermittent trouble on next step without a fixed pause
   }
 
-  public getParagraphText() {
+  public getHomeText() {
     browser.waitForAngular();
-    return element(by.deepCss('app-root ion-content')).getText();
+    return element(by.css('app-home')).getText();
   }
 
   public populateIonicInput(elementName: string, value: (string|number)) {
