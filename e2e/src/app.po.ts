@@ -60,15 +60,18 @@ export class AppPage {
     });
   }
 
-  public setIonicToggle(elementName: string, shouldBeChecked: boolean) {
+  public setIonicToggle(elementName: string, shouldBeChecked: boolean): Promise<boolean> {
     const ionicInput = element(by.css(`ion-toggle[name="${elementName}"]`));
 
-    ionicInput.getAttribute('checked').then((currentValue: string) => {
-      const isChecked: boolean = (currentValue === 'true');
-      if (isChecked !== shouldBeChecked) {
-        browser.waitForAngular();
-        ionicInput.click();
-      }
+    return new Promise<boolean>(resolve => {
+      ionicInput.getAttribute('checked').then((currentValue: string) => {
+        const isChecked: boolean = (currentValue === 'true');
+        if (isChecked !== shouldBeChecked) {
+          browser.waitForAngular();
+          ionicInput.click();
+        }
+        resolve(true);
+      });
     });
   }
 

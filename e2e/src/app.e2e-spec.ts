@@ -23,7 +23,7 @@ describe('new App', () => {
 
   it('should generate the right password with domain_only switched off', () => {
     page.navigateToTab('settings');
-    page.setIonicToggle('domain_only', false);
+    expect(page.setIonicToggle('domain_only', false)).toEqual(true);
     page.save();
 
     page.navigateToTab('home');
@@ -39,7 +39,7 @@ describe('new App', () => {
     page.populateIonicInput('output_length', 25);
     expect(page.populateIonicSelect('output_character_set', 'Letters')).toEqual(true);
     expect(page.populateIonicSelect('algorithm', 'SHA1')).toEqual(true);
-    page.setIonicToggle('domain_only', true);
+    expect(page.setIonicToggle('domain_only', true)).toEqual(true);
     page.save();
 
     page.navigateToTab('home');
@@ -55,7 +55,7 @@ describe('new App', () => {
     page.populateIonicInput('output_length', 25);
     expect(page.populateIonicSelect('output_character_set', 'Letters')).toEqual(true);
     expect(page.populateIonicSelect('algorithm', 'SHA1')).toEqual(true);
-    page.setIonicToggle('domain_only', false);
+    expect(page.setIonicToggle('domain_only', false)).toEqual(true);
     page.save();
 
     page.navigateToTab('home');
@@ -75,7 +75,7 @@ describe('new App', () => {
     expect(page.populateIonicSelect('output_character_set', 'Alphanumeric')).toEqual(true);
     expect(page.populateIonicSelect('algorithm', 'HMAC-SHA256')).toEqual(true);
     page.populateIonicInput('output_length', 30);
-    page.setIonicToggle('domain_only', true);
+    expect(page.setIonicToggle('domain_only', true)).toEqual(true);
     page.save();
 
     page.navigateToTab('home');
