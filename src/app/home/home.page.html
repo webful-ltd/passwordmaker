@@ -37,10 +37,12 @@
         <ion-label position="stacked">Per-site password</ion-label>
         <div class="output_password">{{ output_password }}</div>
       </ion-item>
-      <ion-button *ngIf="clipboard_available" icon-start (click)="copy()">
-        <ion-icon name="copy"></ion-icon>
-        Copy
-      </ion-button>
+      <ion-item *ngIf="clipboard_available" class="output_password_item">
+        <ion-button icon-start (click)="copy()">
+          <ion-icon name="copy"></ion-icon>
+          Copy
+        </ion-button>
+      </ion-item>
     </div>
     <p *ngIf="!output_password">Complete the two input fields to generate a unique-per-site password.</p>
   </form>
