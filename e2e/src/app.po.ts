@@ -18,7 +18,7 @@ export class AppPage {
     const tab = element(by.css(`ion-tab-button[tab="${tabName}"]`));
     tab.click();
     browser.waitForAngular();
-    browser.pause(500); // Travis builds had intermittent trouble on next step without a fixed pause
+    browser.pause(1000); // Travis builds had intermittent trouble on next step without a fixed pause
   }
 
   public getHomeText() {
@@ -79,7 +79,7 @@ export class AppPage {
     const ionicSaveButton = element(by.css(`ion-button[name="save"]`));
     browser.waitForAngular();
     ionicSaveButton.click();
-    browser.pause(2100); // Wait for success toast message
+    browser.pause(5500); // Wait for success toast message - TODO why does this need to be so long?
   }
 
   public getOutputPassword() {
