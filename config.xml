@@ -71,7 +71,7 @@
     <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/supports-screens">
         <supports-screens android:anyDensity="true" android:compatibleWidthLimitDp="10000" android:largeScreens="true" android:largestWidthLimitDp="10000" android:normalScreens="true" android:requiresSmallestWidthDp="240" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
     </edit-config>
-    <engine name="ios" spec="4.5.5" />
+    <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.1.1" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
