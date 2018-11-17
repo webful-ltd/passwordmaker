@@ -57,7 +57,7 @@ export class SettingsPage {
         () => {
           this.events.publish('settingsSaved');
           this.toast.create({
-            message: (`Settings saved!`),
+            message: ('Settings saved!'),
             duration: 2000,
             showCloseButton: true,
             closeButtonText: 'OK',

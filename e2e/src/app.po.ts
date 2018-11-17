@@ -79,6 +79,7 @@ export class AppPage {
     const ionicSaveButton = element(by.css(`ion-button[name="save"]`));
     browser.waitForAngular();
     ionicSaveButton.click();
+    browser.pause(2100); // Wait for success toast message
   }
 
   public getOutputPassword() {
