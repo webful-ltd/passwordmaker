@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as urlParse from 'url-parse/dist/url-parse'; // https://github.com/unshiftio/url-parse/issues/150#issuecomment-403150854
 import * as makePassword from '@webful/passwordmaker-lib';
-import * as isSecondLevelDomain from '2ldcheck';
+import * as isSecondLevelDomain from '@webful/2ldcheck';
 
 import { Settings } from '../models/Settings';
 
