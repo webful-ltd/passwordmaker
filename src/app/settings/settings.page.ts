@@ -11,6 +11,7 @@ import { SettingsService } from '../settings.service';
 })
 
 export class SettingsPage {
+  public isDomainOnly: boolean;
   public settings: FormGroup;
 
   constructor(
@@ -30,7 +31,12 @@ export class SettingsPage {
 
   ionViewWillEnter() {
     this.settingsService.getCurrentSettings()
-      .then(settings => this.settings.setValue(settings));
+      .then(settings => {
+        this.settings.setValue(settings);
+        // `ion-toggle` doesn't seem to get boolean values cascaded through like other reactive form
+        // elements, so we need to set this manually and use with its `[checked]` attribute.
+        this.isDomainOnly = settings.domain_only;
+      });
   }
 
   save({ value, valid }: { value: Settings, valid: boolean }) {
