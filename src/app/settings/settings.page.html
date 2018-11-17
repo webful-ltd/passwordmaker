@@ -5,16 +5,15 @@
 </ion-header>
 
 <ion-content padding>
-  <form *ngIf="settings" [formGroup]="settingsForm" (ngSubmit)="save()">
+  <form *ngIf="settings" [formGroup]="settings" (ngSubmit)="save(settings)" novalidate>
     <ion-item>
       <ion-label position="stacked">Length of passwords</ion-label>
-      <ion-input name="output_length" [(ngModel)]="settings.output_length" formControlName="output_length" type="number"></ion-input>
+      <ion-input name="output_length" formControlName="output_length" type="number"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Possible characters</ion-label>
       <ion-select
         name="output_character_set"
-        [(ngModel)]="settings.output_character_set"
         formControlName="output_character_set"
       >
         <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Alphanum + symbols</ion-select-option>
@@ -29,7 +28,6 @@
       <ion-label position="stacked">Minutes to remember master password</ion-label>
         <ion-range
           name="remember_minutes"
-          [(ngModel)]="settings.remember_minutes"
           formControlName="remember_minutes"
           min="0"
           max="10"
@@ -40,11 +38,7 @@
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Hash algorithm</ion-label>
-      <ion-select
-        name="algorithm"
-        [(ngModel)]="settings.algorithm"
-        formControlName="algorithm"
-      >
+      <ion-select name="algorithm" formControlName="algorithm">
         <ion-select-option value="hmac-sha256">HMAC-SHA256</ion-select-option>
         <ion-select-option value="sha256">SHA256</ion-select-option>
         <ion-select-option value="hmac-sha1">HMAC-SHA1</ion-select-option>
@@ -58,11 +52,7 @@
 
     <ion-item>
       <ion-label>Use just domain name?</ion-label>
-      <ion-toggle
-        name="domain_only"
-        [(ngModel)]="settings.domain_only"
-        formControlName="domain_only"
-      ></ion-toggle>
+      <ion-toggle name="domain_only" formControlName="domain_only"></ion-toggle>
     </ion-item>
 
     <ion-button
@@ -70,7 +60,7 @@
       type="submit"
       color="primary"
       expand="block"
-      [disabled]="!settingsForm.valid"
+      [disabled]="settings.invalid"
     >Save</ion-button>
   </form>
 </ion-content>

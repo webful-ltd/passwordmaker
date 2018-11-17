@@ -11,8 +11,7 @@ import { SettingsService } from '../settings.service';
 })
 
 export class SettingsPage {
-  public settings: Settings;
-  public settingsForm: FormGroup;
+  public settings: FormGroup;
 
   constructor(
     private events: Events,
@@ -20,22 +19,34 @@ export class SettingsPage {
     private settingsService: SettingsService,
     public toast: ToastController,
   ) {
-    this.settingsForm = this.formBuilder.group({
-      output_character_set: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\\:";\'<>?,./'],
-      output_length: [15, Validators.pattern('[0-9]+')],
-      remember_minutes: [5, Validators.required],
+    this.settings = this.formBuilder.group({
       algorithm: ['hmac-sha256', Validators.required],
       domain_only: [true],
+      output_character_set: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
+      output_length: [15, [Validators.required, Validators.pattern('[0-9]+')]],
+      remember_minutes: [5, Validators.required],
     });
   }
 
   ionViewWillEnter() {
     this.settingsService.getCurrentSettings()
-      .then(settings => this.settings = settings);
+      .then(settings => this.settings.setValue(settings));
   }
 
-  save() {
-    this.settingsService.save(this.settings)
+  save({ value, valid }: { value: Settings, valid: boolean }) {
+    if (!valid) {
+      this.toast.create({
+        message: ('Settings not valid. Is your chosen output length a number?'),
+        duration: 3500,
+        cssClass: 'error',
+        showCloseButton: true,
+        closeButtonText: 'OK',
+      }).then(errorToast => errorToast.present());
+
+      return;
+    }
+
+    this.settingsService.save(value)
       .then(
         () => {
           this.events.publish('settingsSaved');
