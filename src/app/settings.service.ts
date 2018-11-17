@@ -13,6 +13,10 @@ export class SettingsService {
   constructor(private storage: Storage) {}
 
   public save(settings: Settings): Promise<any> {
+    if (!settings) {
+      return Promise.reject('No settings data');
+    }
+
     this.currentPromise = this.currentSettings = null; // Ensure future `getCurrentSettings()` don't get old values
 
     return this.storage.set('settings', settings);
