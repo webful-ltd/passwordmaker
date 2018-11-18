@@ -79,7 +79,6 @@ export class AppPage {
     const ionicSaveButton = element(by.css(`ion-button[name="save"]`));
     browser.waitForAngular();
     ionicSaveButton.click();
-    browser.pause(5500); // Wait for success toast message - TODO why does this need to be so long?
   }
 
   public getOutputPassword() {

@@ -44,6 +44,7 @@ export class SettingsPage {
       this.toast.create({
         message: ('Settings not valid. Is your chosen output length a number?'),
         duration: 3500,
+        position: 'top',
         cssClass: 'error',
         showCloseButton: true,
         closeButtonText: 'OK',
@@ -59,6 +60,7 @@ export class SettingsPage {
           this.toast.create({
             message: ('Settings saved!'),
             duration: 2000,
+            position: 'top',
             showCloseButton: true,
             closeButtonText: 'OK',
           }).then(successToast => successToast.present());
@@ -67,6 +69,7 @@ export class SettingsPage {
           this.toast.create({
             message: (`Error: ${reason}`),
             duration: 3500,
+            position: 'top',
             cssClass: 'error',
             showCloseButton: true,
             closeButtonText: 'OK',
