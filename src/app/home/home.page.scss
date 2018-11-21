@@ -1,9 +1,12 @@
-.output_password {
+.output_password, p.input_help {
   background: var(--ion-color-secondary);
   color: var(--ion-color-secondary-contrast);
   width: 100%;
   padding: 0.5em;
   border-radius: 4px;
+}
+
+.output_password {
   margin-top: 5px;
   text-align: left;
 }

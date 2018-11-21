@@ -14,6 +14,7 @@
         type="text"
         (ionChange)="updatePassword()"
       ></ion-input>
+      <p class="input_help">Which site or app are you logging into? e.g. <em>when.fm</em></p>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Master password</ion-label>
@@ -24,6 +25,7 @@
         type="password"
         (ionChange)="updatePassword()"
       ></ion-input>
+      <p class="input_help">What <em>super secret</em> password are you using to guard all your per-site passwords?</p>
     </ion-item>
 
     <p *ngIf="literal_input_warning" class="warning">
@@ -44,6 +46,6 @@
         </ion-button>
       </ion-item>
     </div>
-    <p *ngIf="!output_password">Complete the two input fields to generate a unique-per-site password.</p>
+    <p *ngIf="!output_password">Complete the two inputs and we'll give you a shiny password that's unique for this site or app.</p>
   </form>
 </ion-content>
