@@ -14,7 +14,10 @@
         type="text"
         (ionChange)="updatePassword()"
       ></ion-input>
-      <p class="input_help">Which site or app are you logging into? e.g. <em>when.fm</em></p>
+      <p class="input_help">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Which site or app are you logging into? e.g. <em>when.fm</em>
+      </p>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Master password</ion-label>
@@ -25,10 +28,15 @@
         type="password"
         (ionChange)="updatePassword()"
       ></ion-input>
-      <p class="input_help">What <em>super secret</em> password are you using to guard all your per-site passwords?</p>
+      <p class="input_help">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Think of it as your digital skeleton key &ndash; a super secret, memorable password, that will enable you
+        to generate and recall separate login details for each service you use
+      </p>
     </ion-item>
 
     <p *ngIf="literal_input_warning" class="warning">
+      <ion-icon name="warning"></ion-icon>
       Because you have <em>Use just domain name?</em> switched off in Settings, every URL you
       enter will give you a different password - your input is <em>literal</em>. If you
       didn't change this on purpose it may mean you can't use your passwords.
@@ -46,6 +54,6 @@
         </ion-button>
       </ion-item>
     </div>
-    <p *ngIf="!output_password">Complete the two inputs and we'll give you a shiny password that's unique for this site or app.</p>
+    <p *ngIf="!output_password">Fill out the above fields to generate a unique, secure password for each service you register with online</p>
   </form>
 </ion-content>

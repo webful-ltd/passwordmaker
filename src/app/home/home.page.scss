@@ -6,6 +6,10 @@
   border-radius: 4px;
 }
 
+p > ion-icon {
+  vertical-align: sub;
+}
+
 .output_password {
   margin-top: 5px;
   text-align: left;
