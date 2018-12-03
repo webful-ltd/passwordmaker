@@ -14,11 +14,11 @@
         type="text"
         (ionChange)="updatePassword()"
       ></ion-input>
-      <p class="input_help">
-        <ion-icon name="information-circle-outline"></ion-icon>
-        Which site or app are you logging into? e.g. <em>when.fm</em>
-      </p>
     </ion-item>
+    <p class="input_help">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      Which site or app are you logging into? e.g. <em>when.fm</em>
+    </p>
     <ion-item>
       <ion-label position="floating">Master password</ion-label>
       <ion-input
@@ -28,12 +28,12 @@
         type="password"
         (ionChange)="updatePassword()"
       ></ion-input>
-      <p class="input_help">
-        <ion-icon name="information-circle-outline"></ion-icon>
-        Think of it as your digital skeleton key &ndash; a super secret, memorable password, that will enable you
-        to generate and recall separate login details for each service you use
-      </p>
     </ion-item>
+    <p class="input_help">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      Think of it as your digital skeleton key &ndash; a super secret, memorable password, that will enable you
+      to generate and recall separate login details for each service you use
+    </p>
 
     <p *ngIf="literal_input_warning" class="warning">
       <ion-icon name="warning"></ion-icon>
@@ -54,6 +54,6 @@
         </ion-button>
       </ion-item>
     </div>
-    <p *ngIf="!output_password">Fill out the above fields to generate a unique, secure password for each service you register with online</p>
+    <p *ngIf="!output_password">Fill out the above fields to generate a unique, secure password for each service you register with online.</p>
   </form>
 </ion-content>

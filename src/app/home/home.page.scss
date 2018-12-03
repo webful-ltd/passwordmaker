@@ -1,9 +1,21 @@
 .output_password, p.input_help {
-  background: var(--ion-color-secondary);
-  color: var(--ion-color-secondary-contrast);
   width: 100%;
   padding: 0.5em;
+}
+
+.output_password {
+  background: var(--ion-color-secondary);
+  color: var(--ion-color-secondary-contrast);
   border-radius: 4px;
+}
+
+p.input_help {
+  background: var(--ion-color-medium);
+  color: var(--ion-color-medium-contrast);
+  border-top: solid 2px var(--ion-color-secondary);
+  border-radius: 0 0 4px 4px;
+  margin: 0.5em 0 0 0;
+  font-size: 12.8px;
 }
 
 p > ion-icon {
