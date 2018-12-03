@@ -72,8 +72,9 @@ export class HomePage implements OnInit {
   public copy() {
     this.clipboard.copy(this.output_password).then(() => {
       this.toast.create({
-        message: (`Copied to clipboard!`),
+        message: ('Copied to clipboard!'),
         duration: 2000,
+        position: 'top',
         showCloseButton: true,
         closeButtonText: 'OK',
       }).then(successToast => successToast.present());
