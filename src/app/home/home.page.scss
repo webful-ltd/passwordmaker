@@ -1,4 +1,4 @@
-.output_password, p.input_help {
+.output_password, p.input_help, p.warning {
   width: 100%;
   padding: 0.5em;
 }
@@ -9,13 +9,22 @@
   border-radius: 4px;
 }
 
+p.input_help, p.warning {
+  border-radius: 0 0 4px 4px;
+  margin: 0.5em 0 0 0;
+  font-size: 12.8px;
+}
+
 p.input_help {
   background: var(--ion-color-medium);
   color: var(--ion-color-medium-contrast);
   border-top: solid 2px var(--ion-color-secondary);
-  border-radius: 0 0 4px 4px;
-  margin: 0.5em 0 0 0;
-  font-size: 12.8px;
+}
+
+p.warning {
+  background: var(--ion-color-danger);
+  color: var(--ion-color-danger-contrast);
+  border-top: solid 2px var(--ion-color-danger-shade);
 }
 
 p > ion-icon {
