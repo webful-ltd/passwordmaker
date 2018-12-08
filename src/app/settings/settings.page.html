@@ -28,7 +28,7 @@
           formControlName="remember_minutes"
           min="0"
           max="10"
-          color="secondary"
+          color="primary"
           snaps="true"
           pin="true"
         ></ion-range>
@@ -53,14 +53,14 @@
         name="domain_only"
         formControlName="domain_only"
         [checked]="isDomainOnly"
-        color="secondary"
+        color="primary"
       ></ion-toggle>
     </ion-item>
 
     <ion-button
       name="save"
       type="submit"
-      color="secondary"
+      color="primary"
       expand="block"
       [disabled]="settings.invalid"
     >Save</ion-button>
