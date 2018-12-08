@@ -13,6 +13,7 @@
         [(ngModel)]="input.host"
         type="text"
         (ionChange)="updatePassword()"
+        (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
     <p class="input_help">
@@ -27,6 +28,7 @@
         inputmode="password"
         type="password"
         (ionChange)="updatePassword()"
+        (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
     <p class="input_help">

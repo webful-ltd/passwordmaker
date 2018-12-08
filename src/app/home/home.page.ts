@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Events, Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 import { Input } from '../../models/Input';
 import { PasswordsService } from '../passwords.service';
@@ -23,6 +24,7 @@ export class HomePage implements OnInit {
     private changeDetector: ChangeDetectorRef,
     private clipboard: Clipboard,
     private events: Events,
+    private keyboard: Keyboard,
     private platform: Platform,
     private passwordsService: PasswordsService,
     private settingsService: SettingsService,
@@ -79,6 +81,16 @@ export class HomePage implements OnInit {
         closeButtonText: 'OK',
       }).then(successToast => successToast.present());
     });
+  }
+
+  /**
+   * Helper to add a more intuitive way to tell your device you're done inputting and efficiently hide
+   * the keyboard to see the password and Copy button.
+   */
+  public hideKeyboard() {
+    if (window.cordova) {
+      this.keyboard.hide();
+    }
   }
 
   private updateExpiryTimer() {
