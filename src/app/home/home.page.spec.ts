@@ -1,9 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventsMock, PlatformMock, ToastControllerMock } from 'ionic-mocks';
+import { EventsMock, KeyboardMock, PlatformMock, ToastControllerMock } from 'ionic-mocks';
 
 import { Events, Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { HomePage } from './home.page';
@@ -23,6 +24,7 @@ describe('HomePage', () => {
       providers: [
         { provide: Clipboard, useValue: clipboardSpy },
         { provide: Events, useValue: EventsMock.instance() },
+        { provide: Keyboard, useValue: KeyboardMock.instance() },
         { provide: Platform, useValue: PlatformMock },
         { provide: ToastController, useValue: ToastControllerMock },
       ],
