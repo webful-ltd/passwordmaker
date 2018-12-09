@@ -3,10 +3,18 @@
   padding: 0.5em;
 }
 
+.output_password_outer {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --inner-border-width: 0;
+}
+
 .output_password {
   background: var(--ion-color-secondary);
   color: var(--ion-color-secondary-contrast);
   border-radius: 4px;
+  margin-top: 5px;
+  text-align: left;
 }
 
 p.input_help, p.warning {
@@ -29,13 +37,4 @@ p.warning {
 
 p > ion-icon {
   vertical-align: sub;
-}
-
-.output_password {
-  margin-top: 5px;
-  text-align: left;
-}
-
-.output_password_item {
-  --inner-border-width: 0;
 }

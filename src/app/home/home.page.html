@@ -45,16 +45,14 @@
     </p>
 
     <div *ngIf="output_password">
-      <ion-item class="output_password_item">
+      <ion-item class="output_password_outer">
         <ion-label position="stacked">Per-site password</ion-label>
         <div class="output_password">{{ output_password }}</div>
       </ion-item>
-      <ion-item *ngIf="clipboard_available" class="output_password_item">
-        <ion-button icon-start (click)="copy()">
-          <ion-icon name="copy"></ion-icon>
-          Copy
-        </ion-button>
-      </ion-item>
+      <ion-button *ngIf="clipboard_available" icon-start (click)="copy()" color="primary" expand="block">
+        <ion-icon name="copy"></ion-icon>
+        Copy
+      </ion-button>
     </div>
     <p *ngIf="!output_password">Fill out the above fields to generate a unique, secure password for each service you register with online.</p>
   </form>
