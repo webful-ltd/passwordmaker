@@ -1,19 +1,12 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="home" href="/tabs/(home:home)">
+    <ion-tab-button tab="home">
       <ion-icon name="ios-key"></ion-icon>
       <ion-label>Generate</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="settings" href="/tabs/(settings:settings)">
+    <ion-tab-button tab="settings">
       <ion-icon name="settings"></ion-icon>
       <ion-label>Settings</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
-
-  <ion-tab tab="home">
-    <ion-router-outlet name="home"></ion-router-outlet>
-  </ion-tab>
-  <ion-tab tab="settings">
-    <ion-router-outlet name="settings"></ion-router-outlet>  
-  </ion-tab>
 </ion-tabs>
