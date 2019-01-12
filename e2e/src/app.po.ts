@@ -85,4 +85,9 @@ export class AppPage {
     browser.waitForAngular();
     return element(by.css('div.output_password')).getText();
   }
+
+  public confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
+    browser.sleep(400); // Wait for elements to be available and visible
+    expect(element(by.css(`ion-range[ng-reflect-name="${elementName}"]`)).isPresent()).toBe(expectedToBeVisible);
+  }
 }

@@ -57,6 +57,29 @@
       ></ion-toggle>
     </ion-item>
 
+    <ion-item>
+      <ion-label>Add a fixed number?</ion-label>
+      <ion-toggle
+        name="added_number_on"
+        formControlName="added_number_on"
+        [checked]="hasAddedNumber"
+        (ionChange)="toggleAddedNumber()"
+        color="primary"
+      ></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="hasAddedNumber">
+      <ion-label position="stacked">Cool, which number?</ion-label>
+      <ion-range
+        name="added_number"
+        formControlName="added_number"
+        min="0"
+        max="9"
+        color="primary"
+        snaps="true"
+        pin="true"
+      ></ion-range>
+    </ion-item>
+
     <ion-button
       name="save"
       type="submit"

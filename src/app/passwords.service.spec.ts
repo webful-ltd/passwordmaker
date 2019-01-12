@@ -77,4 +77,12 @@ describe('PasswordsService', () => {
       new Settings('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 30, 0, 'hmac-sha256', true)
     )).toBe('rJeGcpSWpH36PMn706JrNR9vNzr9Wj');
   }));
+
+  it('should add a fixed number if configured', inject([PasswordsService], (service: PasswordsService) => {
+    expect(service.getPassword(
+      'test',
+      'https://user:pass@my.example.com:123/example', // uses example.com
+      new Settings('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 30, 0, 'hmac-sha256', true, true, 8)
+    )).toBe('rJeGcpSWpH36PMn706JrNR9vNzr9Wj8');
+  }));
 });

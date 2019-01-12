@@ -34,10 +34,19 @@ export class SettingsService {
     const settingsService = this;
 
     this.currentPromise = this.storage.get('settings').then(settings => {
+      const defaultSettings = new Settings();
       if (settings === null) {
-        // Initialise with default settings
-        settingsService.currentSettings = new Settings();
+        // Initialise entire dictionary with default settings
+        settingsService.currentSettings = defaultSettings;
       } else {
+        // 'Upgrade' settings data to add defaults for any newly-supported keys since the last save
+        for (const key in defaultSettings) {
+
+
+          if (settings[key] === undefined) {
+            settings[key] = defaultSettings[key];
+          }
+        }
         settingsService.currentSettings = settings;
       }
 

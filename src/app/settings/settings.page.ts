@@ -12,6 +12,7 @@ import { SettingsService } from '../settings.service';
 
 export class SettingsPage {
   public isDomainOnly: boolean;
+  public hasAddedNumber: boolean;
   public settings: FormGroup;
 
   constructor(
@@ -26,6 +27,8 @@ export class SettingsPage {
       output_character_set: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
       output_length: [15, [Validators.required, Validators.pattern('[0-9]+')]],
       remember_minutes: [5, Validators.required],
+      added_number_on: [false],
+      added_number: [0],
     });
   }
 
@@ -36,6 +39,7 @@ export class SettingsPage {
         // `ion-toggle` doesn't seem to get boolean values cascaded through like other reactive form
         // elements, so we need to set this manually and use with its `[checked]` attribute.
         this.isDomainOnly = settings.domain_only;
+        this.hasAddedNumber = settings.added_number_on;
       });
   }
 
@@ -76,5 +80,9 @@ export class SettingsPage {
           }).then(errorToast => errorToast.present());
         }
       );
+  }
+
+  toggleAddedNumber() {
+    this.hasAddedNumber = this.settings.value['added_number_on'];
   }
 }

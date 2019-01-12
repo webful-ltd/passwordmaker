@@ -15,13 +15,19 @@ export class PasswordsService {
       return '';
     }
 
-    return makePassword({
+    const password = makePassword({
       hashAlgorithm: settings.algorithm,
       masterPassword: masterPassword,
       data: coreData,
       length: settings.output_length,
       charset: settings.output_character_set,
     });
+
+    if (settings.added_number_on) {
+      return `${password}${settings.added_number}`;
+    }
+
+    return password;
   }
 
   private extractCoreData(content: string, settings: Settings): string {
