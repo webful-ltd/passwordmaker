@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Events, ToastController } from '@ionic/angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { Settings } from '../../models/Settings';
 import { SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-settings',
+  styleUrls: ['./settings.page.scss'],
   templateUrl: 'settings.page.html',
 })
 
@@ -18,6 +20,7 @@ export class SettingsPage {
   constructor(
     private events: Events,
     private formBuilder: FormBuilder,
+    private iab: InAppBrowser,
     private settingsService: SettingsService,
     public toast: ToastController,
   ) {
@@ -84,5 +87,9 @@ export class SettingsPage {
 
   toggleAddedNumber() {
     this.hasAddedNumber = this.settings.value['added_number_on'];
+  }
+
+  openHelp() {
+    this.iab.create('https://passwordmaker.webful.uk/#settings', '_system');
   }
 }

@@ -5,6 +5,11 @@
 </ion-header>
 
 <ion-content padding>
+  <p class="help">
+    <ion-icon name="information-circle-outline"></ion-icon>
+    What's all this, then?
+    <a (click)="openHelp()" target="_system">Learn about Settings here</a>
+  </p>
   <form *ngIf="settings" [formGroup]="settings" (ngSubmit)="save(settings)" novalidate>
     <ion-item>
       <ion-label position="stacked">Length of passwords</ion-label>
@@ -48,16 +53,6 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Use just domain name?</ion-label>
-      <ion-toggle
-        name="domain_only"
-        formControlName="domain_only"
-        [checked]="isDomainOnly"
-        color="primary"
-      ></ion-toggle>
-    </ion-item>
-
-    <ion-item>
       <ion-label>Add a fixed number?</ion-label>
       <ion-toggle
         name="added_number_on"
@@ -78,6 +73,16 @@
         snaps="true"
         pin="true"
       ></ion-range>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Use just domain name?</ion-label>
+      <ion-toggle
+        name="domain_only"
+        formControlName="domain_only"
+        [checked]="isDomainOnly"
+        color="primary"
+      ></ion-toggle>
     </ion-item>
 
     <ion-button

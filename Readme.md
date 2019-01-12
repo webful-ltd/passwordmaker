@@ -10,10 +10,10 @@ Make secure, unique-per-site passwords.
 
 Built with [Ionic](https://ionicframework.com/) and [Angular](https://angular.io/).
 
-## What is this?
+## What's this?
 
-See [the hype page](https://passwordmaker.webful.uk) for a more complete intro to
-what the app does and why you want it.
+See [the hype page](https://passwordmaker.webful.uk) for more about
+what the app does, why you might want it and how to pick your _Settings_.
 
 ## Dev info
 

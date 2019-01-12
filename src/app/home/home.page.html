@@ -16,7 +16,7 @@
         (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
-    <p class="input_help">
+    <p class="help">
       <ion-icon name="information-circle-outline"></ion-icon>
       Which site or app are you logging into? e.g. <em>when.fm</em>
     </p>
@@ -31,10 +31,10 @@
         (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
-    <p class="input_help">
+    <p class="help">
       <ion-icon name="information-circle-outline"></ion-icon>
       Think of it as your digital skeleton key &ndash; a super secret, memorable password, that will enable you
-      to generate and recall separate login details for each service you use.
+      to generate and recall separate login details for each service you use
     </p>
 
     <p *ngIf="literal_input_warning" class="warning">
