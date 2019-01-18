@@ -2,7 +2,10 @@ import { browser, by, element } from 'protractor';
 
 export class AppPage {
   public maximise() {
-    browser.driver.manage().window().setSize(900, 900);
+    // It would be good to work out a clean way to scroll to UI elements as required and test
+    // at a typical mobile size - but for now this sidesteps that issue and overlapping
+    // elements receiving 'clicks'.
+    browser.driver.manage().window().setSize(900, 1200);
   }
 
   public startOnHomePath() {

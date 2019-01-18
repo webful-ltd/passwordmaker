@@ -16,6 +16,7 @@ export class HomePage implements OnInit {
   public clipboard_available = false;
   public input: Input = new Input();
   public literal_input_warning = false;
+  public non_domain_warning = false;
   public output_password?: string;
   private expire_password_on_context_change = false;
   private expiry_timer_id: number;
@@ -58,8 +59,11 @@ export class HomePage implements OnInit {
   public updatePassword() {
     if (this.input.master_password.length === 0 || this.input.host.length === 0) {
       this.output_password = null;
+      this.non_domain_warning = false;
       return;
     }
+
+    this.non_domain_warning = (this.input.host.indexOf('.') === -1);
 
     if (this.input.master_password.length > 0) {
       this.updateExpiryTimer();
@@ -67,6 +71,13 @@ export class HomePage implements OnInit {
 
     this.settingsService.getCurrentSettings().then(settings => {
       this.literal_input_warning = !settings.domain_only;
+
+      if (!settings.domain_only) {
+        // If we're showing the general literal input warning, the non-domain warning is not really relevant
+        // as we're not going to pull out a domain anyway.
+        this.non_domain_warning = false;
+      }
+
       this.output_password = this.passwordsService.getPassword(this.input.master_password, this.input.host, settings);
     });
   }

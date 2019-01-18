@@ -19,6 +19,14 @@ describe('PasswordMaker', () => {
 
     // Check for correct output for "example.com" with alphanumeric charset, 15 length, HMAC-SHA256.
     expect(page.getOutputPassword()).toEqual('rJeGcpSWpH36PMn');
+    expect(page.getHomeText()).not.toContain(`Your URL or domain doesn't look one`);
+  });
+
+  it('should warn about non-domain input when appropriate', () => {
+    page.populateIonicInput('host', 'myexample');
+    page.populateIonicInput('master_password', 'test');
+
+    expect(page.getHomeText()).toContain(`Your URL or domain doesn't look one`);
   });
 
   it('should generate the right password with domain_only switched off', () => {
