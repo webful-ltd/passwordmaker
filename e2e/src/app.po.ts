@@ -28,7 +28,7 @@ export class AppPage {
 
   public populateIonicInput(elementName: string, value: (string|number)) {
     browser.waitForAngular();
-    const ionicInput = element(by.css(`ion-input[ng-reflect-name="${elementName}"]`));
+    const ionicInput = element(by.css(`input[name="${elementName}"]`));
     ionicInput.click();
 
     // `clear()` wasn't allowed on `ion-input` or the native field, so backspace x20 to remove existing value.
