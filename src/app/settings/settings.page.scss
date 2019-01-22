@@ -1,6 +1,13 @@
-p.help {
+p.help, p.warning {
   border-radius: 4px 4px 0 0;
+}
+
+p.help {
   border-bottom: solid 2px var(--ion-color-secondary);
+}
+
+p.warning {
+  border-bottom: solid 2px var(--ion-color-danger-shade);
 }
 
 a {

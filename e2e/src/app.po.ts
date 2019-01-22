@@ -25,8 +25,11 @@ export class AppPage {
   }
 
   public getHomeText() {
-    browser.waitForAngular();
-    return element(by.css('app-home')).getText();
+    return this.getPageText('home');
+  }
+
+  public getSettingsText() {
+    return this.getPageText('settings');
   }
 
   public populateIonicInput(elementName: string, value: (string|number)) {
@@ -84,6 +87,16 @@ export class AppPage {
     ionicSaveButton.click();
   }
 
+  public getSaveButtonDisabledStatus(): Promise<boolean> {
+    const ionicSaveButton = element(by.css(`ion-button[name="save"]`));
+
+    return new Promise<boolean>(resolve => {
+      ionicSaveButton.getAttribute('disabled').then(disabledValue => {
+        resolve(!!disabledValue);
+      });
+    });
+  }
+
   public getOutputPassword() {
     browser.waitForAngular();
     return element(by.css('div.output_password')).getText();
@@ -92,5 +105,11 @@ export class AppPage {
   public confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
     browser.sleep(400); // Wait for elements to be available and visible
     expect(element(by.css(`ion-range[ng-reflect-name="${elementName}"]`)).isPresent()).toBe(expectedToBeVisible);
+  }
+
+  private getPageText(pageName: string) {
+    browser.waitForAngular();
+
+    return element(by.css(`app-${pageName}`)).getText();
   }
 }

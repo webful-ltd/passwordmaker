@@ -28,7 +28,12 @@ export class SettingsPage {
       algorithm: ['hmac-sha256', Validators.required],
       domain_only: [true],
       output_character_set: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
-      output_length: [15, [Validators.required, Validators.pattern('[0-9]+')]],
+      output_length: [15, [
+        Validators.required,
+        Validators.pattern('[0-9]+'),
+        Validators.min(8),
+        Validators.max(200),
+      ]],
       remember_minutes: [5, Validators.required],
       added_number_on: [false],
       added_number: [0],
@@ -49,7 +54,7 @@ export class SettingsPage {
   save({ value, valid }: { value: Settings, valid: boolean }) {
     if (!valid) {
       this.toast.create({
-        message: ('Settings not valid. Is your chosen output length a number?'),
+        message: ('Settings not valid. Is your chosen Length of passwords between 8 and 200?'),
         duration: 3500,
         position: 'top',
         cssClass: 'error',

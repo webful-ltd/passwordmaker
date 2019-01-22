@@ -6,7 +6,7 @@ p.help {
   border-top: solid 2px var(--ion-color-secondary);
 }
 
-.output_password, p.warning {
+.output_password {
   width: 100%;
   padding: 0.5em;
 }
@@ -26,13 +26,5 @@ p.help {
 }
 
 p.warning {
-  background: var(--ion-color-danger);
-  color: var(--ion-color-danger-contrast);
   border-top: solid 2px var(--ion-color-danger-shade);
-  margin: 0.5em 0 0 0;
-  font-size: 12.8px;
-}
-
-p > ion-icon {
-  vertical-align: sub;
 }

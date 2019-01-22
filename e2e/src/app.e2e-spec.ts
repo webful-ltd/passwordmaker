@@ -29,6 +29,22 @@ describe('PasswordMaker', () => {
     expect(page.getHomeText()).toContain(`Your URL or domain doesn't look one`);
   });
 
+  it('should permit an output length of 200', () => {
+    page.navigateToTab('settings');
+    page.populateIonicInput('output_length', 200);
+
+    expect(page.getSaveButtonDisabledStatus()).toBe(false);
+    expect(page.getSettingsText()).not.toContain('Settings not valid.');
+  });
+
+  it('should not permit an output length of 201', () => {
+    page.navigateToTab('settings');
+    page.populateIonicInput('output_length', 201);
+
+    expect(page.getSaveButtonDisabledStatus()).toBe(true);
+    expect(page.getSettingsText()).toContain('Settings not valid.');
+  });
+
   it('should generate the right password with domain_only switched off', () => {
     page.navigateToTab('settings');
     expect(page.setIonicToggle('domain_only', false)).toEqual(true);

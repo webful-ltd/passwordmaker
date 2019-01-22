@@ -13,7 +13,13 @@
   <form *ngIf="settings" [formGroup]="settings" (ngSubmit)="save(settings)" novalidate>
     <ion-item>
       <ion-label position="stacked">Length of passwords</ion-label>
-      <ion-input name="output_length" formControlName="output_length" type="number"></ion-input>
+      <ion-input
+        name="output_length"
+        formControlName="output_length"
+        type="number"
+        min="8"
+        max="200"
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Possible characters</ion-label>
@@ -85,6 +91,10 @@
       ></ion-toggle>
     </ion-item>
 
+    <p *ngIf="settings.invalid" class="warning">
+      <ion-icon name="warning"></ion-icon>
+      Settings not valid. Is your chosen <em>Length of passwords</em> between 8 and 200?
+    </p>
     <ion-button
       name="save"
       type="submit"

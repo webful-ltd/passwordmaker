@@ -18,15 +18,27 @@ ion-title {
   color: var(--ion-color-primary-contrast);
 }
 
-p.help {
+p > ion-icon {
+  vertical-align: sub;
+}
+
+p.help, p.warning {
   width: 100%;
   margin: 0.5em 0 0 0;
   padding: 0.5em;
   font-size: 12.8px;
+}
+
+p.help {
   background: var(--ion-color-medium);
   color: var(--ion-color-medium-contrast);
 
   a {
     color: var(--ion-color-medium-contrast);
   }
+}
+
+p.warning {
+  background: var(--ion-color-danger);
+  color: var(--ion-color-danger-contrast);
 }
