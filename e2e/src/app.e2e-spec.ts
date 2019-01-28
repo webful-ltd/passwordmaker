@@ -48,7 +48,7 @@ describe('PasswordMaker', () => {
   it('should generate the right password with domain_only switched off', () => {
     page.navigateToTab('settings');
     expect(page.setIonicToggle('domain_only', false)).toEqual(true);
-    page.save();
+    expect(page.save()).toEqual(true);
 
     page.navigateToTab('home');
     page.populateIonicInput('host', 'my.example.com');
@@ -64,7 +64,7 @@ describe('PasswordMaker', () => {
     expect(page.populateIonicSelect('output_character_set', 'Letters')).toEqual(true);
     expect(page.populateIonicSelect('algorithm', 'SHA1')).toEqual(true);
     expect(page.setIonicToggle('domain_only', true)).toEqual(true);
-    page.save();
+    expect(page.save()).toEqual(true);
 
     page.navigateToTab('home');
     page.populateIonicInput('host', 'my.example.com');
@@ -80,7 +80,7 @@ describe('PasswordMaker', () => {
     expect(page.populateIonicSelect('output_character_set', 'Letters')).toEqual(true);
     expect(page.populateIonicSelect('algorithm', 'SHA1')).toEqual(true);
     expect(page.setIonicToggle('domain_only', false)).toEqual(true);
-    page.save();
+    expect(page.save()).toEqual(true);
 
     page.navigateToTab('home');
     page.populateIonicInput('host', 'my.example.com');
@@ -108,7 +108,7 @@ describe('PasswordMaker', () => {
     // Expect added number slider to be visible when linked toggle is on
     page.confirmRangeVisibility('added_number', true); // Leave the range slider at default position, so it saves as 0
 
-    page.save();
+    expect(page.save()).toEqual(true);
 
     page.navigateToTab('home');
     // Check for correct output for "example.com" with alphanumeric charset, 30 length, HMAC-SHA256.

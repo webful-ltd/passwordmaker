@@ -2,10 +2,7 @@ import { browser, by, element } from 'protractor';
 
 export class AppPage {
   public maximise() {
-    // It would be good to work out a clean way to scroll to UI elements as required and test
-    // at a typical mobile size - but for now this sidesteps that issue and overlapping
-    // elements receiving 'clicks'.
-    browser.driver.manage().window().setSize(900, 1200);
+    browser.driver.manage().window().setSize(600, 900);
   }
 
   public startOnHomePath() {
@@ -81,10 +78,25 @@ export class AppPage {
     });
   }
 
-  public save() {
+  public save(): Promise<boolean> {
     const ionicSaveButton = element(by.css(`ion-button[name="save"]`));
-    browser.waitForAngular();
-    ionicSaveButton.click();
+
+    return new Promise<boolean>(resolve => {
+      // Scroll to the bottom of the content, so we don't have to make the browser viewport
+      // huge to avoid the tab bar stealing focus when clicking Save. https://stackoverflow.com/a/47580259/2803757
+      const ionicSaveButtonWebElement = ionicSaveButton.getWebElement();
+      browser.executeScript(
+        `arguments[0].scrollIntoView({behavior: "smooth", block: "end"});`,
+        ionicSaveButtonWebElement,
+      );
+
+      // As the scrolling happens with custom JS and 'outside' the normal E2E event flow, a
+      // short explicit sleep seems to be needed for the scroll to complete before we try to
+      // click() the button. Waiting for `executeScript()`'s promise resolution wasn't sufficient.
+      browser.sleep(500);
+
+      ionicSaveButton.click().then(() => resolve(true));
+    });
   }
 
   public getSaveButtonDisabledStatus(): Promise<boolean> {
