@@ -110,7 +110,10 @@ export class AppPage {
   }
 
   public getOutputPassword() {
-    browser.waitForAngular();
+     // With the Ionic + Angular + Chromedriver updates August 2019, browser.waitForAngular() alone
+     // seemed to stop working for ensuring that div.output_password is available, so had to add an
+     // explicit pause here too.
+    browser.sleep(1000);
     return element(by.css('div.output_password')).getText();
   }
 
