@@ -76,7 +76,7 @@
     "typescript": "~3.5.3"
   },
   "engines": {
-    "node": ">=8.11.1",
+    "node": ">=10",
     "npm": ">=6.0.1"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
