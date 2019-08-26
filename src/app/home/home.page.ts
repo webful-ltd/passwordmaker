@@ -87,7 +87,7 @@ export class HomePage implements OnInit {
       this.toast.create({
         message: ('Copied to clipboard!'),
         duration: 2000,
-        position: 'top',
+        position: 'middle',
         showCloseButton: true,
         closeButtonText: 'OK',
       }).then(successToast => successToast.present());

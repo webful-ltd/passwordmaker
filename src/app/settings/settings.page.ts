@@ -56,7 +56,7 @@ export class SettingsPage {
       this.toast.create({
         message: ('Settings not valid. Is your chosen Length of passwords between 8 and 200?'),
         duration: 3500,
-        position: 'top',
+        position: 'middle',
         cssClass: 'error',
         showCloseButton: true,
         closeButtonText: 'OK',
@@ -72,7 +72,7 @@ export class SettingsPage {
           this.toast.create({
             message: ('Settings saved!'),
             duration: 2000,
-            position: 'top',
+            position: 'middle',
             showCloseButton: true,
             closeButtonText: 'OK',
           }).then(successToast => successToast.present());
@@ -81,7 +81,7 @@ export class SettingsPage {
           this.toast.create({
             message: (`Error: ${reason}`),
             duration: 3500,
-            position: 'top',
+            position: 'middle',
             cssClass: 'error',
             showCloseButton: true,
             closeButtonText: 'OK',
