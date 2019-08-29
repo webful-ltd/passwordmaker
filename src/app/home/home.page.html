@@ -11,6 +11,7 @@
       <ion-input
         name="host"
         [(ngModel)]="input.host"
+        inputmode="url"
         type="text"
         (ionChange)="updatePassword()"
         (keyup.enter)="hideKeyboard()"
