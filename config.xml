@@ -6,7 +6,6 @@
     <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="ScrollEnabled" value="false" />
-    <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="FadeSplashScreenDuration" value="200" />
     <preference name="MixedContentMode" value="1" />
@@ -16,6 +15,8 @@
     <preference name="SplashScreenDelay" value="1500" />
     <preference name="SplashScreenSpinnerColor" value="#a11692" />
     <platform name="android">
+        <preference name="android-minSdkVersion" value="19" />
+        <preference name="android-targetSdkVersion" value="28" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
         <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
