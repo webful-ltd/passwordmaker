@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Events, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { Settings } from '../../models/Settings';
@@ -18,7 +18,6 @@ export class SettingsPage {
   public settings: FormGroup;
 
   constructor(
-    private events: Events,
     private formBuilder: FormBuilder,
     private iab: InAppBrowser,
     private settingsService: SettingsService,
@@ -58,8 +57,7 @@ export class SettingsPage {
         duration: 3500,
         position: 'middle',
         cssClass: 'error',
-        showCloseButton: true,
-        closeButtonText: 'OK',
+        buttons: [{ text: 'OK', role: 'cancel'}],
       }).then(errorToast => errorToast.present());
 
       return;
@@ -68,13 +66,11 @@ export class SettingsPage {
     this.settingsService.save(value)
       .then(
         () => {
-          this.events.publish('settingsSaved');
           this.toast.create({
             message: ('Settings saved!'),
             duration: 2000,
             position: 'middle',
-            showCloseButton: true,
-            closeButtonText: 'OK',
+            buttons: [{ text: 'OK', role: 'cancel'}],
           }).then(successToast => successToast.present());
         },
         (reason) => {
@@ -83,8 +79,7 @@ export class SettingsPage {
             duration: 3500,
             position: 'middle',
             cssClass: 'error',
-            showCloseButton: true,
-            closeButtonText: 'OK',
+            buttons: [{ text: 'OK', role: 'cancel'}],
           }).then(errorToast => errorToast.present());
         }
       );

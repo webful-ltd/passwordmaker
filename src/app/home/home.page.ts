@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import { Events, Platform, ToastController } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 
@@ -24,7 +24,6 @@ export class HomePage implements OnInit {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private clipboard: Clipboard,
-    private events: Events,
     private keyboard: Keyboard,
     private platform: Platform,
     private passwordsService: PasswordsService,
@@ -53,7 +52,7 @@ export class HomePage implements OnInit {
 
     this.updatePassword();
 
-    this.events.subscribe('settingsSaved', () => { this.updatePassword(); });
+    this.settingsService.saveSubject.subscribe(() => { this.updatePassword(); });
   }
 
   public updatePassword() {
@@ -88,8 +87,7 @@ export class HomePage implements OnInit {
         message: ('Copied to clipboard!'),
         duration: 2000,
         position: 'middle',
-        showCloseButton: true,
-        closeButtonText: 'OK',
+        buttons: [{ text: 'OK', role: 'cancel'}],
       }).then(successToast => successToast.present());
     });
   }

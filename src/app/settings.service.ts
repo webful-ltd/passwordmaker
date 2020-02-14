@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { Subject } from 'rxjs';
 
 import { Settings } from '../models/Settings';
 
@@ -7,6 +8,7 @@ import { Settings } from '../models/Settings';
   providedIn: 'root'
 })
 export class SettingsService {
+  public saveSubject: Subject<void> = new Subject<void>();
   private currentSettings: Settings;
   private currentPromise?: Promise<any>;
 
@@ -19,7 +21,12 @@ export class SettingsService {
 
     this.currentPromise = this.currentSettings = null; // Ensure future `getCurrentSettings()` don't get old values
 
-    return this.storage.set('settings', settings);
+    const savePromise = this.storage.set('settings', settings);
+
+    // Tell listening pages (e.g. Home) that the settings changed
+    savePromise.then(() => this.saveSubject.next());
+
+    return savePromise;
   }
 
   public getCurrentSettings(): Promise<Settings> {
@@ -41,8 +48,6 @@ export class SettingsService {
       } else {
         // 'Upgrade' settings data to add defaults for any newly-supported keys since the last save
         for (const key in defaultSettings) {
-
-
           if (settings[key] === undefined) {
             settings[key] = defaultSettings[key];
           }
