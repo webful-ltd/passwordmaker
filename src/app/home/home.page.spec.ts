@@ -9,6 +9,14 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { HomePage } from './home.page';
 
+declare global {
+  interface Window {
+    cordova: Cordova;
+    clearTimeout: (handle?: number) => void;
+    setTimeout: (callback: () => any, interval: number) => any;
+  }
+}
+
 describe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;

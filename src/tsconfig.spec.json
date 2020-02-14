@@ -13,6 +13,7 @@
   ],
   "include": [
     "polyfills.ts",
+    "../node_modules/@types/cordova/index.d.ts",
     "**/*.spec.ts",
     "**/*.d.ts"
   ]
