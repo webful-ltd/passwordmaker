@@ -13,7 +13,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../home/home.module#HomePageModule',
+            loadChildren: () => import('../home/home.module').then(m => m.HomePageModule),
           },
         ],
       },
@@ -22,7 +22,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../settings/settings.module#SettingsPageModule',
+            loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule),
           },
         ],
       },
