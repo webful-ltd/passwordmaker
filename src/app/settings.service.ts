@@ -3,6 +3,7 @@ import { Storage } from '@ionic/storage';
 import { Subject } from 'rxjs';
 
 import { Settings } from '../models/Settings';
+import { SettingsSimple } from '../models/SettingsSimple';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class SettingsService {
     const settingsService = this;
 
     this.currentPromise = this.storage.get('settings').then(settings => {
-      const defaultSettings = new Settings();
+      const defaultSettings = new SettingsSimple();
       if (settings === null) {
         // Initialise entire dictionary with default settings
         settingsService.currentSettings = defaultSettings;

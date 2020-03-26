@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { PasswordsService } from './passwords.service';
-import { Settings } from '../models/Settings';
+import { SettingsSimple } from '../models/SettingsSimple';
 
 describe('PasswordsService', () => {
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('PasswordsService', () => {
     expect(service.getPassword(
       'test',
       'https://user:pass@my.example.com:123/example', // Just uses 'example.com' in non-domain-only mode
-      new Settings()
+      new SettingsSimple()
     )).toBe('rJeGcpSWpH36PMn');
   }));
 
@@ -22,27 +22,30 @@ describe('PasswordsService', () => {
     expect(service.getPassword(
       '☺',
       'https://user:pass@my.example.com:123/example', // Just uses 'example.com' in non-domain-only mode
-      new Settings()
+      new SettingsSimple()
     )).toBe('q89H6EgYwsfboCA');
   }));
 
   it('should skip password generation with no master password', inject([PasswordsService], (service: PasswordsService) => {
-    expect(service.getPassword('', 'example.com', new Settings())).toBe('');
+    expect(service.getPassword('', 'example.com', new SettingsSimple())).toBe('');
   }));
 
   it('should skip password generation with no content input', inject([PasswordsService], (service: PasswordsService) => {
-    expect(service.getPassword('test', '', new Settings())).toBe('');
+    expect(service.getPassword('test', '', new SettingsSimple())).toBe('');
   }));
 
   it('should skip password generation on localhost', inject([PasswordsService], (service: PasswordsService) => {
-    expect(service.getPassword('test', 'http://localhost:1234/asd', new Settings())).toBe('');
+    expect(service.getPassword('test', 'http://localhost:1234/asd', new SettingsSimple())).toBe('');
   }));
 
   it('should use full URI in literal text mode', inject([PasswordsService], (service: PasswordsService) => {
+    const settings = new SettingsSimple();
+    settings.domain_only = false;
+
     expect(service.getPassword(
       'test',
       'https://user:pass@my.example.com:123/example',
-      new Settings('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 15, 0, 'hmac-sha256', false)
+      settings,
     )).toBe('fQxjm35n07fy1UF');
   }));
 
@@ -50,39 +53,53 @@ describe('PasswordsService', () => {
     expect(service.getPassword(
       'test',
       'https://user:pass@my.example.co.uk:123/example', // uses example.co.uk
-      new Settings()
+      new SettingsSimple()
     )).toBe('i4vMR40KZwMD3vF');
   }));
 
   it('should correctly use a different output character set', inject([PasswordsService], (service: PasswordsService) => {
+    const settings = new SettingsSimple();
+    settings.output_character_set = '0123456789';
+
     expect(service.getPassword(
       'test',
       'https://user:pass@my.example.com:123/example', // uses example.com
-      new Settings('0123456789', 15, 0, 'hmac-sha256', true)
+      settings,
     )).toBe('823117584057421');
   }));
 
   it('should correctly use a different algorithm', inject([PasswordsService], (service: PasswordsService) => {
+    const settings = new SettingsSimple();
+    settings.algorithm = 'md5';
+
     expect(service.getPassword(
       'test',
       'https://user:pass@my.example.com:123/example', // uses example.com
-      new Settings('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 15, 0, 'md5', true)
+      settings,
     )).toBe('DZF3hYPXEk25hyV');
   }));
 
   it('should correctly use a different output length', inject([PasswordsService], (service: PasswordsService) => {
+    const settings = new SettingsSimple();
+    settings.output_length = 30;
+
     expect(service.getPassword(
       'test',
       'https://user:pass@my.example.com:123/example', // uses example.com
-      new Settings('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 30, 0, 'hmac-sha256', true)
+      settings,
     )).toBe('rJeGcpSWpH36PMn706JrNR9vNzr9Wj');
   }));
 
   it('should add a fixed number if configured', inject([PasswordsService], (service: PasswordsService) => {
+    const settings = new SettingsSimple();
+    settings.output_length = 30;
+    settings.added_number_on = true;
+    settings.added_number = 8;
+
     expect(service.getPassword(
       'test',
       'https://user:pass@my.example.com:123/example', // uses example.com
-      new Settings('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 30, 0, 'hmac-sha256', true, true, 8)
+      settings,
     )).toBe('rJeGcpSWpH36PMn706JrNR9vNzr9Wj8');
   }));
 });

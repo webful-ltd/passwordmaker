@@ -69,9 +69,9 @@ export class HomePage implements OnInit {
     }
 
     this.settingsService.getCurrentSettings().then(settings => {
-      this.literal_input_warning = !settings.domain_only;
+      this.literal_input_warning = !settings.isDomainOnly();
 
-      if (!settings.domain_only) {
+      if (!settings.isDomainOnly()) {
         // If we're showing the general literal input warning, the non-domain warning is not really relevant
         // as we're not going to pull out a domain anyway.
         this.non_domain_warning = false;

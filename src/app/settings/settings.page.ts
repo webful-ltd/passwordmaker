@@ -4,6 +4,7 @@ import { ToastController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { Settings } from '../../models/Settings';
+import { SettingsSimple } from '../../models/SettingsSimple';
 import { SettingsService } from '../settings.service';
 
 @Component({
@@ -45,8 +46,11 @@ export class SettingsPage {
         this.settings.setValue(settings);
         // `ion-toggle` doesn't seem to get boolean values cascaded through like other reactive form
         // elements, so we need to set this manually and use with its `[checked]` attribute.
-        this.isDomainOnly = settings.domain_only;
-        this.hasAddedNumber = settings.added_number_on;
+        this.isDomainOnly = settings.isDomainOnly();
+
+        if (settings instanceof SettingsSimple) {
+          this.hasAddedNumber = settings.added_number_on;
+        }
       });
   }
 
