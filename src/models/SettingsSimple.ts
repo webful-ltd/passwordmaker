@@ -7,8 +7,6 @@ export class SettingsSimple extends Settings {
   public domain_only = true;
   public output_character_set = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   public output_length = 15;
-  public prefix = '';
-  public suffix = '';
 
   constructor() {
     super();
