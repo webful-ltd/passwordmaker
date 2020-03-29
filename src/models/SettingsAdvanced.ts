@@ -10,6 +10,7 @@ export class SettingsAdvanced extends Settings {
     super();
 
     this.remember_minutes = settingsSimple.remember_minutes;
+
     const firstProfile = new Profile();
     firstProfile.id = 1;
     firstProfile.algorithm = settingsSimple.algorithm;
