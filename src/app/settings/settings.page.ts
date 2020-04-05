@@ -70,6 +70,21 @@ export class SettingsPage {
     });
   }
 
+  async editNewProfile() {
+    this.settingsService.getNextProfileId().then(async nextProfileId => {
+      const newProfile = new Profile();
+      newProfile.profile_id = nextProfileId;
+
+      const modal = await this.modalController.create({
+        component: ProfilePage,
+        componentProps: { profileModel: newProfile }
+      });
+      modal.onWillDismiss().then(() => this.update());
+
+      return await modal.present();
+    });
+  }
+
   async editProfile(profile: Profile) {
     const modal = await this.modalController.create({
       component: ProfilePage,

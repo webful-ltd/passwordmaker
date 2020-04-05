@@ -110,8 +110,7 @@ export class SettingsService {
     return this.currentPromise;
   }
 
-  // todo use for new profiles
-  public getNextUnusedProfileId(): Promise<number> {
+  getNextProfileId(): Promise<number> {
     return new Promise(resolve => {
       this.getCurrentSettings().then(settings => {
         if (!(settings instanceof SettingsAdvanced)) {
