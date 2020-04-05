@@ -1,15 +1,17 @@
 import { Settings } from './Settings';
 
 export class SettingsSimple extends Settings {
-  public added_number_on = false;
-  public added_number?: number;
-  public algorithm: 'hmac-sha256' | 'sha256' | 'hmac-sha1' | 'sha1' | 'hmac-md5' | 'md5' | 'hmac-ripemd160' | 'ripemd160' = 'hmac-sha256';
-  public domain_only = true;
-  public output_character_set = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  public output_length = 15;
+  added_number_on = false;
+  added_number?: number;
+  algorithm: 'hmac-sha256' | 'sha256' | 'hmac-sha1' | 'sha1' | 'hmac-md5' | 'md5' | 'hmac-ripemd160' | 'ripemd160' = 'hmac-sha256';
+  domain_only = true;
+  output_character_set = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  output_length = 15;
 
   constructor() {
     super();
+
+    this.class = this.constructor.name;
   }
 
   getAlgorithm(): 'hmac-sha256' | 'sha256' | 'hmac-sha1' | 'sha1' | 'hmac-md5' | 'md5' | 'hmac-ripemd160' | 'ripemd160' {

@@ -3,23 +3,27 @@ import { Settings } from './Settings';
 import { SettingsSimple } from './SettingsSimple';
 
 export class SettingsAdvanced extends Settings {
-  public profiles: Profile[] = [];
-  private activeProfileId: number;
+  profiles: Profile[] = [];
+
+  active_profile_id: number;
 
   constructor (settingsSimple: SettingsSimple) {
     super();
 
+    this.class = this.constructor.name;
+
     this.remember_minutes = settingsSimple.remember_minutes;
 
     const firstProfile = new Profile();
-    firstProfile.id = 1;
+    firstProfile.profile_id = 1;
+    firstProfile.name = 'Default';
     firstProfile.algorithm = settingsSimple.algorithm;
     firstProfile.domain_only = settingsSimple.domain_only;
-    firstProfile.output_character_set = settingsSimple.output_character_set;
+    firstProfile.output_character_set_preset = settingsSimple.output_character_set;
     firstProfile.output_length = settingsSimple.output_length;
     firstProfile.post_processing_suffix = settingsSimple.added_number_on ? String(settingsSimple.added_number) : '';
 
-    this.profiles = [firstProfile];
+    this.profiles.push(firstProfile);
 
     this.setActiveProfile(1);
   }
@@ -41,7 +45,13 @@ export class SettingsAdvanced extends Settings {
   }
 
   getOutputCharacterSet(): string {
-    return this.getProfile().output_character_set;
+    const profile = this.getProfile();
+
+    if (profile.output_character_set_preset === 'none') {
+      return profile.output_character_set_custom;
+    }
+
+    return profile.output_character_set_preset;
   }
 
   getOutputLength(): number {
@@ -65,10 +75,10 @@ export class SettingsAdvanced extends Settings {
   }
 
   setActiveProfile(profileId: number) {
-    this.activeProfileId = profileId;
+    this.active_profile_id = profileId;
   }
 
   private getProfile(): Profile {
-    return this.profiles.find(thisProfile => thisProfile.id === this.activeProfileId);
+    return this.profiles.find(thisProfile => thisProfile.profile_id === this.active_profile_id);
   }
 }

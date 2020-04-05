@@ -15,6 +15,8 @@ describe('SettingsAdvanced', () => {
 
     // This constructor should set up the first profile with ID 1 and set that to be active.
     const settingsAdvanced = new SettingsAdvanced(settingsSimple);
+    expect(settingsAdvanced.profiles[0].profile_id).toBe(1);
+    expect(settingsAdvanced.profiles[0].name).toBe('Default');
 
     // Check values from simple settings apply to the first profile and pull through to the getters...
     expect(settingsAdvanced.getAlgorithm()).toBe('md5');
@@ -57,7 +59,8 @@ describe('SettingsAdvanced', () => {
     settings.profiles[0].leet_location = 'both';
     settings.profiles[0].leet_level = 9;
     settings.profiles[0].modifier = 'myMod';
-    settings.profiles[0].output_character_set = 'xyz123';
+    settings.profiles[0].output_character_set_preset = 'none';
+    settings.profiles[0].output_character_set_custom = 'xyz123';
     settings.profiles[0].output_length = 7;
     settings.profiles[0].post_processing_suffix = '!!';
     settings.profiles[0].prefix = 'zxc';

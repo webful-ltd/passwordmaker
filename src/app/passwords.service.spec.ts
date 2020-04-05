@@ -3,6 +3,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { PasswordsService } from './passwords.service';
 import { SettingsSimple } from '../models/SettingsSimple';
 
+// TODO test generation w/ leet, prefix, suffix, modifier, arbitrary charset
 describe('PasswordsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({

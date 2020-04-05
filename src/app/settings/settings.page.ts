@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
+import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
+import { Profile } from '../../models/Profile';
+import { ProfilePage } from '../profile/profile.page';
 import { Settings } from '../../models/Settings';
-import { SettingsSimple } from '../../models/SettingsSimple';
+import { SettingsAdvanced } from '../../models/SettingsAdvanced';
 import { SettingsService } from '../settings.service';
+import { SettingsSimple } from '../../models/SettingsSimple';
 
 @Component({
   selector: 'app-settings',
@@ -14,13 +17,15 @@ import { SettingsService } from '../settings.service';
 })
 
 export class SettingsPage {
-  public isDomainOnly: boolean;
-  public hasAddedNumber: boolean;
-  public settings: FormGroup;
+  settings: FormGroup;
+  advanced_mode = false;
+  profiles: Profile[] = [];
 
   constructor(
+    private actionSheetController: ActionSheetController,
     private formBuilder: FormBuilder,
     private iab: InAppBrowser,
+    public modalController: ModalController,
     private settingsService: SettingsService,
     public toast: ToastController,
   ) {
@@ -41,24 +46,61 @@ export class SettingsPage {
   }
 
   ionViewWillEnter() {
-    this.settingsService.getCurrentSettings()
-      .then(settings => {
-        this.settings.setValue(settings);
-        // `ion-toggle` doesn't seem to get boolean values cascaded through like other reactive form
-        // elements, so we need to set this manually and use with its `[checked]` attribute.
-        this.isDomainOnly = settings.isDomainOnly();
+    this.update();
+  }
 
-        if (settings instanceof SettingsSimple) {
-          this.hasAddedNumber = settings.added_number_on;
-        }
-      });
+  /**
+   * Upgrade the app settings to `SettingsAdvanced`, which includes creating profile #0
+   * with ID 1, and open that profile for editing.
+   */
+  addFirstProfile() {
+    this.settingsService.getCurrentSettings().then((settings: Settings) => {
+      if (settings instanceof SettingsAdvanced) {
+        // Things have got confused and we should just use the existing advanced settings' first profile.
+        this.editProfile(settings.profiles[0]);
+        return;
+      }
+
+      if (settings instanceof SettingsSimple) {
+        const advancedSettings = new SettingsAdvanced(settings);
+        this.settingsService.save(advancedSettings).then(() => {
+          this.editProfile(advancedSettings.profiles[0]);
+        });
+      }
+    });
+  }
+
+  async editProfile(profile: Profile) {
+    const modal = await this.modalController.create({
+      component: ProfilePage,
+      componentProps: { profileModel: profile }
+    });
+    modal.onWillDismiss().then(() => this.update());
+
+    return await modal.present();
+  }
+
+  async confirmEnableAdvanced() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Are you sure you want to use Advanced mode?',
+      buttons: [{
+        text: 'Use Advanced mode permanently',
+        icon: 'cog',
+        handler: () => this.addFirstProfile(),
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+      }]
+    });
+    await actionSheet.present();
   }
 
   save({ value, valid }: { value: Settings, valid: boolean }) {
     if (!valid) {
       this.toast.create({
         message: ('Settings not valid. Is your chosen Length of passwords between 8 and 200?'),
-        duration: 3500,
+        duration: 6000,
         position: 'middle',
         cssClass: 'error',
         buttons: [{ text: 'OK', role: 'cancel'}],
@@ -80,7 +122,7 @@ export class SettingsPage {
         (reason) => {
           this.toast.create({
             message: (`Error: ${reason}`),
-            duration: 3500,
+            duration: 6000,
             position: 'middle',
             cssClass: 'error',
             buttons: [{ text: 'OK', role: 'cancel'}],
@@ -89,11 +131,33 @@ export class SettingsPage {
       );
   }
 
-  toggleAddedNumber() {
-    this.hasAddedNumber = this.settings.value['added_number_on'];
-  }
-
   openHelp() {
     this.iab.create('https://passwordmaker.webful.uk/#settings', '_system');
+  }
+
+  private update() {
+    this.settingsService.getCurrentSettings()
+      .then(settings => {
+        this.advanced_mode = (settings instanceof SettingsAdvanced);
+
+        const formValues: any = {
+          remember_minutes: settings.getRememberMinutes(),
+        };
+
+        if (settings instanceof SettingsSimple) {
+          formValues.added_number_on = settings.added_number_on;
+          if (settings.added_number_on) {
+            formValues.added_number = settings.added_number;
+          }
+          formValues.algorithm = settings.getAlgorithm();
+          formValues.domain_only = settings.isDomainOnly();
+          formValues.output_character_set = settings.getOutputCharacterSet();
+          formValues.output_length = settings.getOutputLength();
+        } else if (settings instanceof SettingsAdvanced) {
+          this.profiles = settings.profiles;
+        }
+
+        this.settings.patchValue(formValues);
+      });
   }
 }
