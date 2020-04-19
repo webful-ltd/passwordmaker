@@ -8,6 +8,7 @@ node_js:
   - 13
 cache: npm
 install:
+  - cp package.json.dist package.json
   - npm install
 script:
   - xvfb-run npm run ci
