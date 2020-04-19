@@ -26,7 +26,6 @@ export class ProfilePage implements OnInit {
     public toast: ToastController,
   ) {
     this.profile = this.formBuilder.group({
-      // TODO order these as on page
       name: ['', Validators.required], // TODO check unique
       output_length: [15, [
         Validators.required,
@@ -34,16 +33,16 @@ export class ProfilePage implements OnInit {
         Validators.min(8),
         Validators.max(200),
       ]],
-      output_character_set_custom: [''], // TODO require iff use_.. is true
       output_character_set_preset: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
+      output_character_set_custom: [''], // TODO require iff use_.. is true
       algorithm: ['hmac-sha256', Validators.required],
-      domain_only: [true],
       leet_location: ['none'],
       leet_level: [1],
       modifier: [''],
       prefix: [''],
       suffix: [''],
       post_processing_suffix: [''],
+      domain_only: [true],
     });
   }
 
