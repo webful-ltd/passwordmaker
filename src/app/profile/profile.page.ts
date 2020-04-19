@@ -91,6 +91,7 @@ export class ProfilePage implements OnInit {
             position: 'middle',
             buttons: [{ text: 'OK', role: 'cancel'}],
           }).then(successToast => successToast.present());
+          this.close();
         },
         (reason) => {
           this.toast.create({
