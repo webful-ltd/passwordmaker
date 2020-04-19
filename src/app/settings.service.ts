@@ -67,6 +67,26 @@ export class SettingsService {
     });
   }
 
+  public deleteProfile(profileId: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.getCurrentSettings().then(settings => {
+        if (!(settings instanceof SettingsAdvanced)) {
+          return reject('Settings not of the expected type');
+        }
+
+        const existingProfileIndex: number = settings.profiles.findIndex(thisProfile => thisProfile.profile_id === profileId);
+        settings.profiles.splice(existingProfileIndex, 1);
+
+        // Ensure some surviving Profile is selected for the Make screen's next use
+        settings.setActiveProfile(settings.profiles[0].profile_id);
+
+        this.save(settings).then(saveResolveValue => {
+          resolve(saveResolveValue);
+        });
+      });
+    });
+  }
+
   public getCurrentSettings(): Promise<Settings> {
     if (this.currentPromise instanceof Promise) {
       return this.currentPromise;

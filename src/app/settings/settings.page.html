@@ -14,7 +14,7 @@
   <div *ngIf="advanced_mode">
     <ion-button
       *ngFor="let profile of profiles"
-      (click)="editProfile(profile)"
+      (click)="editProfile(profile, profiles.length)"
       expand="block"
       color="secondary"
     >

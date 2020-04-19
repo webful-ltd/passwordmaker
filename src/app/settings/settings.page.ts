@@ -57,14 +57,14 @@ export class SettingsPage {
     this.settingsService.getCurrentSettings().then((settings: Settings) => {
       if (settings instanceof SettingsAdvanced) {
         // Things have got confused and we should just use the existing advanced settings' first profile.
-        this.editProfile(settings.profiles[0]);
+        this.editProfile(settings.profiles[0], 1);
         return;
       }
 
       if (settings instanceof SettingsSimple) {
         const advancedSettings = new SettingsAdvanced(settings);
         this.settingsService.save(advancedSettings).then(() => {
-          this.editProfile(advancedSettings.profiles[0]);
+          this.editProfile(advancedSettings.profiles[0], advancedSettings.profiles.length);
         });
       }
     });
@@ -85,10 +85,10 @@ export class SettingsPage {
     });
   }
 
-  async editProfile(profile: Profile) {
+  async editProfile(profile: Profile, profileCount: number) {
     const modal = await this.modalController.create({
       component: ProfilePage,
-      componentProps: { profileModel: profile }
+      componentProps: { profileModel: profile, profileCount },
     });
     modal.onWillDismiss().then(() => this.update());
 

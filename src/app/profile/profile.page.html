@@ -140,6 +140,20 @@
       color="primary"
       expand="block"
       [disabled]="profile.invalid"
-    >Save</ion-button>
+    >
+      <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+      Save
+    </ion-button>
+
+    <ion-button
+      *ngIf="profileCount > 1"
+      (click)="confirmDelete()"
+      name="delete"
+      color="secondary"
+      expand="block"
+    >
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Delete
+    </ion-button>
   </form>
 </ion-content>

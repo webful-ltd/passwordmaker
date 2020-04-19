@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
 
 import { Profile } from '../../models/Profile';
 import { SettingsService } from '../settings.service';
@@ -12,12 +12,14 @@ import { SettingsService } from '../settings.service';
 })
 export class ProfilePage implements OnInit {
   @Input() profileModel: Profile;
+  @Input() profileCount: number; // Total profiles so far
 
   profile: FormGroup;
 
   private profileId: number;
 
   constructor(
+    private actionSheetController: ActionSheetController,
     private formBuilder: FormBuilder,
     public modalController: ModalController,
     private settingsService: SettingsService,
@@ -87,6 +89,46 @@ export class ProfilePage implements OnInit {
         () => {
           this.toast.create({
             message: ('Profile saved!'),
+            duration: 3000,
+            position: 'middle',
+            buttons: [{ text: 'OK', role: 'cancel'}],
+          }).then(successToast => successToast.present());
+          this.close();
+        },
+        (reason) => {
+          this.toast.create({
+            message: (`Error: ${reason}`),
+            duration: 6000,
+            position: 'middle',
+            cssClass: 'error',
+            buttons: [{ text: 'OK', role: 'cancel'}],
+          }).then(errorToast => errorToast.present());
+        }
+      );
+  }
+
+  async confirmDelete() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Are you sure you want to delete this profile?',
+      buttons: [{
+        text: 'Delete permanently',
+        icon: 'trash-outline',
+        handler: () => this.delete(),
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+      }]
+    });
+    await actionSheet.present();
+  }
+
+  delete() {
+    this.settingsService.deleteProfile(this.profileId)
+      .then(
+        () => {
+          this.toast.create({
+            message: ('Profile deleted!'),
             duration: 3000,
             position: 'middle',
             buttons: [{ text: 'OK', role: 'cancel'}],
