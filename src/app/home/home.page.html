@@ -49,7 +49,7 @@
       <ion-label position="stacked">Profile</ion-label>
       <ion-select
         name="profile"
-        (ionChange)="switchProfile()"
+        (ionChange)="switchProfile($event)"
         [(ngModel)]="input.active_profile_id"
       >
         <ion-select-option

@@ -93,11 +93,11 @@ export class HomePage implements OnInit {
     });
   }
 
-  switchProfile(event: any) {
-    // console.log(event); // todo save active profile?
-    // if (this.settings instanceof SettingsAdvanced) {
-    //   this.settings.setActiveProfile(newProfileId);
-    // }
+  switchProfile (event: any) {
+    if (this.settings instanceof SettingsAdvanced) {
+      this.settings.setActiveProfile(event.detail.value);
+      this.settingsService.save(this.settings);
+    }
   }
 
   copy() {
