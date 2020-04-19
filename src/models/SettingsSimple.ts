@@ -2,7 +2,10 @@ import { Settings } from './Settings';
 
 export class SettingsSimple extends Settings {
   added_number_on = false;
-  added_number?: number;
+  // For profile rebuilding by property iteration to work in `SettingsService`
+  // (`const key in loadedSettings`) we need each property to get an explicit value,
+  // even if that's `undefined`.
+  added_number?: number = undefined;
   algorithm: 'hmac-sha256' | 'sha256' | 'hmac-sha1' | 'sha1' | 'hmac-md5' | 'md5' | 'hmac-ripemd160' | 'ripemd160' = 'hmac-sha256';
   domain_only = true;
   output_character_set = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -39,7 +42,7 @@ export class SettingsSimple extends Settings {
   }
 
   getPostProcessingSuffix(): string {
-    if (this.added_number_on) {
+    if (this.added_number_on !== undefined) {
       return String(this.added_number);
     }
 

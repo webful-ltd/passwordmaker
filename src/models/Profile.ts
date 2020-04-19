@@ -5,7 +5,7 @@ export class Profile {
   public leet_level = 0; // 1 through 9 when in use
   public leet_location: 'none' | 'before-hashing' | 'after-hashing' | 'both' = 'none';
   public modifier = ''; // username / modifier
-  public name: string;
+  public name = '';
   public output_character_set_custom = '';
   public output_character_set_preset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   public output_length = 15;

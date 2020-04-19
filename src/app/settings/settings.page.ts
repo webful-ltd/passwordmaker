@@ -163,6 +163,8 @@ export class SettingsPage {
           formValues.added_number_on = settings.added_number_on;
           if (settings.added_number_on) {
             formValues.added_number = settings.added_number;
+          } else {
+            formValues.added_number = undefined;
           }
           formValues.algorithm = settings.getAlgorithm();
           formValues.domain_only = settings.isDomainOnly();
