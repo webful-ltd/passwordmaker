@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
 import { Storage } from '@ionic/storage';
 import { Subject } from 'rxjs';
 
@@ -17,7 +18,7 @@ export class SettingsService {
   private currentSettings: Settings;
   private currentPromise?: Promise<any>;
 
-  constructor(private storage: Storage) {}
+  constructor(private cloudSettings: CloudSettings, private storage: Storage) {}
 
   public save(settings: Settings): Promise<any> {
     if (!settings) {
@@ -32,7 +33,12 @@ export class SettingsService {
     const savePromise = this.storage.set(SettingsService.storageKey, settings);
 
     // Tell listening pages (e.g. Home) that the settings changed
-    savePromise.then(() => this.saveSubject.next());
+    savePromise.then(() => {
+      this.saveSubject.next();
+      if (window.cordova) { // No cloud settings without a device
+        this.cloudSettings.save(settings, true);
+      }
+    });
 
     return savePromise;
   }
@@ -100,10 +106,22 @@ export class SettingsService {
 
     this.currentPromise = this.storage.get(SettingsService.storageKey).then(settings => {
       if (settings === null) {
-        // Initialise entire dictionary with default settings
-        settingsService.currentSettings = new SettingsSimple();
+        return new Promise(resolve => {
+          if (!window.cordova) { // No cloud settings without a device
+            return resolve(this.loadDefaults());
+          }
 
-        return settingsService.currentSettings;
+          this.cloudSettings.exists().then(exists => {
+            if (exists) {
+              this.cloudSettings.load()
+                .then(loadedFromCloud => resolve(loadedFromCloud)) // Load past settings
+                .catch(() => resolve(this.loadDefaults())); // Load error
+              return;
+            }
+            // Else existence check worked but no past settings in the cloud
+            resolve(this.loadDefaults());
+          }).catch(() => resolve(this.loadDefaults())); // Existence check error
+        });
       }
 
       // Set up the correct class, and 'upgrade' settings data to add defaults for any
@@ -142,5 +160,13 @@ export class SettingsService {
         resolve(highestExistingProfileId + 1);
       });
     });
+  }
+
+  /**
+   * Initialise entire dictionary with default settings
+   */
+  private loadDefaults() {
+    this.currentSettings = new SettingsSimple();
+    return this.currentSettings;
   }
 }

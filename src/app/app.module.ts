@@ -5,6 +5,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -23,6 +24,7 @@ import { AppComponent } from './app.component';
   ],
   providers: [
     Clipboard,
+    CloudSettings,
     Keyboard,
     InAppBrowser,
     StatusBar,

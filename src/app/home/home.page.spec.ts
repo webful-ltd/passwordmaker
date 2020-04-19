@@ -4,6 +4,7 @@ import { KeyboardMock, PlatformMock, ToastControllerMock } from 'ionic-mocks';
 
 import { Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -31,6 +32,7 @@ describe('HomePage', () => {
       ],
       providers: [
         { provide: Clipboard, useValue: clipboardSpy },
+        CloudSettings,
         { provide: Keyboard, useValue: KeyboardMock.instance() },
         { provide: Platform, useValue: PlatformMock },
         { provide: ToastController, useValue: ToastControllerMock },

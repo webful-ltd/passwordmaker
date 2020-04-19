@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { Profile } from '../../models/Profile';
@@ -17,6 +18,9 @@ describe('ProfilePage', () => {
         IonicModule.forRoot(),
         IonicStorageModule.forRoot(),
         ReactiveFormsModule,
+      ],
+      providers: [
+        CloudSettings,
       ]
     }).compileComponents();
 
