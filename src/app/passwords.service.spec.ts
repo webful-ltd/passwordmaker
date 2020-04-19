@@ -1,9 +1,10 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { PasswordsService } from './passwords.service';
+import { Profile } from '../models/Profile';
+import { SettingsAdvanced } from '../models/SettingsAdvanced';
 import { SettingsSimple } from '../models/SettingsSimple';
 
-// TODO test generation w/ leet, prefix, suffix, modifier, arbitrary charset
 describe('PasswordsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -102,5 +103,33 @@ describe('PasswordsService', () => {
       'https://user:pass@my.example.com:123/example', // uses example.com
       settings,
     )).toBe('rJeGcpSWpH36PMn706JrNR9vNzr9Wj8');
+  }));
+
+  it('should work with advanced settings and a kitchen sink profile', inject([PasswordsService], (service: PasswordsService) => {
+    const firstProfile = new Profile();
+    firstProfile.profile_id = 1;
+    firstProfile.name = 'Unit Test Profile';
+    firstProfile.algorithm = 'sha1';
+    firstProfile.domain_only = true;
+    firstProfile.leet_level = 5;
+    firstProfile.leet_location = 'both';
+    firstProfile.modifier = 'M';
+    firstProfile.output_character_set_preset = 'none';
+    firstProfile.output_character_set_custom = 'xyzabc123';
+    firstProfile.output_length = 24;
+    firstProfile.prefix = 'A';
+    firstProfile.suffix = 'Zz';
+    firstProfile.post_processing_suffix = 'x2';
+
+    const settings = new SettingsAdvanced(new SettingsSimple());
+
+    settings.profiles = [firstProfile];
+    settings.setActiveProfile(1);
+
+    expect(service.getPassword(
+      'test',
+      'https://user:pass@my.example.com:123/example', // uses example.com
+      settings,
+    )).toBe('A2\'/@3|3c13x3@|323@c1cZzx2');
   }));
 });
