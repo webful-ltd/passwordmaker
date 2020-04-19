@@ -54,6 +54,14 @@ export class SettingsService {
           return reject('Settings not of an expected type');
         }
 
+        const clashingNameProfileIndex: number = settings.profiles.findIndex(thisProfile => (
+          thisProfile.name === profile.name &&
+          thisProfile.profile_id !== profile.profile_id
+        ));
+        if (clashingNameProfileIndex > -1) {
+          reject(`Profile name "${profile.name}" is already in use`);
+        }
+
         const existingProfileIndex: number = settings.profiles.findIndex(thisProfile => thisProfile.profile_id === profile.profile_id);
         const isExistingProfile: boolean = (existingProfileIndex > -1);
 

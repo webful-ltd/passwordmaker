@@ -26,7 +26,7 @@ export class ProfilePage implements OnInit {
     public toast: ToastController,
   ) {
     this.profile = this.formBuilder.group({
-      name: ['', Validators.required], // TODO check unique
+      name: ['', [Validators.required]], // Uniqueness is checked in save() to keep things performant
       output_length: [15, [
         Validators.required,
         Validators.pattern('[0-9]+'),
@@ -156,13 +156,13 @@ export class ProfilePage implements OnInit {
     this.modalController.dismiss();
   }
 
-  requireIfNoPresetValidator(formControl: AbstractControl) {
-    if (!formControl.parent) {
+  private requireIfNoPresetValidator(outputCharacterSetCustomControl: AbstractControl) {
+    if (!outputCharacterSetCustomControl.parent) {
       return null;
     }
 
-    if (formControl.parent.get('output_character_set_preset').value === 'none') {
-      return Validators.required(formControl);
+    if (outputCharacterSetCustomControl.parent.get('output_character_set_preset').value === 'none') {
+      return Validators.required(outputCharacterSetCustomControl);
     }
 
     return null;
