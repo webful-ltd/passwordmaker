@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
 
 import { Profile } from '../../models/Profile';
@@ -34,7 +34,7 @@ export class ProfilePage implements OnInit {
         Validators.max(200),
       ]],
       output_character_set_preset: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
-      output_character_set_custom: [''], // TODO require iff use_.. is true
+      output_character_set_custom: ['', this.requireIfNoPresetValidator],
       algorithm: ['hmac-sha256', Validators.required],
       leet_location: ['none'],
       leet_level: [1],
@@ -43,6 +43,12 @@ export class ProfilePage implements OnInit {
       suffix: [''],
       post_processing_suffix: [''],
       domain_only: [true],
+    });
+
+    // We need to ensure that setting the character set away from Custom clears any
+    // validation error on the custom characters field.
+    this.profile.get('output_character_set_preset').valueChanges.subscribe(() => {
+      this.profile.get('output_character_set_custom').updateValueAndValidity();
     });
   }
 
@@ -60,8 +66,8 @@ export class ProfilePage implements OnInit {
   save({ value, valid }: { value: Profile, valid: boolean }) {
     if (!valid) {
       this.toast.create({
-        message: ('Profile not valid. Is your chosen Length of passwords between 8 and 200?'), // TODO review messaging
-        duration: 6000,
+        message: ('Profile not valid. Please review options highlighted with a pink underline and check your chosen Length is between 8 and 200 characters.'),
+        duration: 8000,
         position: 'middle',
         cssClass: 'error',
         buttons: [{ text: 'OK', role: 'cancel'}],
@@ -148,5 +154,17 @@ export class ProfilePage implements OnInit {
 
   close() {
     this.modalController.dismiss();
+  }
+
+  requireIfNoPresetValidator(formControl: AbstractControl) {
+    if (!formControl.parent) {
+      return null;
+    }
+
+    if (formControl.parent.get('output_character_set_preset').value === 'none') {
+      return Validators.required(formControl);
+    }
+
+    return null;
   }
 }
