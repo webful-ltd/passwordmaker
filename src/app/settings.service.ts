@@ -27,8 +27,8 @@ export class SettingsService {
 
     this.currentPromise = this.currentSettings = null; // Ensure future `getCurrentSettings()` don't get old values
 
-    const settingsForPersist = settings;
-    delete settingsForPersist.constructor; // Trying to clone this breaks the storage `set()`.
+    // Trying to clone this breaks the storage `set()` and almost certainly Cloud Settings `save()`.
+    delete settings.constructor;
 
     const savePromise = this.storage.set(SettingsService.storageKey, settings);
 
