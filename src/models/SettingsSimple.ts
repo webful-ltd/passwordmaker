@@ -42,7 +42,7 @@ export class SettingsSimple extends Settings {
   }
 
   getPostProcessingSuffix(): string {
-    if (this.added_number_on !== undefined) {
+    if (this.added_number_on) {
       return String(this.added_number);
     }
 
