@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
