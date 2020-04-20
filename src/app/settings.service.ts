@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
 import { Storage } from '@ionic/storage';
 import { Subject } from 'rxjs';
@@ -18,7 +19,11 @@ export class SettingsService {
   private currentSettings: Settings;
   private currentPromise?: Promise<any>;
 
-  constructor(private cloudSettings: CloudSettings, private storage: Storage) {}
+  constructor(
+    private cloudSettings: CloudSettings,
+    private storage: Storage,
+    public toast: ToastController,
+  ) {}
 
   public save(settings: Settings): Promise<any> {
     if (!settings) {
@@ -122,8 +127,27 @@ export class SettingsService {
           this.cloudSettings.exists().then(exists => {
             if (exists) {
               this.cloudSettings.load()
-                .then(loadedFromCloud => resolve(loadedFromCloud)) // Load past settings
-                .catch(() => resolve(this.loadDefaults())); // Load error
+                .then(loadedFromCloud => { // Success: load past settings
+                  this.toast.create({
+                    message: ('Previous settings loaded from backup'),
+                    duration: 3000,
+                    position: 'middle',
+                    buttons: [{ text: 'OK', role: 'cancel'}],
+                  }).then(successToast => successToast.present());
+
+                  resolve(loadedFromCloud);
+                })
+                .catch(error => { // Load error
+                  this.toast.create({
+                    message: (`Could not load previous settings: ${error}`),
+                    duration: 6000,
+                    position: 'middle',
+                    cssClass: 'error',
+                    buttons: [{ text: 'OK', role: 'cancel'}],
+                  }).then(errorToast => errorToast.present());
+
+                  resolve(this.loadDefaults());
+                });
               return;
             }
             // Else existence check worked but no past settings in the cloud
