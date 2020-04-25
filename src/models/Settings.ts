@@ -1,11 +1,24 @@
-export class Settings {
-  constructor(
-    public output_character_set: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    public output_length: number = 15,
-    public remember_minutes: number = 5,
-    public algorithm: string = 'hmac-sha256',
-    public domain_only: boolean = true,
-    public added_number_on: boolean = false,
-    public added_number?: number,
-  ) {}
+export abstract class Settings {
+  /**
+   * Set for storage serialisation, as Ionic Storage doesn't know which TypeScript class we're saving.
+   * @link https://github.com/ionic-team/ionic-storage/issues/60
+   */
+  class: string;
+
+  remember_minutes = 5;
+
+  getRememberMinutes(): number {
+    return this.remember_minutes;
+  }
+
+  abstract getAlgorithm(): 'hmac-sha256' | 'sha256' | 'hmac-sha1' | 'sha1' | 'hmac-md5' | 'md5' | 'hmac-ripemd160' | 'ripemd160';
+  abstract getLeetLocation(): 'none' | 'before-hashing' | 'after-hashing' | 'both';
+  abstract getLeetLevel(): number;
+  abstract getModifier(): string;
+  abstract getOutputCharacterSet(): string;
+  abstract getOutputLength(): number;
+  abstract getPostProcessingSuffix(): string; // Extends the normal PasswordMaker protocol due to a v1 app quirk.
+  abstract getPrefix(): string;
+  abstract getSuffix(): string;
+  abstract isDomainOnly(): boolean;
 }

@@ -12,4 +12,12 @@ p.warning {
 
 a {
   text-decoration: underline;
+  cursor: pointer;
+}
+
+.button-divider {
+  margin: 1rem;
+  text-align: center;
+  color: #777;
+  font-size: 80%;
 }

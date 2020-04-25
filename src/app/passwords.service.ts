@@ -16,22 +16,23 @@ export class PasswordsService {
     }
 
     const password = makePassword({
-      hashAlgorithm: settings.algorithm,
-      masterPassword: masterPassword,
+      charset: settings.getOutputCharacterSet(),
       data: coreData,
-      length: settings.output_length,
-      charset: settings.output_character_set,
+      hashAlgorithm: settings.getAlgorithm(),
+      l33tLevel: settings.getLeetLevel(),
+      length: settings.getOutputLength(),
+      masterPassword: masterPassword,
+      modifier: settings.getModifier(),
+      prefix: settings.getPrefix(),
+      suffix: settings.getSuffix(),
+      whereToUseL33t: settings.getLeetLocation(),
     });
 
-    if (settings.added_number_on) {
-      return `${password}${settings.added_number}`;
-    }
-
-    return password;
+    return `${password}${settings.getPostProcessingSuffix()}`;
   }
 
   private extractCoreData(content: string, settings: Settings): string {
-    if (!settings.domain_only) {
+    if (!settings.isDomainOnly()) {
       return content; // Use URL or other input unmodified when `domain_only` is off.
     }
 

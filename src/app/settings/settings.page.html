@@ -4,34 +4,98 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="ion-padding">
   <p class="help">
     <ion-icon name="information-circle-outline"></ion-icon>
     What's all this, then?
     <a (click)="openHelp()" target="_system">Learn about Settings here</a>
   </p>
+
+  <div *ngIf="advanced_mode">
+    <ion-button
+      *ngFor="let profile of profiles"
+      (click)="editProfile(profile, profiles.length)"
+      expand="block"
+      color="secondary"
+    >
+      <ion-icon slot="start" name="cog"></ion-icon>
+      Manage {{ profile.name }}
+    </ion-button>
+  </div>
+
   <form *ngIf="settings" [formGroup]="settings" (ngSubmit)="save(settings)" novalidate>
-    <ion-item>
-      <ion-label position="stacked">Length of passwords</ion-label>
-      <ion-input
-        name="output_length"
-        formControlName="output_length"
-        type="number"
-        min="8"
-        max="200"
-      ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Possible characters</ion-label>
-      <ion-select name="output_character_set" formControlName="output_character_set">
-        <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Alphanum + symbols</ion-select-option>
-        <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789">Alphanumeric</ion-select-option>
-        <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz">Letters</ion-select-option>
-        <ion-select-option value="0123456789">Numbers</ion-select-option>
-        <ion-select-option value="0123456789abcdef">Numbers + a-f</ion-select-option>
-        <ion-select-option value="`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Symbols</ion-select-option>
-      </ion-select>
-    </ion-item>
+    <div *ngIf="!advanced_mode">
+      <ion-item>
+        <ion-label position="stacked">Length of passwords</ion-label>
+        <ion-input
+          name="output_length"
+          formControlName="output_length"
+          type="number"
+          min="8"
+          max="200"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Possible characters</ion-label>
+        <ion-select name="output_character_set" formControlName="output_character_set">
+          <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Alphanum + symbols</ion-select-option>
+          <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789">Alphanumeric</ion-select-option>
+          <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz">Letters</ion-select-option>
+          <ion-select-option value="0123456789">Numbers</ion-select-option>
+          <ion-select-option value="0123456789abcdef">Numbers + a-f</ion-select-option>
+          <ion-select-option value="`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Symbols</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Hash algorithm</ion-label>
+        <ion-select name="algorithm" formControlName="algorithm">
+          <ion-select-option value="hmac-sha256">HMAC-SHA256</ion-select-option>
+          <ion-select-option value="sha256">SHA256</ion-select-option>
+          <ion-select-option value="hmac-sha1">HMAC-SHA1</ion-select-option>
+          <ion-select-option value="sha1">SHA1</ion-select-option>
+          <ion-select-option value="hmac-md5">HMAC-MD5</ion-select-option>
+          <ion-select-option value="md5">MD5</ion-select-option>
+          <ion-select-option value="hmac-ripemd160">HMAC-RIPEMD160</ion-select-option>
+          <ion-select-option value="ripemd160">RIPEMD160</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Add a fixed number?</ion-label>
+        <ion-toggle
+          name="added_number_on"
+          formControlName="added_number_on"
+          [checked]="settings.get('added_number_on').value"
+          color="primary"
+        ></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="settings.get('added_number_on').value">
+        <ion-label position="stacked">Cool, which number?</ion-label>
+        <ion-range
+          name="added_number"
+          formControlName="added_number"
+          min="0"
+          max="9"
+          color="primary"
+          snaps="true"
+          pin="true"
+        ></ion-range>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Use just domain name?</ion-label>
+        <ion-toggle
+          name="domain_only"
+          formControlName="domain_only"
+          [checked]="isDomainOnly"
+          color="primary"
+        ></ion-toggle>
+      </ion-item>
+    </div>
+
     <ion-item>
       <ion-label position="stacked">Minutes to remember master password</ion-label>
       <ion-range
@@ -44,63 +108,52 @@
         pin="true"
       ></ion-range>
     </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Hash algorithm</ion-label>
-      <ion-select name="algorithm" formControlName="algorithm">
-        <ion-select-option value="hmac-sha256">HMAC-SHA256</ion-select-option>
-        <ion-select-option value="sha256">SHA256</ion-select-option>
-        <ion-select-option value="hmac-sha1">HMAC-SHA1</ion-select-option>
-        <ion-select-option value="sha1">SHA1</ion-select-option>
-        <ion-select-option value="hmac-md5">HMAC-MD5</ion-select-option>
-        <ion-select-option value="md5">MD5</ion-select-option>
-        <ion-select-option value="hmac-ripemd160">HMAC-RIPEMD160</ion-select-option>
-        <ion-select-option value="ripemd160">RIPEMD160</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Add a fixed number?</ion-label>
-      <ion-toggle
-        name="added_number_on"
-        formControlName="added_number_on"
-        [checked]="hasAddedNumber"
-        (ionChange)="toggleAddedNumber()"
-        color="primary"
-      ></ion-toggle>
-    </ion-item>
-    <ion-item *ngIf="hasAddedNumber">
-      <ion-label position="stacked">Cool, which number?</ion-label>
-      <ion-range
-        name="added_number"
-        formControlName="added_number"
-        min="0"
-        max="9"
-        color="primary"
-        snaps="true"
-        pin="true"
-      ></ion-range>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Use just domain name?</ion-label>
-      <ion-toggle
-        name="domain_only"
-        formControlName="domain_only"
-        [checked]="isDomainOnly"
-        color="primary"
-      ></ion-toggle>
-    </ion-item>
 
     <p *ngIf="settings.invalid" class="warning">
       <ion-icon name="warning"></ion-icon>
-      Settings not valid. Is your chosen <em>Length of passwords</em> between 8 and 200?
+      Settings not valid. Please check above for options highlighted with a pink underline.
     </p>
+
     <ion-button
       name="save"
       type="submit"
       color="primary"
       expand="block"
       [disabled]="settings.invalid"
-    >Save</ion-button>
+    >
+      <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+      Save
+    </ion-button>
+
+    <ion-button
+      *ngIf="advanced_mode"
+      (click)="editNewProfile()"
+      expand="block"
+      color="secondary"
+    >
+      <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+      Add new profile
+    </ion-button>
+
+    <div *ngIf="!advanced_mode">
+      <p class="button-divider">&mdash; OR &mdash;</p>
+
+      <ion-button
+        (click)="confirmEnableAdvanced()"
+        name="advanced"
+        color="secondary"
+        expand="block"
+        [disabled]="settings.invalid"
+      >
+        <ion-icon slot="start" name="cog"></ion-icon>
+        Enable Advanced Settings
+      </ion-button>
+      <p class="help">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Advanced mode enables multiple profiles and some extra output settings.
+        You can't change back to the simple mode if you switch.
+        <a (click)="openHelp()" target="_system">Learn more</a>
+      </p>
+    </div>
   </form>
 </ion-content>

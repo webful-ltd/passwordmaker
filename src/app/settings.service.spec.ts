@@ -1,18 +1,19 @@
 import { TestBed, inject } from '@angular/core/testing';
-
+import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
 import { Storage } from '@ionic/storage';
 
 import { SettingsService } from './settings.service';
-import { Settings } from '../models/Settings';
+import { SettingsSimple } from '../models/SettingsSimple';
 
 describe('SettingsService', () => {
   let storageSpy: Storage;
-  const mockSettings = new Settings();
+  const mockSettings = new SettingsSimple();
 
   beforeEach(() => {
     storageSpy = jasmine.createSpyObj('Storage', { get: () => mockSettings, set: () => true});
     TestBed.configureTestingModule({
       providers: [
+        CloudSettings,
         SettingsService,
         { provide: Storage, useValue: storageSpy },
       ]

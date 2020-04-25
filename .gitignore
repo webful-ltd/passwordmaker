@@ -1,6 +1,12 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
+# For now, don't check in package.json because the Cloud Settings Cordova plugin puts
+# the Android backup service key there. The previous `package.json` combined with
+# the live `package-lock.json` hopefully provides enough for other contributors to
+# work with the project for now.
+package.json
+
 # Don't check in individual build config settings
 .env
 

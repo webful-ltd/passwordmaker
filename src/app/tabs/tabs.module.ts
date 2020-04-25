@@ -7,6 +7,7 @@ import { TabsPageRoutingModule } from './tabs.router.module';
 
 import { TabsPage } from './tabs.page';
 import { HomePageModule } from '../home/home.module';
+import { ProfilePageModule } from '../profile/profile.module';
 import { SettingsPageModule } from '../settings/settings.module';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { SettingsPageModule } from '../settings/settings.module';
     FormsModule,
     TabsPageRoutingModule,
     HomePageModule,
+    ProfilePageModule,
     SettingsPageModule,
   ],
   declarations: [TabsPage]
