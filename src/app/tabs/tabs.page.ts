@@ -1,7 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonTabs, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
 })
-export class TabsPage {}
+export class TabsPage implements OnInit {
+  @ViewChild('tabs') tab: IonTabs;
+
+  constructor(private platform: Platform) {}
+
+  /**
+   * Exit app on hardware 'back' from main view.
+   * {@link https://stackoverflow.com/a/59044000/2803757}
+   */
+  ngOnInit() {
+    /**
+     * Exit app on hardware 'back' if on Home tab, or return to it if anywhere else.
+     * See {@link https://stackoverflow.com/a/59044000/2803757} re. event subscription.
+     * In this case we subscribe permanently since `TabsPage` is app-global and should
+     * only be destroyed when the whole app exits.
+     */
+    this.platform.backButton.subscribe(async () => {
+      if (this.tab.getSelected() === 'home') {
+        navigator['app'].exitApp();
+        return;
+      }
+
+      this.tab.select('home');
+    });
+  }
+}
