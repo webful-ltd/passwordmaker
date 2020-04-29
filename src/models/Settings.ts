@@ -1,7 +1,7 @@
 export abstract class Settings {
   /**
    * Set for storage serialisation, as Ionic Storage doesn't know which TypeScript class we're saving.
-   * @link https://github.com/ionic-team/ionic-storage/issues/60
+   * {@link https://github.com/ionic-team/ionic-storage/issues/60}
    */
   class: string;
 

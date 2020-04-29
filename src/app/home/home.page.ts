@@ -121,7 +121,7 @@ export class HomePage implements OnInit {
   }
 
   private updateExpiryTimer() {
-    this.expire_password_on_context_change  = false;
+    this.expire_password_on_context_change = false;
 
     if (this.expiry_timer_id) {
       window.clearTimeout(this.expiry_timer_id);

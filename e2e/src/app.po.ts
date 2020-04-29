@@ -12,7 +12,7 @@ export class AppPage {
   /**
    * Navigate to a tab in the same way a user would.
    *
-   * @param tab Label for the destination tab
+   * @param {string} tab Label for the destination tab
    */
   public navigateToTab(tabName: string) {
     const tab = element(by.css(`ion-tab-button[tab="${tabName}"]`));
