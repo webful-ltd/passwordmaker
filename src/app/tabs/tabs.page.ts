@@ -10,10 +10,6 @@ export class TabsPage implements OnInit {
 
   constructor(private platform: Platform) {}
 
-  /**
-   * Exit app on hardware 'back' from main view.
-   * {@link https://stackoverflow.com/a/59044000/2803757}
-   */
   ngOnInit() {
     /**
      * Exit app on hardware 'back' if on Home tab, or return to it if anywhere else.
