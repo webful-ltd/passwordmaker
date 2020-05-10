@@ -32,6 +32,7 @@ export class AppPage {
   public populateIonicInput(elementName: string, value: (string|number)) {
     browser.waitForAngular();
     const ionicInput = element(by.css(`input[name="${elementName}"]`));
+    browser.sleep(400); // Wait for elements to be available and visible
     ionicInput.click();
 
     // `clear()` wasn't allowed on `ion-input` or the native field, so backspace x20 to remove existing value.
@@ -110,10 +111,11 @@ export class AppPage {
   }
 
   public getOutputPassword() {
-     // With the Ionic + Angular + Chromedriver updates August 2019, browser.waitForAngular() alone
-     // seemed to stop working for ensuring that div.output_password is available, so had to add an
-     // explicit pause here too.
+    // With the Ionic + Angular + Chromedriver updates August 2019, browser.waitForAngular() alone
+    // seemed to stop working for ensuring that div.output_password is available, so had to add an
+    // explicit pause here too.
     browser.sleep(1000);
+
     return element(by.css('div.output_password')).getText();
   }
 
