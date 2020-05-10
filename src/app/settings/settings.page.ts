@@ -103,6 +103,11 @@ export class SettingsPage {
         icon: 'cog',
         handler: () => this.addFirstProfile(),
       }, {
+        text: 'Learn more first',
+        icon: 'help',
+        handler: () => this.openAdvancedInfo(),
+      }
+      , {
         text: 'Cancel',
         icon: 'close',
         role: 'cancel',
@@ -148,6 +153,10 @@ export class SettingsPage {
 
   openHelp() {
     this.iab.create('https://passwordmaker.webful.uk/#settings', '_system');
+  }
+
+  openAdvancedInfo() {
+    this.iab.create('https://passwordmaker.webful.uk/#advanced', '_system');
   }
 
   private update() {
