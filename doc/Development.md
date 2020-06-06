@@ -1,5 +1,15 @@
 # PasswordMaker Development
 
+## Prepare dependencies
+
+Because of a Cordova plugin's convention of keeping a sensitive value in `package.json`, for now
+this is rather unusually excluded from source control.
+
+We should probably replace this with a better solution at some point. In the mean time, to start:
+
+* `cp package.json.dist package.json`
+* `npm install`
+
 ## Run locally
 
 * `ionic serve`
