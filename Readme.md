@@ -1,4 +1,4 @@
-# Webful PasswordMaker
+# [Webful PasswordMaker](https://passwordmaker.webful.uk)
 
 ![Icon](./resources/android/icon/drawable-xhdpi-icon.png)
 
@@ -12,8 +12,12 @@ Built with [Ionic](https://ionicframework.com/) and [Angular](https://angular.io
 
 ## What's this?
 
+This Android & iOS app makes you a unique password for each site you use, following a
+predictable pattern which means no central trusted server, and compatibility with
+several other plugins and apps which have followed the same conventions over the years.
+
 See [the hype page](https://passwordmaker.webful.uk) for more about
-what the app does, why you might want it and how to pick your _Settings_.
+what the app does, why you might want it and how to pick your [settings](https://passwordmaker.webful.uk/#settings).
 
 ## Get the app
 
