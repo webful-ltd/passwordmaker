@@ -13,7 +13,7 @@ Built with [Ionic](https://ionicframework.com/) and [Angular](https://angular.io
 ## What's this?
 
 This Android & iOS app makes you a unique password for each site you use, following a
-predictable pattern which means no central trusted server, and compatibility with
+deterministic algorithm which means no central trusted server, and compatibility with
 several other plugins and apps which have followed the same conventions over the years.
 
 See [the hype page](https://passwordmaker.webful.uk) for more about
