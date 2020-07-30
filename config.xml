@@ -8,7 +8,7 @@
     <preference name="ScrollEnabled" value="false" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="FadeSplashScreenDuration" value="200" />
-    <preference name="MixedContentMode" value="1" /> <!-- MIXED_CONTENT_NEVER_ALLOW -->
+    <preference name="MixedContentMode" value="1" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
