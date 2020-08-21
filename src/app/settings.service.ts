@@ -160,7 +160,7 @@ export class SettingsService {
       // newly-supported keys since the last save
       let loadedSettings: Settings;
 
-      if (settings.class === SettingsAdvanced.name) {
+      if (settings && settings.class === SettingsAdvanced.name) {
         loadedSettings = new SettingsAdvanced(new SettingsSimple());
       } else {
         loadedSettings = new SettingsSimple();
