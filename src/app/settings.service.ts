@@ -166,12 +166,15 @@ export class SettingsService {
         loadedSettings = new SettingsSimple();
       }
 
-      for (const key in loadedSettings) {
-        if (settings[key] !== undefined) {
-          loadedSettings[key] = settings[key];
+      if (settings) {
+        for (const key in loadedSettings) {
+          if (settings[key] !== undefined) {
+            loadedSettings[key] = settings[key];
+          }
         }
+        loadedSettings.class = settings.class;
       }
-      loadedSettings.class = settings.class;
+
       settingsService.currentSettings = loadedSettings;
 
       return settingsService.currentSettings;
