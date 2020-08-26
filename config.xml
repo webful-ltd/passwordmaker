@@ -15,7 +15,7 @@
     <preference name="SplashScreenDelay" value="1500" />
     <preference name="SplashScreenSpinnerColor" value="#a11692" />
     <platform name="android">
-        <preference name="android-minSdkVersion" value="19" />
+        <preference name="android-minSdkVersion" value="22" />
         <preference name="android-targetSdkVersion" value="29" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
