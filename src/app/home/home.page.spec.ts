@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { KeyboardMock, PlatformMock, ToastControllerMock } from 'ionic-mocks';
 
 import { Platform, ToastController } from '@ionic/angular';
@@ -23,7 +23,7 @@ describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
   let clipboardSpy: Clipboard;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     clipboardSpy = jasmine.createSpyObj('Clipboard', ['copy']);
     TestBed.configureTestingModule({
       declarations: [HomePage],
