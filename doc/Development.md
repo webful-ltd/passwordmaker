@@ -29,6 +29,6 @@ We should probably replace this with a better solution at some point. In the mea
 * See [this answer re build system flag](https://stackoverflow.com/a/52432058/2803757) - change in Xcode before build if necessary.
 * `ionic cordova build ios --prod`
 * Open `platforms/ios/Webful PasswordMaker.xcworkspace` in Xcode.
-* Change target at the top to _Generic iOS Device_
+* Change target at the top to _Any iOS Device_
 * _Product > Archive_
 * _Distribute App_ from the Organizer dialogue.
