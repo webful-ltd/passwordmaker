@@ -15,6 +15,15 @@ We should probably replace this with a better solution at some point. In the mea
 * `ionic serve`
 * Note that the clipboard feature is currently not available in browser.
 
+## Test locally
+
+To run all tests as CI does:
+
+* On macOS only, `npm run update-webdriver` – this is to work around a
+  temporary issue due to a `webdriver-manager` bug whose fix is not yet in
+  a stable Protractor build (as of v7.0.0)
+* `npm run ci` 
+
 ## Build
 
 ### Android
