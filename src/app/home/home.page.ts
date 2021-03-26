@@ -55,6 +55,8 @@ export class HomePage implements OnInit {
       });
     }
 
+    this.settingsService.init();
+
     this.update();
 
     this.settingsService.saveSubject.subscribe(() => { this.update(); });

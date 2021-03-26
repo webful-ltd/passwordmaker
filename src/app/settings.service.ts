@@ -15,10 +15,10 @@ import { SettingsSimple } from '../models/SettingsSimple';
 export class SettingsService {
   private static storageKey = 'settings';
 
-  public saveSubject: Subject<void> = new Subject<void>();
+  ready = false;
+  saveSubject: Subject<void> = new Subject<void>();
   private currentSettings: Settings;
   private currentPromise?: Promise<any>;
-  private ready = false;
 
   constructor(
     private cloudSettings: CloudSettings,
@@ -26,7 +26,7 @@ export class SettingsService {
     public toast: ToastController,
   ) {}
 
-  async ngOnInit() {
+  async init() {
     await this.storage.create();
     this.ready = true;
   }
@@ -114,7 +114,7 @@ export class SettingsService {
 
   private checkIfReady(resolve) {
     if (this.ready) {
-      return resolve();
+      return resolve(this.getCurrentSettings);
     }
 
     setTimeout(() => this.checkIfReady(resolve), 50);
@@ -131,8 +131,11 @@ export class SettingsService {
 
     if (!this.ready) {
       const done = new Promise<Settings>((resolve, reject) => {
-        setTimeout(function() {
-          reject();
+        setTimeout(() => {
+          if (!this.ready) {
+            console.log('Storage not ready after 3 seconds');
+            reject();
+          }
         }, 3000);
         setTimeout(() => this.checkIfReady(resolve), 50);
       });
