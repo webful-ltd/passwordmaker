@@ -14,6 +14,8 @@ import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { HomePage } from './home.page';
 
 declare global {
+  // tslint:disable-next-line: no-empty-interface
+  interface Cordova {}
   interface Window {
     cordova: Cordova;
     clearTimeout: (handle?: number) => void;
