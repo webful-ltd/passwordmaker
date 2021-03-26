@@ -13,7 +13,13 @@ import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { HomePage } from './home.page';
 
-declare let cordova: any;
+declare global {
+  interface Window {
+    cordova: Cordova;
+    clearTimeout: (handle?: number) => void;
+    setTimeout: (callback: () => any, interval: number) => any;
+  }
+}
 
 describe('HomePage', () => {
   let component: HomePage;
