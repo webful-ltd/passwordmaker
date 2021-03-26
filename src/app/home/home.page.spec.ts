@@ -13,6 +13,8 @@ import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { HomePage } from './home.page';
 
+declare var Cordova: any;
+
 declare global {
   interface Window {
     cordova: Cordova;
