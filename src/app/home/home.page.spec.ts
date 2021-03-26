@@ -6,7 +6,10 @@ import { Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { IonicStorageModule } from '@ionic/storage';
+import { Drivers } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
+
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { HomePage } from './home.page';
 
@@ -28,7 +31,9 @@ describe('HomePage', () => {
     TestBed.configureTestingModule({
       declarations: [HomePage],
       imports: [
-        IonicStorageModule.forRoot(),
+        IonicStorageModule.forRoot({
+          driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB],
+        }),
       ],
       providers: [
         { provide: Clipboard, useValue: clipboardSpy },

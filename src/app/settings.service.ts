@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { Subject } from 'rxjs';
 
 import { Profile } from '../models/Profile';
@@ -18,12 +18,18 @@ export class SettingsService {
   public saveSubject: Subject<void> = new Subject<void>();
   private currentSettings: Settings;
   private currentPromise?: Promise<any>;
+  private ready = false;
 
   constructor(
     private cloudSettings: CloudSettings,
     private storage: Storage,
     public toast: ToastController,
   ) {}
+
+  async ngOnInit() {
+    await this.storage.create();
+    this.ready = true;
+  }
 
   public save(settings: Settings): Promise<any> {
     if (!settings) {
@@ -106,6 +112,14 @@ export class SettingsService {
     });
   }
 
+  private checkIfReady(resolve) {
+    if (this.ready) {
+      return resolve();
+    }
+
+    setTimeout(() => this.checkIfReady(resolve), 50);
+  }
+
   public getCurrentSettings(): Promise<Settings> {
     if (this.currentPromise instanceof Promise) {
       return this.currentPromise;
@@ -113,6 +127,17 @@ export class SettingsService {
 
     if (this.currentSettings) {
       return Promise.resolve(this.currentSettings);
+    }
+
+    if (!this.ready) {
+      const done = new Promise<Settings>((resolve, reject) => {
+        setTimeout(function() {
+          reject();
+        }, 3000);
+        setTimeout(() => this.checkIfReady(resolve), 50);
+      });
+
+      return done;
     }
 
     const settingsService = this;

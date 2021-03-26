@@ -2,7 +2,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
-import { IonicStorageModule } from '@ionic/storage';
+import { Drivers } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { Profile } from '../../models/Profile';
 import { ProfilePage } from './profile.page';
@@ -16,7 +18,9 @@ describe('ProfilePage', () => {
       declarations: [ ProfilePage ],
       imports: [
         IonicModule.forRoot(),
-        IonicStorageModule.forRoot(),
+        IonicStorageModule.forRoot({
+          driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB],
+        }),
         ReactiveFormsModule,
       ],
       providers: [
