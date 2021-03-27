@@ -19,9 +19,6 @@ We should probably replace this with a better solution at some point. In the mea
 
 To run all tests as CI does:
 
-* On macOS only, `npm run update-webdriver` – this is to work around a
-  temporary issue due to a `webdriver-manager` bug whose fix is not yet in
-  a stable Protractor build (as of v7.0.0)
 * `npm run ci` 
 
 ## Build
@@ -30,7 +27,7 @@ To run all tests as CI does:
 
 * Configure your local `.env` - copy from `.env.example` if missing.
 * Run: `./build-helpers/android.sh`
-* Enter signing key's password if prompted.
+* Enter signing key's password when prompted.
 * Signed `PasswordMaker.apk` is created in the project root.
 
 ### iOS
