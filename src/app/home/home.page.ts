@@ -38,7 +38,7 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (window.cordova) {
+    if (window.hasOwnProperty('cordova')) {
       // For now, no clipboard in-browser - API support not wide + no plugin support
       if (this.clipboard) {
         this.clipboard_available = true;
@@ -54,6 +54,8 @@ export class HomePage implements OnInit {
         this.updateView();
       });
     }
+
+    this.settingsService.init();
 
     this.update();
 
@@ -115,7 +117,7 @@ export class HomePage implements OnInit {
    * the keyboard to see the password and Copy button.
    */
   hideKeyboard() {
-    if (window.cordova) {
+    if (window.hasOwnProperty('cordova')) {
       this.keyboard.hide();
     }
   }

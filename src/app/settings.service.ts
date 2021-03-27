@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { Subject } from 'rxjs';
 
 import { Profile } from '../models/Profile';
@@ -15,7 +15,8 @@ import { SettingsSimple } from '../models/SettingsSimple';
 export class SettingsService {
   private static storageKey = 'settings';
 
-  public saveSubject: Subject<void> = new Subject<void>();
+  ready = false;
+  saveSubject: Subject<void> = new Subject<void>();
   private currentSettings: Settings;
   private currentPromise?: Promise<any>;
 
@@ -24,6 +25,11 @@ export class SettingsService {
     private storage: Storage,
     public toast: ToastController,
   ) {}
+
+  async init() {
+    await this.storage.create();
+    this.ready = true;
+  }
 
   public save(settings: Settings): Promise<any> {
     if (!settings) {
@@ -40,7 +46,7 @@ export class SettingsService {
     // Tell listening pages (e.g. Home) that the settings changed
     savePromise.then(() => {
       this.saveSubject.next();
-      if (window.cordova) { // No cloud settings without a device
+      if (window.hasOwnProperty('cordova')) { // No cloud settings without a device
         this.cloudSettings.save(settings, true);
       }
     });
@@ -106,6 +112,14 @@ export class SettingsService {
     });
   }
 
+  private checkIfReady(resolve) {
+    if (this.ready) {
+      return resolve(this.getCurrentSettings);
+    }
+
+    setTimeout(() => this.checkIfReady(resolve), 50);
+  }
+
   public getCurrentSettings(): Promise<Settings> {
     if (this.currentPromise instanceof Promise) {
       return this.currentPromise;
@@ -115,12 +129,26 @@ export class SettingsService {
       return Promise.resolve(this.currentSettings);
     }
 
+    if (!this.ready) {
+      const done = new Promise<Settings>((resolve, reject) => {
+        setTimeout(() => {
+          if (!this.ready) {
+            console.log('Storage not ready after 3 seconds');
+            reject();
+          }
+        }, 3000);
+        setTimeout(() => this.checkIfReady(resolve), 50);
+      });
+
+      return done;
+    }
+
     const settingsService = this;
 
     this.currentPromise = this.storage.get(SettingsService.storageKey).then(settings => {
       if (settings === null) {
         return new Promise(resolve => {
-          if (!window.cordova) { // No cloud settings without a device
+          if (!window.hasOwnProperty('cordova')) { // No cloud settings without a device
             return resolve(this.loadDefaults());
           }
 
