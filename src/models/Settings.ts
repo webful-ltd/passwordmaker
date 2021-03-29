@@ -7,10 +7,6 @@ export abstract class Settings {
 
   remember_minutes = 5;
 
-  getRememberMinutes(): number {
-    return this.remember_minutes;
-  }
-
   abstract getAlgorithm(): 'hmac-sha256' | 'sha256' | 'hmac-sha1' | 'sha1' | 'hmac-md5' | 'md5' | 'hmac-ripemd160' | 'ripemd160';
   abstract getLeetLocation(): 'none' | 'before-hashing' | 'after-hashing' | 'both';
   abstract getLeetLevel(): number;

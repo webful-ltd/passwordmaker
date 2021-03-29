@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
+import { ActionSheetController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { Profile } from '../../models/Profile';
@@ -16,20 +16,24 @@ import { SettingsSimple } from '../../models/SettingsSimple';
   templateUrl: 'settings.page.html',
 })
 
-export class SettingsPage {
-  settings: FormGroup;
+export class SettingsPage implements OnInit {
+  settingsForm: FormGroup;
   advanced_mode = false;
   profiles: Profile[] = [];
+  settingsLoaded = false;
+
+  private loading: HTMLIonLoadingElement;
 
   constructor(
     private actionSheetController: ActionSheetController,
     private formBuilder: FormBuilder,
     private iab: InAppBrowser,
+    public loadingController: LoadingController,
     public modalController: ModalController,
     private settingsService: SettingsService,
     public toast: ToastController,
   ) {
-    this.settings = this.formBuilder.group({
+    this.settingsForm = this.formBuilder.group({
       algorithm: ['hmac-sha256', Validators.required],
       domain_only: [true],
       output_character_set: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
@@ -45,7 +49,9 @@ export class SettingsPage {
     });
   }
 
-  ionViewWillEnter() {
+  async ngOnInit() {
+    this.loading = await this.loadingController.create();
+    this.loading.present();
     this.update();
   }
 
@@ -165,7 +171,7 @@ export class SettingsPage {
         this.advanced_mode = (settings instanceof SettingsAdvanced);
 
         const formValues: any = {
-          remember_minutes: settings.getRememberMinutes(),
+          remember_minutes: settings.remember_minutes,
         };
 
         if (settings instanceof SettingsSimple) {
@@ -183,7 +189,12 @@ export class SettingsPage {
           this.profiles = settings.profiles;
         }
 
-        this.settings.patchValue(formValues);
+        this.settingsForm.patchValue(formValues);
+
+        this.settingsLoaded = true;
+        if (this.loading) {
+          this.loading.dismiss();
+        }
       });
   }
 }
