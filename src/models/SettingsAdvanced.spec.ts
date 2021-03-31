@@ -24,7 +24,7 @@ describe('SettingsAdvanced', () => {
     expect(settingsAdvanced.getOutputCharacterSet()).toBe('0123456789');
     expect(settingsAdvanced.getOutputLength()).toBe(13);
     expect(settingsAdvanced.getPostProcessingSuffix()).toBe('4');
-    expect(settingsAdvanced.getRememberMinutes()).toBe(3);
+    expect(settingsAdvanced.remember_minutes).toBe(3);
 
     // ...and check defaults are as expected
     expect(settingsAdvanced.getLeetLevel()).toBe(0);
@@ -47,7 +47,7 @@ describe('SettingsAdvanced', () => {
     expect(settings.getOutputLength()).toBe(15);
     expect(settings.getPostProcessingSuffix()).toBe('');
     expect(settings.getPrefix()).toBe('');
-    expect(settings.getRememberMinutes()).toBe(5);
+    expect(settings.remember_minutes).toBe(5);
     expect(settings.getSuffix()).toBe('');
     expect(settings.isDomainOnly()).toBe(true);
   });
@@ -76,7 +76,7 @@ describe('SettingsAdvanced', () => {
     expect(settings.getOutputLength()).toBe(7);
     expect(settings.getPostProcessingSuffix()).toBe('!!');
     expect(settings.getPrefix()).toBe('zxc');
-    expect(settings.getRememberMinutes()).toBe(0);
+    expect(settings.remember_minutes).toBe(0);
     expect(settings.getSuffix()).toBe('vbn');
     expect(settings.isDomainOnly()).toBe(false);
   });

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import { Platform, ToastController } from '@ionic/angular';
+import { LoadingController, Platform, ToastController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 
@@ -24,20 +24,25 @@ export class HomePage implements OnInit {
 
   private expire_password_on_context_change = false;
   private expiry_timer_id: number;
+  private loading: HTMLIonLoadingElement;
   private settings: Settings;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private clipboard: Clipboard,
     private keyboard: Keyboard,
-    private platform: Platform,
+    public loadingController: LoadingController,
     private passwordsService: PasswordsService,
+    private platform: Platform,
     private settingsService: SettingsService,
     public toast: ToastController,
     private zone: NgZone,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.loading = await this.loadingController.create();
+    this.loading.present();
+
     if (window.hasOwnProperty('cordova')) {
       // For now, no clipboard in-browser - API support not wide + no plugin support
       if (this.clipboard) {
@@ -54,8 +59,6 @@ export class HomePage implements OnInit {
         this.updateView();
       });
     }
-
-    this.settingsService.init();
 
     this.update();
 
@@ -92,6 +95,10 @@ export class HomePage implements OnInit {
 
       this.output_password = this.passwordsService.getPassword(this.input.master_password, this.input.host, settings);
     });
+
+    if (this.loading) {
+      this.loading.dismiss();
+    }
   }
 
   switchProfile (event: any) {
@@ -131,7 +138,7 @@ export class HomePage implements OnInit {
     }
 
     this.settingsService.getCurrentSettings().then(settings => {
-      if (settings.getRememberMinutes() > 0) {
+      if (settings.remember_minutes > 0) {
         // "Don't let me into my zone": Because the expire flag is always used in conjunction with
         // other UI events, we don't need Angular to be tracking for this timeout. And if we allow
         // it to do so, e2e tests break with default values (non-zero save password minutes) because
@@ -139,7 +146,7 @@ export class HomePage implements OnInit {
         this.zone.runOutsideAngular(() => {
           this.expiry_timer_id = window.setTimeout(() => {
             this.expire_password_on_context_change = true;
-          }, settings.getRememberMinutes() * 60000);
+          }, settings.remember_minutes * 60000);
         });
       } else {
         this.expire_password_on_context_change = true;

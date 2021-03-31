@@ -23,7 +23,7 @@
     </ion-button>
   </div>
 
-  <form *ngIf="settings" [formGroup]="settings" (ngSubmit)="save(settings)" novalidate>
+  <form *ngIf="settingsLoaded" [formGroup]="settingsForm" (ngSubmit)="save(settingsForm)" novalidate>
     <div *ngIf="!advanced_mode">
       <ion-item>
         <ion-label position="stacked">Length of passwords</ion-label>
@@ -67,12 +67,12 @@
         <ion-toggle
           name="added_number_on"
           formControlName="added_number_on"
-          [checked]="settings.get('added_number_on').value"
+          [checked]="settingsForm.get('added_number_on').value"
           color="primary"
         ></ion-toggle>
       </ion-item>
 
-      <ion-item *ngIf="settings.get('added_number_on').value">
+      <ion-item *ngIf="settingsForm.get('added_number_on').value">
         <ion-label position="stacked">Cool, which number?</ion-label>
         <ion-range
           name="added_number"
@@ -109,7 +109,7 @@
       ></ion-range>
     </ion-item>
 
-    <p *ngIf="settings.invalid" class="warning">
+    <p *ngIf="settingsForm.invalid" class="warning">
       <ion-icon name="warning"></ion-icon>
       Settings not valid. Please check above for options highlighted with a pink underline.
     </p>
@@ -119,7 +119,7 @@
       type="submit"
       color="primary"
       expand="block"
-      [disabled]="settings.invalid"
+      [disabled]="settingsForm.invalid"
     >
       <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
       Save
@@ -143,7 +143,7 @@
         name="advanced"
         color="secondary"
         expand="block"
-        [disabled]="settings.invalid"
+        [disabled]="settingsForm.invalid"
       >
         <ion-icon slot="start" name="cog"></ion-icon>
         Enable Advanced Settings

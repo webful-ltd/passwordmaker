@@ -12,7 +12,7 @@ describe('SettingsSimple', () => {
     expect(settings.getOutputLength()).toBe(15);
     expect(settings.getPostProcessingSuffix()).toBe('');
     expect(settings.getPrefix()).toBe('');
-    expect(settings.getRememberMinutes()).toBe(5);
+    expect(settings.remember_minutes).toBe(5);
     expect(settings.getSuffix()).toBe('');
     expect(settings.isDomainOnly()).toBe(true);
   });
@@ -35,7 +35,7 @@ describe('SettingsSimple', () => {
     expect(settings.getOutputLength()).toBe(7);
     expect(settings.getPostProcessingSuffix()).toBe('8');
     expect(settings.getPrefix()).toBe('');
-    expect(settings.getRememberMinutes()).toBe(0);
+    expect(settings.remember_minutes).toBe(0);
     expect(settings.getSuffix()).toBe('');
     expect(settings.isDomainOnly()).toBe(false);
   });
