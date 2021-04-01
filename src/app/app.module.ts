@@ -16,6 +16,7 @@ import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SettingsService } from './settings.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { AppComponent } from './app.component';
     CloudSettings,
     Keyboard,
     InAppBrowser,
+    SettingsService,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

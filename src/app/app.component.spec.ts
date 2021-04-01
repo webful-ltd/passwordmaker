@@ -8,10 +8,8 @@ import { Storage } from '@ionic/storage-angular';
 
 import { AppComponent } from './app.component';
 import { SettingsSimple } from '../models/SettingsSimple';
-import { SettingsService } from './settings.service';
 
 describe('AppComponent', () => {
-
   let platformReadySpy, platformSpy, statusBarSpy, splashScreenSpy, storageSpy;
   const mockSettings = new SettingsSimple();
 
@@ -32,9 +30,6 @@ describe('AppComponent', () => {
       providers: [
         CloudSettings,
         { provide: Platform, useValue: platformSpy },
-        { provider: SettingsService, useValue: jasmine.createSpyObj('SettingsService', {
-          init: () => true,
-        })},
         { provide: SplashScreen, useValue: splashScreenSpy },
         { provide: StatusBar, useValue: statusBarSpy },
         { provide: Storage, useValue: storageSpy },
