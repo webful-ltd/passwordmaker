@@ -2,8 +2,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { KeyboardMock, PlatformMock, ToastControllerMock } from 'ionic-mocks';
 
+// import { Clipboard } from '@capacitor/clipboard';
 import { Platform, ToastController } from '@ionic/angular';
-import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Drivers } from '@ionic/storage';
@@ -23,10 +23,10 @@ declare global {
 describe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
-  let clipboardSpy: Clipboard;
+  // let clipboardSpy: Clipboard;
 
   beforeEach(waitForAsync(() => {
-    clipboardSpy = jasmine.createSpyObj('Clipboard', ['copy']);
+    // clipboardSpy = jasmine.createSpyObj('Clipboard', ['write']);
     TestBed.configureTestingModule({
       declarations: [HomePage],
       imports: [
@@ -35,7 +35,7 @@ describe('HomePage', () => {
         }),
       ],
       providers: [
-        { provide: Clipboard, useValue: clipboardSpy },
+        // { provide: Clipboard, useValue: clipboardSpy },
         CloudSettings,
         { provide: Keyboard, useValue: KeyboardMock.instance() },
         { provide: Platform, useValue: PlatformMock },

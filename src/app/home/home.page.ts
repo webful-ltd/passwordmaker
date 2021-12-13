@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { Clipboard } from '@capacitor/clipboard';
 import { LoadingController, Platform, ToastController } from '@ionic/angular';
-import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 import { Input } from '../../models/Input';
@@ -29,7 +29,6 @@ export class HomePage implements OnInit {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private clipboard: Clipboard,
     private keyboard: Keyboard,
     public loadingController: LoadingController,
     private passwordsService: PasswordsService,
@@ -44,10 +43,8 @@ export class HomePage implements OnInit {
     this.loading.present();
 
     if (window.hasOwnProperty('cordova')) {
-      // For now, no clipboard in-browser - API support not wide + no plugin support
-      if (this.clipboard) {
-        this.clipboard_available = true;
-      }
+      // @capacitor/clipboard "is not implemented on web Wrapper" for now.
+      this.clipboard_available = true;
 
       // And no clearing master password in-browser as context switching events are
       // less usable, and we don't officially target a web build as yet
@@ -109,7 +106,7 @@ export class HomePage implements OnInit {
   }
 
   copy() {
-    this.clipboard.copy(this.output_password).then(() => {
+    Clipboard.write({ string: this.output_password }).then(() => {
       this.toast.create({
         message: ('Copied to clipboard!'),
         duration: 2000,
