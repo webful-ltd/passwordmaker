@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Webful PasswordMaker</string>
+    <string name="title_activity_main">Webful PasswordMaker</string>
+    <string name="package_name">uk.webful.passwordmaker</string>
+    <string name="custom_url_scheme">uk.webful.passwordmaker</string>
+</resources>

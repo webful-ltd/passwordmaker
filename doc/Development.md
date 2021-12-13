@@ -25,16 +25,15 @@ To run all tests as CI does:
 
 ### Android
 
-* Configure your local `.env` - copy from `.env.example` if missing.
-* Run: `./build-helpers/android.sh`
-* Enter signing key's password when prompted.
-* Signed `PasswordMaker.apk` is created in the project root.
+* `ionic capacitor build android --prod`
+* In Android Studio, go to Build > Generate Signed Bundle / APK...
+* Choose to make bundle and use your keystore
 
 ### iOS
 
 * See [this answer re build system flag](https://stackoverflow.com/a/52432058/2803757) - change in Xcode before build if necessary.
-* `ionic cordova build ios --prod`
-* Open `platforms/ios/Webful PasswordMaker.xcworkspace` in Xcode.
+* `ionic capacitor build ios --prod`
+* Open `ios/App/App.xcworkspace` in Xcode, or let Capacitor do this for you
 * Change target at the top to _Any iOS Device_
 * _Product > Archive_
 * _Distribute App_ from the Organizer dialogue.

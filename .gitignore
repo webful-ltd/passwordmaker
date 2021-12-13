@@ -7,9 +7,6 @@
 # work with the project for now.
 package.json
 
-# Don't check in individual build config settings
-.env
-
 # Don't check in production Android builds
 PasswordMaker.apk
 
