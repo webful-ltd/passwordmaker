@@ -16,12 +16,12 @@
   "license": "GPL-3.0-or-later",
   "private": false,
   "dependencies": {
-    "@angular/common": "^12.0.2",
-    "@angular/core": "^12.0.2",
-    "@angular/forms": "^12.0.2",
-    "@angular/platform-browser": "^12.0.2",
-    "@angular/platform-browser-dynamic": "^12.0.2",
-    "@angular/router": "^12.0.2",
+    "@angular/common": "^12.2.14",
+    "@angular/core": "^12.2.14",
+    "@angular/forms": "^12.2.14",
+    "@angular/platform-browser": "^12.2.14",
+    "@angular/platform-browser-dynamic": "^12.2.14",
+    "@angular/router": "^12.2.14",
     "@ionic-native/clipboard": "^5.31.1",
     "@ionic-native/cloud-settings": "^5.31.1",
     "@ionic-native/core": "^5.31.1",
@@ -54,15 +54,15 @@
     "url-parse": "^1.4.7"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "^0.1200.2",
-    "@angular-devkit/build-angular": "^12.0.2",
-    "@angular-devkit/core": "^12.0.2",
-    "@angular-devkit/schematics": "^12.0.2",
-    "@angular/cli": "^12.0.2",
-    "@angular/compiler": "^12.0.2",
-    "@angular/compiler-cli": "^12.0.2",
-    "@angular/language-service": "^12.0.2",
-    "@ionic/angular-toolkit": "^4.0.0",
+    "@angular-devkit/architect": "^0.1202.14",
+    "@angular-devkit/build-angular": "^12.2.14",
+    "@angular-devkit/core": "^12.2.14",
+    "@angular-devkit/schematics": "^12.2.14",
+    "@angular/cli": "^12.2.14",
+    "@angular/compiler": "^12.2.14",
+    "@angular/compiler-cli": "^12.2.14",
+    "@angular/language-service": "^12.2.14",
+    "@ionic/angular-toolkit": "^5.0.3",
     "@types/jasmine": "^3.6.7",
     "@types/jasminewd2": "^2.0.8",
     "@types/node": "^14.14.36",
@@ -83,8 +83,8 @@
     "zone.js": "^0.11.4"
   },
   "engines": {
-    "node": ">=12",
-    "npm": ">=6.0.1"
+    "node": "^12.14.1 || >=14.0.0",
+    "npm": "^6.11.0 || ^7.5.6"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
   "cordova": {
