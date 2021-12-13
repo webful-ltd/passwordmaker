@@ -18,6 +18,9 @@ const config: CapacitorConfig = {
       SplashScreenDelay: '1500',
       SplashScreenSpinnerColor: '#a11692'
     }
+  },
+  server: {
+    iosScheme: 'ionic',
   }
 };
 
