@@ -5,8 +5,8 @@ android {
     defaultConfig {
         applicationId "uk.webful.passwordmaker"
         compileSdkVersion rootProject.ext.minSdkVersion
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 22
+        targetSdkVersion targetSdkVersion
         versionCode 21000
         versionName '2.1.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
