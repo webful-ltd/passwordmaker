@@ -6,7 +6,6 @@ import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
@@ -28,7 +27,6 @@ import { SettingsService } from './settings.service';
   providers: [
     CloudSettings,
     Keyboard,
-    InAppBrowser,
     SettingsService,
     StatusBar,
     SplashScreen,
