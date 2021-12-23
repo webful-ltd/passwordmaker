@@ -40,15 +40,7 @@ export class HomePage implements OnInit {
 
   async ngOnInit() {
     this.loading = await this.loadingController.create();
-
-    // Work around intermittent component test failures due to Loading timing issues.
-    // e.g. "Error: Uncaught (in promise): TypeError: this.loading.present is not a function"
-    // See also https://github.com/ionic-team/ionic-framework/issues/15629
-    if (this.loading) {
-      this.loading.present();
-    } else {
-      console.log('Skipped presenting loading ctrller as not created');
-    }
+    this.loading.present();
 
     if (window.hasOwnProperty('cordova')) {
       // @capacitor/clipboard "is not implemented on web Wrapper" for now.
