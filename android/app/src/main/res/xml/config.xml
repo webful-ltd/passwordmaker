@@ -15,11 +15,5 @@
   <preference name="permissions" value="none" />
   <preference name="ScrollEnabled" value="false" />
   <preference name="BackupWebStorage" value="none" />
-  <preference name="FadeSplashScreenDuration" value="200" />
   <preference name="MixedContentMode" value="1" />
-  <preference name="SplashMaintainAspectRatio" value="true" />
-  <preference name="SplashShowOnlyFirstTime" value="false" />
-  <preference name="SplashScreen" value="screen" />
-  <preference name="SplashScreenDelay" value="1500" />
-  <preference name="SplashScreenSpinnerColor" value="#a11692" />
 </widget>
