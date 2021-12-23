@@ -24,7 +24,20 @@ export class AppComponent {
     this.settings.init();
 
     this.platform.ready().then(() => {
-      StatusBar.setBackgroundColor({ color: '#a11692' });
+      if (window.hasOwnProperty('cordova')) { // Don't crash on web platform.
+        StatusBar.setBackgroundColor({ color: '#a11692' });
+      }
+
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      this.toggleDarkTheme(prefersDark.matches);
+      prefersDark.addListener(mediaQuery => this.toggleDarkTheme(mediaQuery.matches));
     });
+  }
+
+  /**
+   * @returns Whether dark mode class is now added.
+   */
+  toggleDarkTheme(shouldAdd: boolean): boolean {
+    return document.body.classList.toggle('dark', shouldAdd);
   }
 }
