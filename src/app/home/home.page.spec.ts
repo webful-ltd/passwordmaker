@@ -22,11 +22,6 @@ describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
 
   beforeEach(waitForAsync(() => {
-    // Work around intermittent component test failures due to Loading timing issues.
-    // e.g. "Error: Uncaught (in promise): TypeError: this.loading.present is not a function"
-    // See also https://github.com/ionic-team/ionic-framework/issues/15629
-    fakeAsync(() => tick(1000));
-
     TestBed.configureTestingModule({
       declarations: [HomePage],
       imports: [
