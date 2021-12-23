@@ -5,9 +5,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,10 +23,7 @@ import { SettingsService } from './settings.service';
   ],
   providers: [
     CloudSettings,
-    Keyboard,
     SettingsService,
-    StatusBar,
-    SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

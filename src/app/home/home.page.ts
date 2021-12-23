@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Clipboard } from '@capacitor/clipboard';
+import { Keyboard } from '@capacitor/keyboard';
 import { LoadingController, Platform, ToastController } from '@ionic/angular';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 import { Input } from '../../models/Input';
 import { PasswordsService } from '../passwords.service';
@@ -29,7 +29,6 @@ export class HomePage implements OnInit {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private keyboard: Keyboard,
     public loadingController: LoadingController,
     private passwordsService: PasswordsService,
     private platform: Platform,
@@ -122,7 +121,7 @@ export class HomePage implements OnInit {
    */
   hideKeyboard() {
     if (window.hasOwnProperty('cordova')) {
-      this.keyboard.hide();
+      Keyboard.hide();
     }
   }
 

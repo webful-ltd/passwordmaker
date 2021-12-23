@@ -1,9 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { KeyboardMock, PlatformMock, ToastControllerMock } from 'ionic-mocks';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { PlatformMock, ToastControllerMock } from 'ionic-mocks';
 import { Platform, ToastController } from '@ionic/angular';
 import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
@@ -31,7 +30,6 @@ describe('HomePage', () => {
       ],
       providers: [
         CloudSettings,
-        { provide: Keyboard, useValue: KeyboardMock.instance() },
         { provide: Platform, useValue: PlatformMock },
         { provide: ToastController, useValue: ToastControllerMock },
       ],
