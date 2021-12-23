@@ -10,13 +10,7 @@ const config: CapacitorConfig = {
       permissions: 'none',
       ScrollEnabled: 'false',
       BackupWebStorage: 'none',
-      FadeSplashScreenDuration: '200',
       MixedContentMode: '1',
-      SplashMaintainAspectRatio: 'true',
-      SplashShowOnlyFirstTime: 'false',
-      SplashScreen: 'screen',
-      SplashScreenDelay: '1500',
-      SplashScreenSpinnerColor: '#a11692'
     }
   },
   server: {
