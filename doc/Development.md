@@ -28,7 +28,9 @@ To run all tests as CI does:
 * Set new `versionCode` and `versionName` in [android/app/build.gradle](../android/app/build.gradle)
 * `ionic capacitor build android --prod`
 * In Android Studio, go to Build > Generate Signed Bundle / APK...
-* Choose to make an Android App Bundle and use your keystore
+* Choose to make an Android App Bundle and use your keystore – generated in Studio, as the
+  beloved ~2014 format seemingly doesn't play nice with 2020s .aab's
+* Upload the signed `.aab` [in Google Play Console](https://play.google.com/console/u/0/developers)
 
 ### iOS
 
