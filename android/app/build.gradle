@@ -1,13 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
+    // See https://stackoverflow.com/a/24336042/2803757 – as of 29/12/21, without this workaround
+    // debug builds worked but release ones, even with a cleanly re-added Capacitor platform, hit a lint
+    // error and had no actual information in the lint results report.
+    lintOptions { 
+        checkReleaseBuilds false
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "uk.webful.passwordmaker"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 21000
-        versionName "2.1.0"
+        versionCode 21001
+        versionName "2.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
