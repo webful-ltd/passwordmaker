@@ -7,9 +7,6 @@
 # work with the project for now.
 package.json
 
-# Don't check in individual build config settings
-.env
-
 # Don't check in production Android builds
 PasswordMaker.apk
 
@@ -35,7 +32,6 @@ www/
 node_modules/
 tmp/
 temp/
-platforms/
 plugins/
 plugins/android.json
 plugins/ios.json

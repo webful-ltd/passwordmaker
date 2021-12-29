@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Browser } from '@capacitor/browser';
 import { ActionSheetController, LoadingController, ModalController, ToastController } from '@ionic/angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { Profile } from '../../models/Profile';
 import { ProfilePage } from '../profile/profile.page';
@@ -27,7 +27,6 @@ export class SettingsPage implements OnInit {
   constructor(
     private actionSheetController: ActionSheetController,
     private formBuilder: FormBuilder,
-    private iab: InAppBrowser,
     public loadingController: LoadingController,
     public modalController: ModalController,
     private settingsService: SettingsService,
@@ -158,11 +157,11 @@ export class SettingsPage implements OnInit {
   }
 
   openHelp() {
-    this.iab.create('https://passwordmaker.webful.uk/#settings', '_system');
+    Browser.open({ url: 'https://passwordmaker.webful.uk/#settings' });
   }
 
   openAdvancedInfo() {
-    this.iab.create('https://passwordmaker.webful.uk/#advanced', '_system');
+    Browser.open({ url: 'https://passwordmaker.webful.uk/#advanced' });
   }
 
   private update() {

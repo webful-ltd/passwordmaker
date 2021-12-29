@@ -25,16 +25,23 @@ To run all tests as CI does:
 
 ### Android
 
-* Configure your local `.env` - copy from `.env.example` if missing.
-* Run: `./build-helpers/android.sh`
-* Enter signing key's password when prompted.
-* Signed `PasswordMaker.apk` is created in the project root.
+These steps contain an assumption you should adjust for your local dev situation. The example is based on
+using macOS and Android Studio having your most appropriate 'new' Java (new Gradle versions require
+Java 11). If these things are not true, adjust or delete the `JAVA_HOME` var as appropriate.
+
+* Set new `versionCode` and `versionName` in [android/app/build.gradle](../android/app/build.gradle)
+* `JAVA_HOME="/Applications/Android Studio.app/Contents/jre/Contents/Home" ionic capacitor build android --prod`
+* _If first build,_ in Android Studio choose _Build > Select Build Variant..._ and choose `release`.
+* In Android Studio, go to _Build > Generate Signed Bundle / APK...
+* Choose to make an Android App Bundle and use your keystore
+* Upload the signed [`app-release.aab`](../android/app/release/app-release.aab) [in Google Play Console](https://play.google.com/console/u/0/developers)
 
 ### iOS
 
 * See [this answer re build system flag](https://stackoverflow.com/a/52432058/2803757) - change in Xcode before build if necessary.
-* `ionic cordova build ios --prod`
-* Open `platforms/ios/Webful PasswordMaker.xcworkspace` in Xcode.
+* Set new `CURRENT_PROJECT_VERSION` and `MARKETING_VERSION` in [ios/App/App.xcodeproj/project.pbxproj](../ios/App/App.xcodeproj/project.pbxproj)
+* `ionic capacitor build ios --prod`
+* Open `ios/App/App.xcworkspace` in Xcode, or let Capacitor do this for you
 * Change target at the top to _Any iOS Device_
 * _Product > Archive_
 * _Distribute App_ from the Organizer dialogue.
