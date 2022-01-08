@@ -45,3 +45,15 @@ Java 11). If these things are not true, adjust or delete the `JAVA_HOME` var as 
 * Change target at the top to _Any iOS Device_
 * _Product > Archive_
 * _Distribute App_ from the Organizer dialogue.
+
+### Resources update
+
+Icon and splash screen shouldn't need regenerating on each build. But if they change (in `resources/`), run:
+
+* `npm run resources`
+
+As a temporary [workaround](https://github.com/leonardoquevedox/capacitor-resources/issues/10#issuecomment-934244953)
+for Android icon size issues, globally [install `cordova-res`](https://www.npmjs.com/package/cordova-res)
+and run:
+
+* `cordova-res android --skip-config --copy --type icon`
