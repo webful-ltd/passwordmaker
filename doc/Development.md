@@ -42,7 +42,7 @@ Java 11). If these things are not true, adjust or delete the `JAVA_HOME` var as 
 * Set new `CURRENT_PROJECT_VERSION` and `MARKETING_VERSION` in [ios/App/App.xcodeproj/project.pbxproj](../ios/App/App.xcodeproj/project.pbxproj)
 * `ionic capacitor build ios --prod`
 * Open `ios/App/App.xcworkspace` in Xcode, or let Capacitor do this for you
-* Change target at the top to _Any iOS Device_
+* Change target at the top to _Any iOS Device (arm64)_
 * _Product > Archive_
 * _Distribute App_ from the Organizer dialogue.
 
