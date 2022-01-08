@@ -38,6 +38,7 @@
     "@ionic/storage-angular": "^3.0.2",
     "@webful/passwordmaker-lib": "~0.1.2",
     "2ldcheck": "~0.0.6",
+    "capacitor-dark-mode": "github:webful-ltd/ionicCapacitorDarkMode",
     "capacitor-resources": "^2.0.5",
     "cordova-android": "^9.0.0",
     "cordova-ios": "^6.2.0",
