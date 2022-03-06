@@ -10,7 +10,7 @@ import { SettingsService } from '../settings.service';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePageComponent implements OnInit {
   @Input() profileModel: Profile;
   @Input() profileCount: number; // Total profiles so far
 

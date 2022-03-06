@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { TabsPageRoutingModule } from './tabs.router.module';
 
-import { TabsPage } from './tabs.page';
+import { TabsPageComponent } from './tabs.page';
 import { HomePageModule } from '../home/home.module';
 import { ProfilePageModule } from '../profile/profile.module';
 import { SettingsPageModule } from '../settings/settings.module';
@@ -20,6 +20,6 @@ import { SettingsPageModule } from '../settings/settings.module';
     ProfilePageModule,
     SettingsPageModule,
   ],
-  declarations: [TabsPage]
+  declarations: [TabsPageComponent]
 })
 export class TabsPageModule {}

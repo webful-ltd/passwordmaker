@@ -7,15 +7,15 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { Profile } from '../../models/Profile';
-import { ProfilePage } from './profile.page';
+import { ProfilePageComponent } from './profile.page';
 
-describe('ProfilePage', () => {
-  let component: ProfilePage;
-  let fixture: ComponentFixture<ProfilePage>;
+describe('ProfilePageComponent', () => {
+  let component: ProfilePageComponent;
+  let fixture: ComponentFixture<ProfilePageComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProfilePage ],
+      declarations: [ ProfilePageComponent ],
       imports: [
         IonicModule.forRoot(),
         IonicStorageModule.forRoot({
@@ -28,7 +28,7 @@ describe('ProfilePage', () => {
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProfilePage);
+    fixture = TestBed.createComponent(ProfilePageComponent);
     component = fixture.componentInstance;
     component.profileModel = new Profile();
     component.profileModel.profile_id = 1;

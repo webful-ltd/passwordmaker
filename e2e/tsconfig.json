@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "dom",
+            "es7"
+        ],
+        "module": "ES2020",
+        "types": [
+            "node",
+            "webdriverio/async",
+            "@wdio/jasmine-framework",
+            "expect-webdriverio",
+            "module"
+        ],
+        "target": "es5"
+    }
+}

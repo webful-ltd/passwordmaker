@@ -81,7 +81,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="profile.get('leet_location').value != 'none'">
+      <ion-item *ngIf="profile.get('leet_location').value !== 'none'">
         <ion-label position="stacked">l33t level</ion-label>
         <ion-range
           name="leet_level"
