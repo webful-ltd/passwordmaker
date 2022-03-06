@@ -10,6 +10,10 @@ We should probably replace this with a better solution at some point. In the mea
 * `cp package.json.dist package.json`
 * `npm install`
 
+### If new to Ionic
+
+* `npm install -g @ionic/cli`
+
 ## Run locally
 
 * `ionic serve`
