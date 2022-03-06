@@ -35,6 +35,7 @@ Java 11). If these things are not true, adjust or delete the `JAVA_HOME` var as 
 
 * Set new `versionCode` and `versionName` in [android/app/build.gradle](../android/app/build.gradle)
 * `JAVA_HOME="/Applications/Android Studio.app/Contents/jre/Contents/Home" ionic capacitor build android --prod`
+* `ionic capacitor build android --prod`
 * _If first build,_ in Android Studio choose _Build > Select Build Variant..._ and choose `release`.
 * In Android Studio, go to _Build > Generate Signed Bundle / APK...
 * Choose to make an Android App Bundle and use your keystore
