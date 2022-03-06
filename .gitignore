@@ -6,7 +6,7 @@
 # the Android backup service key there. The previous `package.json` combined with
 # the live `package-lock.json` hopefully provides enough for other contributors to
 # work with the project for now.
-package.json
+/package.json
 
 # Don't check in production Android builds
 PasswordMaker.apk

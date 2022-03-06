@@ -1,58 +1,61 @@
-import { browser, by, element } from 'protractor';
+const IonicInput = require('./helpers/ionic-input');
 
-export class AppPage {
-  public maximise() {
-    browser.driver.manage().window().setSize(600, 900);
-  }
+class AppPage {
+  private browser: WebdriverIO.Browser;
 
-  public startOnHomePath() {
-    browser.get('/');
-  }
+  /**
+   * @param {WebdriverIO.BrowserObject} browser   Global auto browser object.
+   */
+  setBrowser(browser: WebdriverIO.Browser) {
+    this.browser = browser;
+  };
+
+  maximise() {
+    browser.setWindowSize(600, 900);
+  };
+
+  startOnHomePath() {
+    browser.url('/');
+  };
 
   /**
    * Navigate to a tab in the same way a user would.
    *
    * @param {string} tab Label for the destination tab
    */
-  public navigateToTab(tabName: string) {
-    const tab = element(by.css(`ion-tab-button[tab="${tabName}"]`));
-    tab.click();
-    browser.waitForAngular();
-    browser.sleep(1000); // Travis builds had intermittent trouble on next step without a fixed wait
-  }
+  async navigateToTab(tabName: string) {
+    const tab = await $(`ion-tab-button[tab="${tabName}"]`);
+    await tab.click();
+    await browser.pause(1400); // Ensure elements all ready on the new page before proceeding.
+  };
 
-  public getHomeText() {
+  async getHomeText() {
     return this.getPageText('home');
-  }
+  };
 
-  public getSettingsText() {
+  async getSettingsText() {
     return this.getPageText('settings');
-  }
+  };
 
-  public populateIonicInput(elementName: string, value: (string|number)) {
-    browser.waitForAngular();
-    const ionicInput = element(by.css(`input[name="${elementName}"]`));
-    browser.sleep(400); // Wait for elements to be available and visible
-    ionicInput.click();
+  async populateIonicInput(elementName: string, value: (string|number)) {
+    const ionicInput = new IonicInput(`input[name="${elementName}"]`);
+    await ionicInput.setValue(value.toString());
+  };
 
-    // `clear()` wasn't allowed on `ion-input` or the native field, so backspace x20 to remove existing value.
-    ionicInput.sendKeys('\b'.repeat(20) + value);
-  }
-
-  public populateIonicSelect(elementName: string, valueLabel: string): Promise<boolean> {
-    return new Promise(resolve => {
-      const ionicSelect = element(by.css(`ion-select[name="${elementName}"]`));
-      browser.waitForAngular();
+  // We can probably replace this with the helper element + its select(...) at some point, but we'll
+  // still need some custom logic to work out which numeric item index to pass in.
+  populateIonicSelect(elementName: string, valueLabel: string): Promise<boolean> {
+    return new Promise(async resolve => {
+      const ionicSelect = await $(`ion-select[name="${elementName}"]`);
       ionicSelect.click();
-      browser.sleep(400); // Wait for elements to be available and visible
+      await browser.pause(400); // Wait for select to be interactible.
 
-      return element.all(by.css('div.alert-radio-group > button')).map(possibleRadio => {
-        possibleRadio.getText().then(possibleRadioText => {
+      return $$('div.alert-radio-group > button').map(possibleRadio => {
+        possibleRadio.getText().then(async possibleRadioText => {
           if (possibleRadioText === valueLabel) {
             possibleRadio.click();
-            element(by.buttonText('OK')).click();
-
-            browser.sleep(200); // Wait for overlay's close animation so it doesn't steal focus
+            await $('button*=OK').click();
+            await browser.pause(200); // Wait for overlay's close animation so it doesn't steal focus
             resolve(true);
           }
         }).catch(error => {
@@ -62,71 +65,62 @@ export class AppPage {
         });
       });
     });
-  }
+  };
 
-  public setIonicToggle(elementName: string, shouldBeChecked: boolean): Promise<boolean> {
-    const ionicInput = element(by.css(`ion-toggle[name="${elementName}"]`));
+  async setIonicToggle(elementName: string, shouldBeChecked: boolean): Promise<boolean> {
+    const ionicInput = await $(`ion-toggle[name="${elementName}"]`);
 
-    return new Promise<boolean>(resolve => {
-      ionicInput.getAttribute('checked').then((currentValue: string) => {
+    return new Promise<boolean>(async resolve => {
+      await ionicInput.getAttribute('aria-checked').then(async (currentValue: string) => {
         const isChecked: boolean = (currentValue === 'true');
         if (isChecked !== shouldBeChecked) {
-          browser.waitForAngular();
-          ionicInput.click();
+          await ionicInput.click();
         }
         resolve(true);
       });
     });
-  }
+  };
 
-  public save(): Promise<boolean> {
-    const ionicSaveButton = element(by.css(`ion-button[name="save"]`));
+  async save(): Promise<boolean> {
+    const ionicSaveButton = await $(`ion-button[name="save"]`);
 
-    return new Promise<boolean>(resolve => {
-      // Scroll to the bottom of the content, so we don't have to make the browser viewport
-      // huge to avoid the tab bar stealing focus when clicking Save. https://stackoverflow.com/a/47580259/2803757
-      const ionicSaveButtonWebElement = ionicSaveButton.getWebElement();
-      browser.executeScript(
-        `arguments[0].scrollIntoView({behavior: "smooth", block: "end"});`,
-        ionicSaveButtonWebElement,
-      );
-
-      // As the scrolling happens with custom JS and 'outside' the normal E2E event flow, a
-      // short explicit sleep seems to be needed for the scroll to complete before we try to
-      // click() the button. Waiting for `executeScript()`'s promise resolution wasn't sufficient.
-      browser.sleep(500);
-
-      ionicSaveButton.click().then(() => resolve(true));
+    return new Promise<boolean>(async resolve => {
+      await ionicSaveButton.click().then(() => resolve(true));
     });
-  }
+    // return ionicSaveButton.click();
+  };
 
-  public getSaveButtonDisabledStatus(): Promise<boolean> {
-    const ionicSaveButton = element(by.css(`ion-button[name="save"]`));
+  async getSaveButtonDisabledStatus(): Promise<boolean> {
+    const ionicSaveButton = await $(`ion-button[name="save"]`);
 
-    return new Promise<boolean>(resolve => {
-      ionicSaveButton.getAttribute('disabled').then(disabledValue => {
+    return new Promise<boolean>(async resolve => {
+      await ionicSaveButton.getAttribute('disabled').then(disabledValue => {
         resolve(!!disabledValue);
       });
     });
-  }
+  };
 
-  public getOutputPassword() {
+  async getOutputPassword() {
     // With the Ionic + Angular + Chromedriver updates August 2019, browser.waitForAngular() alone
     // seemed to stop working for ensuring that div.output_password is available, so had to add an
     // explicit pause here too.
-    browser.sleep(1000);
+    await browser.pause(200);
 
-    return element(by.css('div.output_password')).getText();
-  }
+    return $('div.output_password').getText();
+  };
 
-  public confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
-    browser.sleep(400); // Wait for elements to be available and visible
-    expect(element(by.css(`ion-range[ng-reflect-name="${elementName}"]`)).isPresent()).toBe(expectedToBeVisible);
-  }
+  confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
+    browser.pause(400); // Wait for elements to be available and visible
+    if (expectedToBeVisible) {
+      expect($(`ion-range[ng-reflect-name="${elementName}"]`)).toExist();
+    } else {
+      expect($(`ion-range[ng-reflect-name="${elementName}"]`)).not.toExist();
+    }
+  };
 
-  private getPageText(pageName: string) {
-    browser.waitForAngular();
-
-    return element(by.css(`app-${pageName}`)).getText();
-  }
+  async getPageText(pageName: string): Promise<string> {
+    return (await $(`app-${pageName}`)).getText();
+  };
 }
+
+module.exports = AppPage

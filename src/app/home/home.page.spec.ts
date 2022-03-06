@@ -7,7 +7,7 @@ import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
-import { HomePage } from './home.page';
+import { HomePageComponent } from './home.page';
 
 declare global {
   interface Window {
@@ -16,13 +16,13 @@ declare global {
   }
 }
 
-describe('HomePage', () => {
-  let component: HomePage;
-  let fixture: ComponentFixture<HomePage>;
+describe('HomePageComponent', () => {
+  let component: HomePageComponent;
+  let fixture: ComponentFixture<HomePageComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePage],
+      declarations: [HomePageComponent],
       imports: [
         IonicStorageModule.forRoot({
           driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB],
@@ -38,7 +38,7 @@ describe('HomePage', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomePage);
+    fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

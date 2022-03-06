@@ -4,7 +4,7 @@ import { Browser } from '@capacitor/browser';
 import { ActionSheetController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 
 import { Profile } from '../../models/Profile';
-import { ProfilePage } from '../profile/profile.page';
+import { ProfilePageComponent } from '../profile/profile.page';
 import { Settings } from '../../models/Settings';
 import { SettingsAdvanced } from '../../models/SettingsAdvanced';
 import { SettingsService } from '../settings.service';
@@ -16,7 +16,7 @@ import { SettingsSimple } from '../../models/SettingsSimple';
   templateUrl: 'settings.page.html',
 })
 
-export class SettingsPage implements OnInit {
+export class SettingsPageComponent implements OnInit {
   settingsForm: FormGroup;
   advanced_mode = false;
   profiles: Profile[] = [];
@@ -81,7 +81,7 @@ export class SettingsPage implements OnInit {
       newProfile.profile_id = nextProfileId;
 
       const modal = await this.modalController.create({
-        component: ProfilePage,
+        component: ProfilePageComponent,
         componentProps: { profileModel: newProfile }
       });
       modal.onWillDismiss().then(() => this.update());
@@ -92,7 +92,7 @@ export class SettingsPage implements OnInit {
 
   async editProfile(profile: Profile, profileCount: number) {
     const modal = await this.modalController.create({
-      component: ProfilePage,
+      component: ProfilePageComponent,
       componentProps: { profileModel: profile, profileCount },
     });
     modal.onWillDismiss().then(() => this.update());

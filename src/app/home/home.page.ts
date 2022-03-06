@@ -14,7 +14,7 @@ import { SettingsService } from '../settings.service';
   styleUrls: ['./home.page.scss'],
   templateUrl: 'home.page.html',
 })
-export class HomePage implements OnInit {
+export class HomePageComponent implements OnInit {
   advanced_mode = false;
   clipboard_available = false;
   input: Input = new Input();
