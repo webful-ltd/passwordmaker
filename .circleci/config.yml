@@ -3,7 +3,10 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: cimg/node:lts
+      - image: thebiggive/donate-frontend-ci:latest
+        auth:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_ACCESS_TOKEN
     steps:
       - checkout
       - restore_cache:
