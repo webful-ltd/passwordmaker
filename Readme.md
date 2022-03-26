@@ -2,7 +2,7 @@
 
 ![Icon](./resources/android/icon/drawable-xhdpi-icon.png)
 
-[![Build Status](https://app.travis-ci.com/webful-ltd/passwordmaker.svg?branch=main)](https://app.travis-ci.com/github/webful-ltd/passwordmaker)
+[![Build Status](https://circleci.com/gh/webful-ltd/passwordmaker.svg?style=svg)](https://app.circleci.com/pipelines/github/webful-ltd/passwordmaker)
 
 A modern mobile app supporting [Password Maker](https://passwordmaker.org/).
 
