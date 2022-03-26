@@ -12,7 +12,8 @@
     "lint": "ng lint",
     "e2e": "wdio run e2e/wdio.conf.ts",
     "ci": "npm run lint && npm run test:ci && (npm run start&) && npm run e2e",
-    "resources": "capacitor-resources -p android,ios"
+    "resources": "capacitor-resources -p android,ios",
+    "postinstall": "npm i webdriver-manager@latest && ./node_modules/.bin/webdriver-manager update"
   },
   "license": "GPL-3.0-or-later",
   "private": false,
@@ -56,7 +57,8 @@
     "rxjs": "^6.6.3",
     "rxjs-compat": "^6.6.3",
     "tslib": "^1.14.1",
-    "url-parse": "^1.5.7"
+    "url-parse": "^1.5.7",
+    "webdriver-manager": "^12.1.8"
   },
   "devDependencies": {
     "@angular-devkit/architect": "^0.1301.4",
