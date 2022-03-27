@@ -10,12 +10,12 @@ class AppPage {
     this.browser = browser;
   };
 
-  maximise() {
-    browser.setWindowSize(600, 900);
+  async maximise() {
+    await browser.setWindowSize(600, 900);
   };
 
-  startOnHomePath() {
-    browser.url('/');
+  async startOnHomePath() {
+    await browser.url('/');
   };
 
   /**
@@ -109,8 +109,8 @@ class AppPage {
     return $('div.output_password').getText();
   };
 
-  confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
-    browser.pause(400); // Wait for elements to be available and visible
+  async confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
+    await browser.pause(400); // Wait for elements to be available and visible
     if (expectedToBeVisible) {
       expect($(`ion-range[ng-reflect-name="${elementName}"]`)).toExist();
     } else {
