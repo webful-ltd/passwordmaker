@@ -17,7 +17,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
-      - run: npm run ci
+      - run: xvfb-run npm run ci
 
 workflows:
   test:
