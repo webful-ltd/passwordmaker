@@ -1,6 +1,3 @@
-const puppeteer = require('puppeteer');
-process.env.CHROME_BIN = puppeteer.executablePath();
-
 let AppPage = require('./src/app.po');
 
 exports.config = {
@@ -89,20 +86,6 @@ exports.config = {
         maxInstances: 5,
         //
         browserName: 'chrome',
-        'goog:chromeOptions': {
-            args: [
-                '--disable-gpu',
-                '--headless',
-                '--no-sandbox',
-                '--whitelisted-ips',
-                '--disable-dev-shm-usage',
-                '--allow-insecure-localhost',
-                '--disable-web-security',
-                '--ignore-certificate-errors',
-                '--allow-running-insecure-content',
-            ],
-            extensions: [],
-        },
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.

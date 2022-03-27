@@ -19,6 +19,12 @@ To run all tests as CI does:
 
 * `npm run ci` 
 
+We currently run:
+
+* Angular tests (largely component / unit tests) via Karma headless with Puppeteer, when in CI mode
+* Webdriver.io e2e tests in non-headless Chromium, which works as-is locally but requires CI to
+  have xvfb to [simulate a framebuffer](https://support.circleci.com/hc/en-us/articles/360042959233-Using-xvfb-to-run-applications). 
+
 For other options e.g. to see tests running in a real local Chrome, check the `"scripts"` key
 in [`package.json`](../package.json).
 
