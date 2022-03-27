@@ -88,6 +88,7 @@ exports.config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
+                '--verbose',
                 '--start-maximised',
                 '--disable-gpu',
                 '--headless',
