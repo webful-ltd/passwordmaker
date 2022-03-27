@@ -19,6 +19,9 @@ To run all tests as CI does:
 
 * `npm run ci` 
 
+For other options e.g. to see tests running in a real local Chrome, check the `"scripts"` key
+in [`package.json`](../package.json).
+
 ## Build
 
 ### Android
