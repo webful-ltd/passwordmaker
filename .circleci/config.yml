@@ -17,11 +17,12 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
+      - run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
       # Adding xvfb was the easiest way to get simulated non-headless tests working, and we
       # had thorny compat issues trying to use WebDriver.io + Puppeteer. If build times are
       # ever an issue we can start building a custom Docker image that already has xvfb baked
       # in, so we don't have to wait for this install on each run.
-      - run: sudo apt-get update && sudo apt-get -qq -y install xvfb
+      - run: sudo apt-get update && sudo apt-get install -qq -y xvfb ./google-chrome-stable_current_amd64.deb
       - run: xvfb-run npm run ci
 
 workflows:

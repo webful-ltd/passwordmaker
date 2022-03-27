@@ -15,9 +15,15 @@
 
 ## Test locally
 
-To run all tests as CI does:
+To run all tests mostly as CI does:
 
-* `npm run ci` 
+* `npm run ci`
+
+Or in Docker, using xvfb exactly as in CI:
+
+* `docker-compose run --rm test
+
+### Test runtime environments
 
 We currently run:
 

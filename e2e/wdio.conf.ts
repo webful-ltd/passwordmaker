@@ -1,3 +1,5 @@
+const puppeteer = require('puppeteer');
+
 let AppPage = require('./src/app.po');
 
 exports.config = {
@@ -88,12 +90,12 @@ exports.config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
+                '--no-sandbox',
                 '--verbose',
                 '--start-maximised',
                 '--disable-gpu',
-                '--headless',
-                '--no-sandbox',
-                '--whitelisted-ips',
+                // '--headless',
+                '--whitelisted-ips=',
                 '--disable-dev-shm-usage',
                 '--allow-insecure-localhost',
                 '--disable-web-security',
@@ -155,7 +157,20 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver'],
+    services: [
+        ['chromedriver', {
+            // chromedriverCustomPath: '/usr/bin/chromium-browser',
+            outputDir: '/tmp/chromedriver-logs',
+            logFileName: 'wdio-chromedriver.log',
+            args: [
+                '--no-sandbox',
+                '--verbose',
+                // '--headless',
+                '--disable-dev-shm-usage',
+                '--whitelisted-ips=',
+            ],
+        }],
+    ],
 
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
