@@ -100,8 +100,8 @@
     "zone.js": "^0.11.4"
   },
   "engines": {
-    "node": ">=16",
-    "npm": ">=8"
+    "node": ">=12",
+    "npm": ">=6"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
   "cordova": {
