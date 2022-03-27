@@ -96,7 +96,7 @@
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "karmaConfig": "src/karma-local.conf.js",
             "styles": [
               {
                 "input": "src/theme/variables.scss"
