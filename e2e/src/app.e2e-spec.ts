@@ -3,6 +3,10 @@ AppPage = require('./app.po');
 let page: typeof AppPage;
 
 describe('PasswordMaker', () => {
+  beforeAll(async () => {
+    await browser.pause(3000);
+  });
+
   beforeEach(async () => {
     page = new AppPage();
     await page.setBrowser(browser);
@@ -11,10 +15,9 @@ describe('PasswordMaker', () => {
     await browser.pause(500); // CI needs a bit of time for interactible elements.
   });
 
-  // TODO figure out why this is flakier on CI.
-  // it('should display the master password field label', async () => {
-  //   expect(await page.getHomeText()).toContain('Master password');
-  // });
+  it('should display the master password field label', async () => {
+    expect(await page.getHomeText()).toContain('Master password');
+  });
 
   it('should generate the right password for the default settings', async () => {
     await page.populateIonicInput('host', 'my.example.com');
