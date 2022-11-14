@@ -55,7 +55,7 @@ describe('PasswordMaker', () => {
 
   it('should generate the right password with domain_only switched off', async () => {
     await page.navigateToTab('settings');
-    expect(await page.setIonicToggle('domain_only', false)).toEqual(true);    
+    expect(await page.setIonicToggle('domain_only', false)).toEqual(true);
     expect(await page.save()).toEqual(true);
 
     await page.navigateToTab('home');

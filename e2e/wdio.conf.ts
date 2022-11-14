@@ -198,7 +198,7 @@ exports.config = {
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     jasmineOpts: {
-        defaultTimeoutInterval: 30000,
+        defaultTimeoutInterval: 15000,
         // For now, we have some test rely on the length etc. from the previous ones, so we need the side
         // effects and therefore a specific order. We should add a 'reset' helper in the future so we can
         // turn on randomisation and better guarantee non-flaky tests.
