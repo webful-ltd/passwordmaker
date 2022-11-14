@@ -1,0 +1,33 @@
+version: 2.1
+
+orbs:
+  browser-tools: circleci/browser-tools@1.4.0
+  docker: circleci/docker@2.1.2
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:16.18-browsers
+        auth:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_ACCESS_TOKEN
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+      - run: npm install --quiet
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+      - run: npm run ci
+
+workflows:
+  test:
+    jobs:
+      - test:
+          context:
+            - docker-hub-creds
