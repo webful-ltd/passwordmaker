@@ -42,7 +42,7 @@ describe('PasswordMaker', () => {
     await page.navigateToTab('settings');
     await page.populateIonicInput('output_length', 201);
 
-    browser.pause(200); // Give UI a little time to update – button status update check was flaky otherwise.
+    await browser.pause(200); // Give UI a little time to update – button status update check was flaky otherwise.
 
     expect(await page.getSaveButtonDisabledStatus()).toBe(true);
     expect(await page.getSettingsText()).toContain('Settings not valid.');
