@@ -16,7 +16,7 @@
   "license": "GPL-3.0-or-later",
   "private": false,
   "dependencies": {
-    "@angular/cli": "^13.1.4",
+    "@angular/cli": "^14.2.9",
     "@angular/common": "^14.2.10",
     "@angular/core": "^14.2.10",
     "@angular/forms": "^14.2.10",
@@ -57,10 +57,10 @@
     "url-parse": "^1.5.7"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "^0.1301.4",
-    "@angular-devkit/build-angular": "^13.1.4",
-    "@angular-devkit/core": "^13.1.4",
-    "@angular-devkit/schematics": "^13.1.4",
+    "@angular-devkit/architect": "^0.1402.9",
+    "@angular-devkit/build-angular": "^14.2.9",
+    "@angular-devkit/core": "^14.2.9",
+    "@angular-devkit/schematics": "^14.2.9",
     "@angular-eslint/builder": "14.1.2",
     "@angular-eslint/eslint-plugin": "14.1.2",
     "@angular-eslint/eslint-plugin-template": "14.1.2",
@@ -90,12 +90,12 @@
     "karma-jasmine": "^4.0.1",
     "karma-jasmine-html-reporter": "^1.5.4",
     "ts-node": "^10.5",
-    "typescript": "^4.5.5",
+    "typescript": "^4.6",
     "wdio-chromedriver-service": "^7.2.8",
     "zone.js": "^0.11.4"
   },
   "engines": {
-    "node": ">=14.0.0",
+    "node": ">=14.15",
     "npm": "^6.11.0 || ^7.5.6 || ^8.0"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
