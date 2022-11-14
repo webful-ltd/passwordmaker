@@ -3,12 +3,17 @@ AppPage = require('./app.po');
 let page: typeof AppPage;
 
 describe('PasswordMaker', () => {
+  beforeAll(async () => {
+    await browser.pause(3000);
+  });
+
   beforeEach(async () => {
     page = new AppPage();
     await page.setBrowser(browser);
     await page.maximise();
     await page.startOnHomePath();
-  })
+    await browser.pause(500); // CI needs a bit of time for interactible elements.
+  });
 
   it('should display the master password field label', async () => {
     expect(await page.getHomeText()).toContain('Master password');
@@ -42,7 +47,7 @@ describe('PasswordMaker', () => {
     await page.navigateToTab('settings');
     await page.populateIonicInput('output_length', 201);
 
-    browser.pause(200); // Give UI a little time to update – button status update check was flaky otherwise.
+    await browser.pause(200); // Give UI a little time to update – button status update check was flaky otherwise.
 
     expect(await page.getSaveButtonDisabledStatus()).toBe(true);
     expect(await page.getSettingsText()).toContain('Settings not valid.');
