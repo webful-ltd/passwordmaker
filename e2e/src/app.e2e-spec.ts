@@ -8,7 +8,7 @@ describe('PasswordMaker', () => {
     await page.setBrowser(browser);
     await page.maximise();
     await page.startOnHomePath();
-    await browser.pause(500); // Give UI a little time to update before first content check.
+    await browser.pause(2000); // Give UI a little time to update before first content check.
   })
 
   it('should display the master password field label', async () => {
