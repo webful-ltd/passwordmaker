@@ -3,10 +3,6 @@ AppPage = require('./app.po');
 let page: typeof AppPage;
 
 describe('PasswordMaker', () => {
-  beforeAll(async () => {
-    await browser.pause(2000);
-  });
-
   beforeEach(async () => {
     page = new AppPage();
     await page.setBrowser(browser);
