@@ -3,10 +3,6 @@ AppPage = require('./app.po');
 let page: typeof AppPage;
 
 describe('PasswordMaker', () => {
-  beforeAll(async () => {
-    await browser.pause(10000); // First test especially seems to need a bit of time in CI.
-  });
-
   beforeEach(async () => {
     page = new AppPage();
     await page.setBrowser(browser);
@@ -14,10 +10,9 @@ describe('PasswordMaker', () => {
     await page.startOnHomePath();
   });
 
-  // TODO figure out why this is intermittently flaky.
-  // it('should display the master password field label', async () => {
-  //   expect(await page.getHomeText()).toContain('Master password');
-  // });
+  it('should display the master password field label', async () => {
+    expect(await page.getHomeText()).toContain('Master password');
+  });
 
   it('should generate the right password for the default settings', async () => {
     await page.populateIonicInput('host', 'my.example.com');
