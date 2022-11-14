@@ -91,6 +91,7 @@ exports.config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
+                '--headless',
                 '--no-sandbox',
                 '--start-maximised',
                 '--disable-gpu',
@@ -161,6 +162,7 @@ exports.config = {
             outputDir: '/tmp/chromedriver-logs',
             logFileName: 'wdio-chromedriver.log',
             args: [
+                '--headless',
                 '--no-sandbox',
                 '--disable-dev-shm-usage',
                 '--whitelisted-ips=',
