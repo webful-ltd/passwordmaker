@@ -43,7 +43,6 @@ Java 11). If these things are not true, adjust or delete the `JAVA_HOME` var as 
 
 ### iOS
 
-* See [this answer re build system flag](https://stackoverflow.com/a/52432058/2803757) - change in Xcode before build if necessary.
 * Set new `CURRENT_PROJECT_VERSION` and `MARKETING_VERSION` in [ios/App/App.xcodeproj/project.pbxproj](../ios/App/App.xcodeproj/project.pbxproj)
 * `ionic capacitor build ios --prod`
 * Open `ios/App/App.xcworkspace` in Xcode, or let Capacitor do this for you
