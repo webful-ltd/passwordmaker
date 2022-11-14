@@ -8,6 +8,7 @@ describe('PasswordMaker', () => {
     await page.setBrowser(browser);
     await page.maximise();
     await page.startOnHomePath();
+    await browser.pause(500); // CI needs a bit of time for interactible elements.
   });
 
   it('should display the master password field label', async () => {
