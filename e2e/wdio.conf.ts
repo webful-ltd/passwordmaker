@@ -1,3 +1,6 @@
+const puppeteer = require('puppeteer');
+process.env.CHROME_BIN = puppeteer.executablePath();
+
 let AppPage = require('./src/app.po');
 
 exports.config = {
@@ -86,6 +89,20 @@ exports.config = {
         maxInstances: 5,
         //
         browserName: 'chrome',
+        'goog:chromeOptions': {
+            args: [
+                '--no-sandbox',
+                '--start-maximised',
+                '--disable-gpu',
+                '--whitelisted-ips=',
+                '--disable-dev-shm-usage',
+                '--allow-insecure-localhost',
+                '--disable-web-security',
+                '--ignore-certificate-errors',
+                '--allow-running-insecure-content',
+            ],
+            extensions: [],
+        },
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
@@ -139,7 +156,17 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver'],
+    services: [
+        ['chromedriver', {
+            outputDir: '/tmp/chromedriver-logs',
+            logFileName: 'wdio-chromedriver.log',
+            args: [
+                '--no-sandbox',
+                '--disable-dev-shm-usage',
+                '--whitelisted-ips=',
+            ],
+        }],
+    ],
 
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
