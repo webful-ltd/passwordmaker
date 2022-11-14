@@ -3,12 +3,15 @@ AppPage = require('./app.po');
 let page: typeof AppPage;
 
 describe('PasswordMaker', () => {
+  beforeAll(async () => {
+    await browser.pause(10000); // First test especially seems to need a bit of time in CI.
+  });
+
   beforeEach(async () => {
     page = new AppPage();
     await page.setBrowser(browser);
     await page.maximise();
     await page.startOnHomePath();
-    await browser.pause(3000); // First test especially seems to need a bit of time in CI.
   });
 
   // TODO figure out why this is intermittently flaky.
