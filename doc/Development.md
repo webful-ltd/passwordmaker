@@ -17,7 +17,14 @@
 
 To run all tests as CI does:
 
-* `npm run ci` 
+* `npm run ci`
+
+### Test runtime environments
+
+We currently run:
+
+* Angular tests – largely component / unit tests – via Karma
+* Webdriver.io e2e tests with Chromium, using CircleCI browser base and supporting orb in CI.
 
 ## Build
 
