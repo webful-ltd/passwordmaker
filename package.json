@@ -71,7 +71,7 @@
     "@angular/language-service": "^14.2.10",
     "@capacitor/cli": "^4.0.0",
     "@ionic/angular-toolkit": "^6.0.0",
-    "@ionic/cordova-builders": "^6.1.0",
+    "@ionic/cordova-builders": "^7.0.0",
     "@types/jasminewd2": "^2.0.8",
     "@types/node": "^14.18.12",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
