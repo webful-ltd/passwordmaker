@@ -91,12 +91,12 @@
     "karma-jasmine-html-reporter": "^1.5.4",
     "puppeteer": "18.1.*",
     "ts-node": "^10.5",
-    "typescript": "^4.6",
+    "typescript": "^4.8",
     "wdio-chromedriver-service": "^7.2.8",
     "zone.js": "^0.11.4"
   },
   "engines": {
-    "node": ">=14.15",
+    "node": ">=14.20",
     "npm": "^6.11.0 || ^7.5.6 || ^8.0"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
