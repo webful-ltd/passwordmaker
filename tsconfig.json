@@ -13,7 +13,6 @@
       "es2017",
       "dom"
     ],
-    "skipLibCheck": true,
     "useDefineForClassFields": false
   }
 }
