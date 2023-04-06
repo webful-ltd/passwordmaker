@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "wdio run e2e/wdio.conf.ts",
     "ci": "npm run lint && npm run test:once && (npm run start&) && npm run e2e",
-    "resources": "capacitor-resources -p android,ios"
+    "resources": "npx @capacitor/assets generate"
   },
   "license": "GPL-3.0-or-later",
   "private": false,
@@ -40,7 +40,6 @@
     "@types/jasmine": "^3.10.3",
     "@webful/passwordmaker-lib": "~0.1.4",
     "2ldcheck": "~0.0.6",
-    "capacitor-resources": "^2.0.5",
     "cordova-android": "^10.1.1",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-cloud-settings": "^2.0.0",
@@ -67,6 +66,7 @@
     "@angular/compiler": "^15.0.3",
     "@angular/compiler-cli": "^15.0.3",
     "@angular/language-service": "^15.0.3",
+    "@capacitor/assets": "^2.0.4",
     "@capacitor/cli": "^4.0.0",
     "@ionic/angular-toolkit": "^9.0.0",
     "@ionic/cordova-builders": "^7.0.0",
