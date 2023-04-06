@@ -38,7 +38,7 @@ class AppPage {
   };
 
   async populateIonicInput(elementName: string, value: (string|number)) {
-    const ionicInput = new IonicInput(`input[name="${elementName}"]`);
+    const ionicInput = new IonicInput(elementName);
     await ionicInput.setValue(value.toString());
   };
 
@@ -54,7 +54,10 @@ class AppPage {
         possibleRadio.getText().then(async possibleRadioText => {
           if (possibleRadioText === valueLabel) {
             possibleRadio.click();
-            await $('button*=OK').click();
+
+            // ion-select OK button, inside the alert group overlay, now has its copy in an inner span.
+            await $('span*=OK').parentElement().click();
+
             await browser.pause(200); // Wait for overlay's close animation so it doesn't steal focus
             resolve(true);
           }
