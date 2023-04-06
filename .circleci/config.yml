@@ -22,15 +22,15 @@ jobs:
           chrome-version: 111.0.5563.146 # https://github.com/puppeteer/puppeteer/blob/main/versions.js
       - browser-tools/install-chromedriver
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v2-dependencies-{{ checksum "package-lock.json" }}
+      - restore_cache:
+          keys:
+            - v2-dependencies-{{ checksum "package-lock.json" }}
       - run: npm config set puppeteer_skip_chromium_download true
       - run: npm install --quiet
-      # - save_cache:
-      #     paths:
-      #       - node_modules
-      #     key: v2-dependencies-{{ checksum "package-lock.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v2-dependencies-{{ checksum "package-lock.json" }}
       - run: npm run ci
 
 workflows:
