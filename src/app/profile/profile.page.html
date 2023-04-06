@@ -104,8 +104,6 @@
 
       <ion-item *ngIf="profile.get('leet_location').value !== 'none'">
         <ion-range
-          label="l33t level"
-          labelPlacement="stacked"
           name="leet_level"
           formControlName="leet_level"
           min="1"
@@ -113,7 +111,11 @@
           color="primary"
           snaps="true"
           pin="true"
-        ></ion-range>
+        >
+          <div slot="label">
+            <ion-label>l33t level</ion-label>
+          </div>
+        </ion-range>
       </ion-item>
 
       <ion-item>

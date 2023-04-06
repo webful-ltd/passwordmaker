@@ -83,8 +83,6 @@
 
       <ion-item *ngIf="settingsForm.get('added_number_on').value">
         <ion-range
-          label="Which number?"
-          labelPlacement="stacked"
           name="added_number"
           formControlName="added_number"
           min="0"
@@ -92,7 +90,11 @@
           color="primary"
           snaps="true"
           pin="true"
-        ></ion-range>
+        >
+          <div slot="label">
+            <ion-label>Which number?</ion-label>
+          </div>
+        </ion-range>
       </ion-item>
 
       <ion-item>
