@@ -9,7 +9,7 @@
     "test": "ng test",
     "test:once": "ng test --watch=false",
     "lint": "ng lint",
-    "e2e": "webdriver-manager update --versions.chrome 107.0.5304.121 && ng e2e --webdriver-update=false wdio run e2e/wdio.conf.ts",
+    "e2e": "wdio run e2e/wdio.conf.ts",
     "ci": "npm run lint && npm run test:once && (npm run start&) && npm run e2e",
     "resources": "npx @capacitor/assets generate"
   },
