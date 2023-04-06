@@ -14,7 +14,7 @@ jobs:
       # https://stackoverflow.com/a/75738251/2803757 – this lib's required for Chrome 111
       # and not in the current base image.
       - run: |
-          cd tmp;
+          cd /tmp;
           wget http://archive.ubuntu.com/ubuntu/pool/main/libu/libu2f-host/libu2f-udev_1.1.4-1_all.deb;
           sudo dpkg -i libu2f-udev_1.1.4-1_all.deb;
           cd ~/project
