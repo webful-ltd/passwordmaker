@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { Platform } from '@ionic/angular';
-import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
+import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import { Storage } from '@ionic/storage-angular';
 
 import { AppComponent } from './app.component';

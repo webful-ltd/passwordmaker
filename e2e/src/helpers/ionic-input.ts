@@ -3,8 +3,8 @@ const Ionic$ = require('./ionic$');
 const ElementActionOptions = require('./definitions');
 
 class IonicInput extends IonicComponent {
-  constructor(selector: string) {
-    super(selector);
+  constructor(name: string) {
+    super(`ion-input[name=${name}`);
   }
 
   async setValue(

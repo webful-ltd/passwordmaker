@@ -39,7 +39,7 @@ export class HomePageComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = await this.loadingController.create();
-    this.loading.present();
+    await this.loading.present();
 
     if (window.hasOwnProperty('cordova')) {
       // @capacitor/clipboard "is not implemented on web Wrapper" for now.

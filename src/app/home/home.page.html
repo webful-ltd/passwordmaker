@@ -7,13 +7,14 @@
 <ion-content class="ion-padding">
   <form>
     <ion-item>
-      <ion-label position="floating">URL or domain</ion-label>
       <ion-input
+        label="URL or domain"
+        labelPlacement="floating"
         name="host"
         [(ngModel)]="input.host"
         inputmode="url"
         type="text"
-        (ionChange)="update()"
+        (ionInput)="update()"
         (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
@@ -22,13 +23,14 @@
       Which site or app are you logging into? e.g. <em>when.fm</em>
     </p>
     <ion-item>
-      <ion-label position="floating">Master password</ion-label>
       <ion-input
+        label="Master password"
+        labelPlacement="floating"
         name="master_password"
         [(ngModel)]="input.master_password"
         inputmode="password"
         type="password"
-        (ionChange)="update()"
+        (ionInput)="update()"
         (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
@@ -46,8 +48,9 @@
     </p>
 
     <ion-item *ngIf="advanced_mode">
-      <ion-label position="stacked">Profile</ion-label>
       <ion-select
+        label="Profile"
+        labelPlacement="stacked"
         name="profile"
         (ionChange)="switchProfile($event)"
         [(ngModel)]="input.active_profile_id"

@@ -26,7 +26,7 @@ class AppPage {
   async navigateToTab(tabName: string) {
     const tab = await $(`ion-tab-button[tab="${tabName}"]`);
     await tab.click();
-    await browser.pause(1400); // Ensure elements all ready on the new page before proceeding.
+    await browser.pause(500); // Ensure elements all ready on the new page before proceeding.
   };
 
   async getHomeText() {
@@ -38,7 +38,7 @@ class AppPage {
   };
 
   async populateIonicInput(elementName: string, value: (string|number)) {
-    const ionicInput = new IonicInput(`input[name="${elementName}"]`);
+    const ionicInput = new IonicInput(elementName);
     await ionicInput.setValue(value.toString());
   };
 
@@ -54,7 +54,10 @@ class AppPage {
         possibleRadio.getText().then(async possibleRadioText => {
           if (possibleRadioText === valueLabel) {
             possibleRadio.click();
-            await $('button*=OK').click();
+
+            // ion-select OK button, inside the alert group overlay, now has its copy in an inner span.
+            await $('span*=OK').parentElement().click();
+
             await browser.pause(200); // Wait for overlay's close animation so it doesn't steal focus
             resolve(true);
           }
@@ -71,13 +74,15 @@ class AppPage {
     const ionicInput = await $(`ion-toggle[name="${elementName}"]`);
 
     return new Promise<boolean>(async resolve => {
-      await ionicInput.getAttribute('aria-checked').then(async (currentValue: string) => {
-        const isChecked: boolean = (currentValue === 'true');
-        if (isChecked !== shouldBeChecked) {
-          await ionicInput.click();
-        }
+      const currentValue = await $(ionicInput).$('>>> input[type="checkbox"]').getAttribute('aria-checked');
+
+      if (currentValue === shouldBeChecked.toString()) {
         resolve(true);
-      });
+        return;
+      }
+
+      await ionicInput.click();
+      resolve(true);
     });
   };
 
@@ -87,7 +92,6 @@ class AppPage {
     return new Promise<boolean>(async resolve => {
       await ionicSaveButton.click().then(() => resolve(true));
     });
-    // return ionicSaveButton.click();
   };
 
   async getSaveButtonDisabledStatus(): Promise<boolean> {
@@ -110,7 +114,6 @@ class AppPage {
   };
 
   async confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
-    await browser.pause(400); // Wait for elements to be available and visible
     if (expectedToBeVisible) {
       expect($(`ion-range[ng-reflect-name="${elementName}"]`)).toExist();
     } else {

@@ -4,7 +4,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
-import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
+import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { AppRoutingModule } from './app-routing.module';

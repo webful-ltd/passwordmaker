@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 
 import { Profile } from '../../models/Profile';
 import { SettingsService } from '../settings.service';
@@ -14,12 +14,21 @@ export class ProfilePageComponent implements OnInit {
   @Input() profileModel: Profile;
   @Input() profileCount: number; // Total profiles so far
 
+  deleteConfirmationButtons = [{
+    text: 'Delete permanently',
+    icon: 'trash-outline',
+    handler: () => this.delete(),
+  }, {
+    text: 'Cancel',
+    icon: 'close',
+    role: 'cancel',
+  }];
+  isDeleteConfirmationOpen = false;
   profile: FormGroup;
 
   private profileId: number;
 
   constructor(
-    private actionSheetController: ActionSheetController,
     private formBuilder: FormBuilder,
     public modalController: ModalController,
     private settingsService: SettingsService,
@@ -112,20 +121,12 @@ export class ProfilePageComponent implements OnInit {
       );
   }
 
-  async confirmDelete() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Are you sure you want to delete this profile?',
-      buttons: [{
-        text: 'Delete permanently',
-        icon: 'trash-outline',
-        handler: () => this.delete(),
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-      }]
-    });
-    await actionSheet.present();
+  confirmDelete() {
+    this.isDeleteConfirmationOpen = true;
+  }
+
+  dismissDelete() {
+    this.isDeleteConfirmationOpen = false;
   }
 
   delete() {

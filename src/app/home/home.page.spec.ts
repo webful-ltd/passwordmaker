@@ -1,8 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { PlatformMock, ToastControllerMock } from 'ionic-mocks';
-import { Platform, ToastController } from '@ionic/angular';
-import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
+import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
@@ -30,8 +28,6 @@ describe('HomePageComponent', () => {
       ],
       providers: [
         CloudSettings,
-        { provide: Platform, useValue: PlatformMock },
-        { provide: ToastController, useValue: ToastControllerMock },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

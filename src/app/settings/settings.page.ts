@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Browser } from '@capacitor/browser';
-import { ActionSheetController, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 
 import { Profile } from '../../models/Profile';
 import { ProfilePageComponent } from '../profile/profile.page';
@@ -22,10 +22,25 @@ export class SettingsPageComponent implements OnInit {
   profiles: Profile[] = [];
   settingsLoaded = false;
 
+  advancedConfirmationButtons = [{
+    text: 'Use Advanced mode permanently',
+    icon: 'cog',
+    handler: () => this.addFirstProfile(),
+  }, {
+    text: 'Learn more first',
+    icon: 'help',
+    handler: () => this.openAdvancedInfo(),
+  }
+  , {
+    text: 'Cancel',
+    icon: 'close',
+    role: 'cancel',
+  }];
+  isAdvancedConfirmationOpen = false;
+
   private loading: HTMLIonLoadingElement;
 
   constructor(
-    private actionSheetController: ActionSheetController,
     private formBuilder: FormBuilder,
     public loadingController: LoadingController,
     public modalController: ModalController,
@@ -50,7 +65,7 @@ export class SettingsPageComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = await this.loadingController.create();
-    this.loading.present();
+    await this.loading.present();
     this.update();
   }
 
@@ -100,25 +115,12 @@ export class SettingsPageComponent implements OnInit {
     return await modal.present();
   }
 
-  async confirmEnableAdvanced() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Are you sure you want to use Advanced mode?',
-      buttons: [{
-        text: 'Use Advanced mode permanently',
-        icon: 'cog',
-        handler: () => this.addFirstProfile(),
-      }, {
-        text: 'Learn more first',
-        icon: 'help',
-        handler: () => this.openAdvancedInfo(),
-      }
-      , {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-      }]
-    });
-    await actionSheet.present();
+  confirmEnableAdvanced() {
+    this.isAdvancedConfirmationOpen = true;
+  }
+
+  dismissEnableAdvanced() {
+    this.isAdvancedConfirmationOpen = false;
   }
 
   save({ value, valid }: { value: Settings, valid: boolean }) {
