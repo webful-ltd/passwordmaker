@@ -11,12 +11,14 @@ jobs:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_ACCESS_TOKEN
     steps:
-      - browser-tools/install-chrome
+      - browser-tools/install-chrome:
+          chrome-version: 111.0.5556.0 # https://github.com/puppeteer/puppeteer/blob/main/versions.js
       - browser-tools/install-chromedriver
       - checkout
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package-lock.json" }}
+      - run: npm config set puppeteer_skip_chromium_download true
       - run: npm install --quiet
       - save_cache:
           paths:
