@@ -26,7 +26,7 @@ class AppPage {
   async navigateToTab(tabName: string) {
     const tab = await $(`ion-tab-button[tab="${tabName}"]`);
     await tab.click();
-    await browser.pause(1400); // Ensure elements all ready on the new page before proceeding.
+    await browser.pause(500); // Ensure elements all ready on the new page before proceeding.
   };
 
   async getHomeText() {
@@ -114,7 +114,6 @@ class AppPage {
   };
 
   async confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
-    await browser.pause(400); // Wait for elements to be available and visible
     if (expectedToBeVisible) {
       expect($(`ion-range[ng-reflect-name="${elementName}"]`)).toExist();
     } else {

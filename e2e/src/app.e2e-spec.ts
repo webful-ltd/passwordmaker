@@ -4,7 +4,6 @@ let page: typeof AppPage;
 
 describe('PasswordMaker', () => {
   beforeAll(async () => {
-    await browser.pause(3000);
   });
 
   beforeEach(async () => {
@@ -46,8 +45,6 @@ describe('PasswordMaker', () => {
   it('should not permit an output length of 201', async () => {
     await page.navigateToTab('settings');
     await page.populateIonicInput('output_length', 201);
-
-    await browser.pause(200); // Give UI a little time to update – button status update check was flaky otherwise.
 
     expect(await page.getSaveButtonDisabledStatus()).toBe(true);
     expect(await page.getSettingsText()).toContain('Settings not valid.');
