@@ -11,6 +11,7 @@ jobs:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_ACCESS_TOKEN
     steps:
+      - run: sudo apt install libu2f-udev # Required for Chrome 111.
       - browser-tools/install-chrome:
           chrome-version: 111.0.5563.146 # https://github.com/puppeteer/puppeteer/blob/main/versions.js
       - browser-tools/install-chromedriver
