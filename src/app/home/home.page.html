@@ -14,7 +14,7 @@
         [(ngModel)]="input.host"
         inputmode="url"
         type="text"
-        (ionChange)="update()"
+        (ionInput)="update()"
         (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
@@ -30,7 +30,7 @@
         [(ngModel)]="input.master_password"
         inputmode="password"
         type="password"
-        (ionChange)="update()"
+        (ionInput)="update()"
         (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
