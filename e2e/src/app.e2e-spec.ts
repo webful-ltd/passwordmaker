@@ -59,7 +59,7 @@ describe('PasswordMaker', () => {
     expect(await page.save()).toEqual(true);
 
     await page.navigateToTab('home');
-    await browser.pause(1500); // Give toast time to auto dismiss
+
     await page.populateIonicInput('host', 'my.example.com');
     await page.populateIonicInput('master_password', 'test');
 
@@ -76,7 +76,7 @@ describe('PasswordMaker', () => {
     expect(await page.save()).toEqual(true);
 
     await page.navigateToTab('home');
-    await browser.pause(1500); // Give toast time to auto dismiss
+
     await page.populateIonicInput('host', 'my.example.com');
     await page.populateIonicInput('master_password', 'test');
 
@@ -93,7 +93,7 @@ describe('PasswordMaker', () => {
     expect(await page.save()).toEqual(true);
 
     await page.navigateToTab('home');
-    await browser.pause(1500); // Give toast time to auto dismiss
+
     await page.populateIonicInput('host', 'my.example.com');
     await page.populateIonicInput('master_password', 'test');
 
@@ -122,7 +122,7 @@ describe('PasswordMaker', () => {
     expect(await page.save()).toEqual(true);
 
     await page.navigateToTab('home');
-    await browser.pause(1500); // Give toast time to auto dismiss
+
     // Check for correct output for "example.com" with alphanumeric charset, 30 length, HMAC-SHA256.
     expect(await page.getOutputPassword()).toEqual('rJeGcpSWpH36PMn706JrNR9vNzr9Wj0');
     expect(await page.getHomeText()).not.toContain(`If you didn't change this on purpose`); // no non-domain_only warning

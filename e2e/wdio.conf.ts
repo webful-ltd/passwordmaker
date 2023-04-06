@@ -91,7 +91,7 @@ exports.config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
-                '--headless',
+                '--headless', // Comment both --headless flags for real browser local testing
                 '--no-sandbox',
                 '--start-maximised',
                 '--disable-gpu',
@@ -104,10 +104,10 @@ exports.config = {
             ],
             extensions: [],
         },
-        acceptInsecureCerts: true
+        acceptInsecureCerts: true,
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
-        // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
+        excludeDriverLogs: ['*'], // exclude all driver session logs
         // excludeDriverLogs: ['bugreport', 'server'],
     }],
     //
@@ -117,7 +117,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'warn',
     //
     // Set specific log levels per logger
     // loggers:
@@ -162,7 +162,7 @@ exports.config = {
             outputDir: '/tmp/chromedriver-logs',
             logFileName: 'wdio-chromedriver.log',
             args: [
-                '--headless',
+                '--headless', // Comment both --headless flags for real browser local testing
                 '--no-sandbox',
                 '--disable-dev-shm-usage',
                 '--whitelisted-ips=',
