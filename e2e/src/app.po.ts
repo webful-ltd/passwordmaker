@@ -87,7 +87,6 @@ class AppPage {
     return new Promise<boolean>(async resolve => {
       await ionicSaveButton.click().then(() => resolve(true));
     });
-    // return ionicSaveButton.click();
   };
 
   async getSaveButtonDisabledStatus(): Promise<boolean> {
