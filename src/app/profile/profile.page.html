@@ -20,12 +20,18 @@
   <form [formGroup]="profile" (ngSubmit)="save(profile)" novalidate>
     <ion-list>
       <ion-item>
-        <ion-input label="Profile Name" name="name" formControlName="name"></ion-input>
+        <ion-input
+          label="Profile Name"
+          labelPlacement="stacked"
+          name="name"
+          formControlName="name"
+        ></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-input
           label="Length of passwords"
+          labelPlacement="stacked"
           name="output_length"
           formControlName="output_length"
           type="number"
@@ -37,6 +43,7 @@
       <ion-item>
         <ion-select
           label="Possible characters"
+          labelPlacement="stacked"
           name="output_character_set_preset"
           formControlName="output_character_set_preset"
         >
@@ -57,6 +64,7 @@
       <ion-item *ngIf="profile.get('output_character_set_preset').value === 'none'">
         <ion-input
           label="Possible characters"
+          labelPlacement="stacked"
           name="output_character_set_custom"
           formControlName="output_character_set_custom"
         ></ion-input>
@@ -65,6 +73,7 @@
       <ion-item>
         <ion-select
           label="Hash algorithm"
+          labelPlacement="stacked"
           name="algorithm"
           formControlName="algorithm"
         >
@@ -82,6 +91,7 @@
       <ion-item>
         <ion-select
           label="Use l33t?"
+          labelPlacement="stacked"
           name="leet_location"
           formControlName="leet_location"
         >
@@ -95,6 +105,7 @@
       <ion-item *ngIf="profile.get('leet_location').value !== 'none'">
         <ion-range
           label="l33t level"
+          labelPlacement="stacked"
           name="leet_level"
           formControlName="leet_level"
           min="1"
@@ -108,6 +119,7 @@
       <ion-item>
         <ion-input
           label="Username / Modifier"
+          labelPlacement="stacked"
           name="modifier"
           formControlName="modifier"
         ></ion-input>
@@ -120,6 +132,7 @@
       <ion-item>
         <ion-input
           label="Prefix"
+          labelPlacement="stacked"
           name="prefix"
           formControlName="prefix"
         ></ion-input>
@@ -128,6 +141,7 @@
       <ion-item>
         <ion-input
           label="Suffix"
+          labelPlacement="stacked"
           name="suffix"
           formControlName="suffix"
         ></ion-input>
@@ -136,6 +150,7 @@
       <ion-item>
         <ion-input
           label="Post-processing suffix"
+          labelPlacement="stacked"
           name="post_processing_suffix"
           formControlName="post_processing_suffix"
         ></ion-input>

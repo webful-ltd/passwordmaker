@@ -9,6 +9,7 @@
     <ion-item>
       <ion-input
         label="URL or domain"
+        labelPlacement="floating"
         name="host"
         [(ngModel)]="input.host"
         inputmode="url"
@@ -24,6 +25,7 @@
     <ion-item>
       <ion-input
         label="Master password"
+        labelPlacement="floating"
         name="master_password"
         [(ngModel)]="input.master_password"
         inputmode="password"
@@ -48,6 +50,7 @@
     <ion-item *ngIf="advanced_mode">
       <ion-select
         label="Profile"
+        labelPlacement="stacked"
         name="profile"
         (ionChange)="switchProfile($event)"
         [(ngModel)]="input.active_profile_id"

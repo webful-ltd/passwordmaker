@@ -28,6 +28,7 @@
       <ion-item>
         <ion-input
           label="Length of passwords"
+          labelPlacement="stacked"
           name="output_length"
           formControlName="output_length"
           type="number"
@@ -39,6 +40,7 @@
       <ion-item>
         <ion-select
           label="Possible characters"
+          labelPlacement="stacked"
           name="output_character_set"
           formControlName="output_character_set"
         >
@@ -54,6 +56,7 @@
       <ion-item>
         <ion-select
           label="Hash algorithm"
+          labelPlacement="stacked"
           name="algorithm"
           formControlName="algorithm"
         >
@@ -81,6 +84,7 @@
       <ion-item *ngIf="settingsForm.get('added_number_on').value">
         <ion-range
           label="Which number?"
+          labelPlacement="stacked"
           name="added_number"
           formControlName="added_number"
           min="0"
