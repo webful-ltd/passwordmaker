@@ -11,7 +11,10 @@ jobs:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_ACCESS_TOKEN
     steps:
-      - run: sudo apt install libu2f-udev # Required for Chrome 111.
+      # https://stackoverflow.com/a/75738251/2803757 – this lib's required for Chrome 111
+      # and not in the current base image.
+      - run: wget http://archive.ubuntu.com/ubuntu/pool/main/libu/libu2f-host/libu2f-udev_1.1.4-1_all.deb
+      - run: sudo dpkg -i libu2f-udev_1.1.4-1_all.deb
       - browser-tools/install-chrome:
           chrome-version: 111.0.5563.146 # https://github.com/puppeteer/puppeteer/blob/main/versions.js
       - browser-tools/install-chromedriver
