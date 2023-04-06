@@ -26,8 +26,8 @@
   <form *ngIf="settingsLoaded" [formGroup]="settingsForm" (ngSubmit)="save(settingsForm)" novalidate>
     <div *ngIf="!advanced_mode">
       <ion-item>
-        <ion-label position="stacked">Length of passwords</ion-label>
         <ion-input
+          label="Length of passwords"
           name="output_length"
           formControlName="output_length"
           type="number"
@@ -37,8 +37,11 @@
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Possible characters</ion-label>
-        <ion-select name="output_character_set" formControlName="output_character_set">
+        <ion-select
+          label="Possible characters"
+          name="output_character_set"
+          formControlName="output_character_set"
+        >
           <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Alphanum + symbols</ion-select-option>
           <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789">Alphanumeric</ion-select-option>
           <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz">Letters</ion-select-option>
@@ -49,8 +52,11 @@
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Hash algorithm</ion-label>
-        <ion-select name="algorithm" formControlName="algorithm">
+        <ion-select
+          label="Hash algorithm"
+          name="algorithm"
+          formControlName="algorithm"
+        >
           <ion-select-option value="hmac-sha256">HMAC-SHA256</ion-select-option>
           <ion-select-option value="sha256">SHA256</ion-select-option>
           <ion-select-option value="hmac-sha1">HMAC-SHA1</ion-select-option>
@@ -63,19 +69,18 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Add a fixed number?</ion-label>
         <ion-toggle
           name="added_number_on"
           formControlName="added_number_on"
           [checked]="settingsForm.get('added_number_on').value"
           color="primary"
           enable-on-off-labels="true"
-        ></ion-toggle>
+        >Add a fixed number?</ion-toggle>
       </ion-item>
 
       <ion-item *ngIf="settingsForm.get('added_number_on').value">
-        <ion-label position="stacked">Cool, which number?</ion-label>
         <ion-range
+          label="Which number?"
           name="added_number"
           formControlName="added_number"
           min="0"
@@ -87,19 +92,17 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Use just domain name?</ion-label>
         <ion-toggle
           name="domain_only"
           formControlName="domain_only"
           [checked]="isDomainOnly"
           color="primary"
           enable-on-off-labels="true"
-        ></ion-toggle>
+        >Use just domain name?</ion-toggle>
       </ion-item>
     </div>
 
     <ion-item>
-      <ion-label position="stacked">Minutes to remember master password</ion-label>
       <ion-range
         name="remember_minutes"
         formControlName="remember_minutes"
@@ -108,8 +111,16 @@
         color="primary"
         snaps="true"
         pin="true"
-      ></ion-range>
+      >
+        <div slot="label">
+          <ion-label>Save minutes</ion-label>
+        </div>
+      </ion-range>
     </ion-item>
+    <p class="help input-help">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      How long to remember your master password, in minutes.
+    </p>
 
     <p *ngIf="settingsForm.invalid" class="warning">
       <ion-icon name="warning"></ion-icon>

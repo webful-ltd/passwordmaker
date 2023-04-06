@@ -6,6 +6,12 @@ p.help {
   border-bottom: solid 2px var(--ion-color-secondary);
 }
 
+p.input-help {
+  border-bottom-width: 0;
+  border-top: solid 2px var(--ion-color-secondary);
+  border-radius: 0 0 4px 4px;
+}
+
 p.warning {
   border-bottom: solid 2px var(--ion-color-danger-shade);
 }

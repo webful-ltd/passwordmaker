@@ -20,13 +20,12 @@
   <form [formGroup]="profile" (ngSubmit)="save(profile)" novalidate>
     <ion-list>
       <ion-item>
-        <ion-label position="stacked">Profile Name</ion-label>
-        <ion-input name="name" formControlName="name"></ion-input>
+        <ion-input label="Profile Name" name="name" formControlName="name"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Length of passwords</ion-label>
         <ion-input
+          label="Length of passwords"
           name="output_length"
           formControlName="output_length"
           type="number"
@@ -36,8 +35,11 @@
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Possible characters</ion-label>
-        <ion-select name="output_character_set_preset" formControlName="output_character_set_preset">
+        <ion-select
+          label="Possible characters"
+          name="output_character_set_preset"
+          formControlName="output_character_set_preset"
+        >
           <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Alphanum + symbols</ion-select-option>
           <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789">Alphanumeric</ion-select-option>
           <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz">Letters</ion-select-option>
@@ -53,13 +55,19 @@
         using a preset group.
       </p>
       <ion-item *ngIf="profile.get('output_character_set_preset').value === 'none'">
-        <ion-label position="stacked">Possible characters</ion-label>
-        <ion-input name="output_character_set_custom" formControlName="output_character_set_custom"></ion-input>
+        <ion-input
+          label="Possible characters"
+          name="output_character_set_custom"
+          formControlName="output_character_set_custom"
+        ></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Hash algorithm</ion-label>
-        <ion-select name="algorithm" formControlName="algorithm">
+        <ion-select
+          label="Hash algorithm"
+          name="algorithm"
+          formControlName="algorithm"
+        >
           <ion-select-option value="hmac-sha256">HMAC-SHA256</ion-select-option>
           <ion-select-option value="sha256">SHA256</ion-select-option>
           <ion-select-option value="hmac-sha1">HMAC-SHA1</ion-select-option>
@@ -72,8 +80,11 @@
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Use l33t?</ion-label>
-        <ion-select name="leet_location" formControlName="leet_location">
+        <ion-select
+          label="Use l33t?"
+          name="leet_location"
+          formControlName="leet_location"
+        >
           <ion-select-option value="none">No</ion-select-option>
           <ion-select-option value="before-hashing">Before generating password</ion-select-option>
           <ion-select-option value="after-hashing">After generating password</ion-select-option>
@@ -82,8 +93,8 @@
       </ion-item>
 
       <ion-item *ngIf="profile.get('leet_location').value !== 'none'">
-        <ion-label position="stacked">l33t level</ion-label>
         <ion-range
+          label="l33t level"
           name="leet_level"
           formControlName="leet_level"
           min="1"
@@ -95,8 +106,11 @@
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Username / Modifier</ion-label>
-        <ion-input name="modifier" formControlName="modifier"></ion-input>
+        <ion-input
+          label="Username / Modifier"
+          name="modifier"
+          formControlName="modifier"
+        ></ion-input>
       </ion-item>
       <p class="help">
         <ion-icon name="information-circle-outline"></ion-icon>
@@ -104,29 +118,37 @@
       </p>
 
       <ion-item>
-        <ion-label position="stacked">Prefix</ion-label>
-        <ion-input name="prefix" formControlName="prefix"></ion-input>
+        <ion-input
+          label="Prefix"
+          name="prefix"
+          formControlName="prefix"
+        ></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Suffix</ion-label>
-        <ion-input name="suffix" formControlName="suffix"></ion-input>
+        <ion-input
+          label="Suffix"
+          name="suffix"
+          formControlName="suffix"
+        ></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Post-processing suffix</ion-label>
-        <ion-input name="post_processing_suffix" formControlName="post_processing_suffix"></ion-input>
+        <ion-input
+          label="Post-processing suffix"
+          name="post_processing_suffix"
+          formControlName="post_processing_suffix"
+        ></ion-input>
       </ion-item>
   
       <ion-item>
-        <ion-label>Use just domain name?</ion-label>
         <ion-toggle
           name="domain_only"
           formControlName="domain_only"
           [checked]="profile.get('domain_only').value"
           color="primary"
           enable-on-off-labels="true"
-        ></ion-toggle>
+        >Use just domain name?</ion-toggle>
       </ion-item>
     </ion-list>
 
