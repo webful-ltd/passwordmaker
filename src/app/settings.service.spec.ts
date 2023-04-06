@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { CloudSettings } from '@ionic-native/cloud-settings/ngx';
+import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import { Storage } from '@ionic/storage-angular';
 
 import { SettingsService } from './settings.service';
