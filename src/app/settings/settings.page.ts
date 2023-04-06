@@ -50,7 +50,7 @@ export class SettingsPageComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = await this.loadingController.create();
-    this.loading.present();
+    await this.loading.present();
     this.update();
   }
 
