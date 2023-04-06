@@ -167,6 +167,14 @@
         <ion-icon slot="start" name="cog"></ion-icon>
         Enable Advanced Settings
       </ion-button>
+
+      <ion-action-sheet
+        [isOpen]="isAdvancedConfirmationOpen"
+        header="Are you sure you want to use Advanced mode?"
+        [buttons]="advancedConfirmationButtons"
+        (didDismiss)="dismissEnableAdvanced()"
+      ></ion-action-sheet>
+
       <p class="help">
         <ion-icon name="information-circle-outline"></ion-icon>
         Advanced mode enables multiple profiles and extra output settings.

@@ -194,5 +194,12 @@
       <ion-icon slot="start" name="trash-outline"></ion-icon>
       Delete
     </ion-button>
+
+    <ion-action-sheet
+      [isOpen]="isDeleteConfirmationOpen"
+      header="Are you sure you want to delete this profile?"
+      [buttons]="deleteConfirmationButtons"
+      (didDismiss)="dismissDelete()"
+    ></ion-action-sheet>
   </form>
 </ion-content>
