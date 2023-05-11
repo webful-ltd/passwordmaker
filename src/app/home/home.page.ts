@@ -61,36 +61,53 @@ export class HomePageComponent implements OnInit {
     this.settingsService.saveSubject.subscribe(() => { this.update(); });
   }
 
-  update() {
-    this.settingsService.getCurrentSettings().then(settings => {
-      this.settings = settings;
-      if (settings instanceof SettingsAdvanced) {
-        this.advanced_mode = true;
-        this.input.active_profile_id = settings.active_profile_id;
-      }
+  async update() {
+    let settings: Settings;
+    try {
+      settings = await this.settingsService.getCurrentSettings();
+    } catch (err) {
+      this.toast.create({
+        message: (`Could not load settings: ${err.message}`),
+        position: 'middle',
+        cssClass: 'error',
+        buttons: [{ text: 'OK', role: 'cancel'}],
+      }).then(errorToast => errorToast.present());
+      this.loading.dismiss();
 
-      if (this.input.master_password.length === 0 || this.input.host.length === 0) {
-        this.output_password = null;
-        this.non_domain_warning = false;
-        return;
-      }
+      return;
+    }
 
-      this.non_domain_warning = (this.input.host.indexOf('.') === -1);
+    this.settings = settings;
+    if (settings instanceof SettingsAdvanced) {
+      this.advanced_mode = true;
+      this.input.active_profile_id = settings.active_profile_id;
+    }
 
-      if (this.input.master_password.length > 0) {
-        this.updateExpiryTimer();
-      }
+    if (this.input.master_password.length === 0 || this.input.host.length === 0) {
+      this.output_password = null;
+      this.non_domain_warning = false;
+      return;
+    }
 
-      this.literal_input_warning = !settings.isDomainOnly();
+    this.non_domain_warning = (this.input.host.indexOf('.') === -1);
 
-      if (!settings.isDomainOnly()) {
-        // If we're showing the general literal input warning, the non-domain warning is not really relevant
-        // as we're not going to pull out a domain anyway.
-        this.non_domain_warning = false;
-      }
+    if (this.input.master_password.length > 0) {
+      this.updateExpiryTimer();
+    }
 
-      this.output_password = this.passwordsService.getPassword(this.input.master_password, this.input.host, settings);
-    });
+    this.literal_input_warning = !settings.isDomainOnly();
+
+    if (!settings.isDomainOnly()) {
+      // If we're showing the general literal input warning, the non-domain warning is not really relevant
+      // as we're not going to pull out a domain anyway.
+      this.non_domain_warning = false;
+    }
+
+    this.output_password = this.passwordsService.getPassword(
+      this.input.master_password,
+      this.input.host,
+      settings,
+    );
 
     if (this.loading) {
       this.loading.dismiss();

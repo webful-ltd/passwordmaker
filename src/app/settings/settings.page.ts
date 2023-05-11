@@ -73,21 +73,34 @@ export class SettingsPageComponent implements OnInit {
    * Upgrade the app settings to `SettingsAdvanced`, which includes creating profile #0
    * with ID 1, and open that profile for editing.
    */
-  addFirstProfile() {
-    this.settingsService.getCurrentSettings().then((settings: Settings) => {
-      if (settings instanceof SettingsAdvanced) {
-        // Things have got confused and we should just use the existing advanced settings' first profile.
-        this.editProfile(settings.profiles[0], 1);
-        return;
-      }
+  async addFirstProfile() {
+    let settings: Settings;
+    try {
+      settings = await this.settingsService.getCurrentSettings();
+    } catch (err) {
+      this.toast.create({
+        message: (`Could not load settings for profile creation: ${err.message}`),
+        position: 'middle',
+        cssClass: 'error',
+        buttons: [{ text: 'OK', role: 'cancel'}],
+      }).then(errorToast => errorToast.present());
+      this.loading.dismiss();
 
-      if (settings instanceof SettingsSimple) {
-        const advancedSettings = new SettingsAdvanced(settings);
-        this.settingsService.save(advancedSettings).then(() => {
-          this.editProfile(advancedSettings.profiles[0], advancedSettings.profiles.length);
-        });
-      }
-    });
+      return;
+    }
+
+    if (settings instanceof SettingsAdvanced) {
+      // Things have got confused and we should just use the existing advanced settings' first profile.
+      this.editProfile(settings.profiles[0], 1);
+      return;
+    }
+
+    if (settings instanceof SettingsSimple) {
+      const advancedSettings = new SettingsAdvanced(settings);
+      this.settingsService.save(advancedSettings).then(() => {
+        this.editProfile(advancedSettings.profiles[0], advancedSettings.profiles.length);
+      });
+    }
   }
 
   async editNewProfile() {
@@ -166,36 +179,48 @@ export class SettingsPageComponent implements OnInit {
     Browser.open({ url: 'https://passwordmaker.webful.uk/#advanced' });
   }
 
-  private update() {
-    this.settingsService.getCurrentSettings()
-      .then(settings => {
-        this.advanced_mode = (settings instanceof SettingsAdvanced);
+  private async update() {
+    let settings: Settings;
+    try {
+      settings = await this.settingsService.getCurrentSettings();
+    } catch (err) {
+      this.toast.create({
+        message: (`Could not load settings for update: ${err.message}`),
+        position: 'middle',
+        cssClass: 'error',
+        buttons: [{ text: 'OK', role: 'cancel'}],
+      }).then(errorToast => errorToast.present());
+      this.loading.dismiss();
 
-        const formValues: any = {
-          remember_minutes: settings.remember_minutes,
-        };
+      return;
+    }
+  
+      this.advanced_mode = (settings instanceof SettingsAdvanced);
 
-        if (settings instanceof SettingsSimple) {
-          formValues.added_number_on = settings.added_number_on;
-          if (settings.added_number_on) {
-            formValues.added_number = settings.added_number;
-          } else {
-            formValues.added_number = undefined;
-          }
-          formValues.algorithm = settings.getAlgorithm();
-          formValues.domain_only = settings.isDomainOnly();
-          formValues.output_character_set = settings.getOutputCharacterSet();
-          formValues.output_length = settings.getOutputLength();
-        } else if (settings instanceof SettingsAdvanced) {
-          this.profiles = settings.profiles;
+      const formValues: any = {
+        remember_minutes: settings.remember_minutes,
+      };
+
+      if (settings instanceof SettingsSimple) {
+        formValues.added_number_on = settings.added_number_on;
+        if (settings.added_number_on) {
+          formValues.added_number = settings.added_number;
+        } else {
+          formValues.added_number = undefined;
         }
+        formValues.algorithm = settings.getAlgorithm();
+        formValues.domain_only = settings.isDomainOnly();
+        formValues.output_character_set = settings.getOutputCharacterSet();
+        formValues.output_length = settings.getOutputLength();
+      } else if (settings instanceof SettingsAdvanced) {
+        this.profiles = settings.profiles;
+      }
 
-        this.settingsForm.patchValue(formValues);
+      this.settingsForm.patchValue(formValues);
 
-        this.settingsLoaded = true;
-        if (this.loading) {
-          this.loading.dismiss();
-        }
-      });
+      this.settingsLoaded = true;
+      if (this.loading) {
+        this.loading.dismiss();
+      }
   }
 }
