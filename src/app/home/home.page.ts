@@ -86,6 +86,10 @@ export class HomePageComponent implements OnInit {
     if (this.input.master_password.length === 0 || this.input.host.length === 0) {
       this.output_password = null;
       this.non_domain_warning = false;
+      if (this.loading) {
+        this.loading.dismiss();
+      }
+
       return;
     }
 
