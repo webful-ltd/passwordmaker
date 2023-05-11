@@ -113,8 +113,6 @@ export class SettingsService {
   }
 
   getCurrentSettings(): Promise<Settings> {
-    throw new Error('I am a test error message');
-
     if (this.currentPromise instanceof Promise) {
       return this.currentPromise;
     }
