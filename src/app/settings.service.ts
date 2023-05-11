@@ -122,16 +122,15 @@ export class SettingsService {
     }
 
     if (!this.ready) {
-      return new Promise<Settings>((resolve, reject) => {
+      return new Promise<Settings>((resolve) => {
         setTimeout(() => {
           if (!this.ready) {
-            console.log('Storage not ready after 5 seconds');
-            reject();
+            throw new Error('Storage not ready after 30 seconds');
           }
-        }, 5000);
-         // Not ready yet -> try again in 50ms and resolve
+        }, 30000);
+         // Not ready yet -> try again in 1s and resolve
          // with result.
-        setTimeout(() => resolve(this.getCurrentSettings()), 50);
+        setTimeout(() => this.getCurrentSettings().then(result => resolve(result)), 1000);
       });
     }
 
