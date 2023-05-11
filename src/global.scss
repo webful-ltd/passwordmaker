@@ -10,8 +10,14 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-ion-toast.error > .toast-wrapper {
-  background: var(--ion-color-danger);
+ion-toast.error {
+  --background: var(--ion-color-danger);
+  --button-color: var(--ion-color-danger-contrast) ;
+  --color: var(--ion-color-danger-contrast);
+
+  &::part(button) {
+    color: var(--ion-color-danger-contrast);
+  }
 }
 
 ion-title {
