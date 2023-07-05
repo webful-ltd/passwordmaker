@@ -35,7 +35,7 @@ using macOS and Android Studio having your most appropriate 'new' Java (new Grad
 Java 11). If these things are not true, adjust or delete the `JAVA_HOME` var as appropriate.
 
 * Set new `versionCode` and `versionName` in [android/app/build.gradle](../android/app/build.gradle)
-* `JAVA_HOME=$JAVA_11_HOME ionic capacitor build android --prod`
+* `ionic capacitor build android --prod`
 * _If first build,_ in Android Studio choose _Build > Select Build Variant..._ and choose `release`.
 * In Android Studio, go to _Build > Generate Signed Bundle / APK...
 * Choose to make an Android App Bundle and use your keystore
