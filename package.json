@@ -36,7 +36,7 @@
     "@capacitor/keyboard": "^4.0.0",
     "@capacitor/status-bar": "^4.0.0",
     "@ionic/angular": "^7.0.1",
-    "@ionic/storage-angular": "^3.0.2",
+    "@ionic/storage-angular": "^4.0.0",
     "@types/jasmine": "^3.10.3",
     "@webful/passwordmaker-lib": "~0.1.4",
     "2ldcheck": "~0.0.6",
