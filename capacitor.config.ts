@@ -13,6 +13,9 @@ const config: CapacitorConfig = {
       MixedContentMode: '1',
     }
   },
+  ios: {
+    scheme: 'Webful PasswordMaker',
+  },
   server: {
     androidScheme: 'http', // https://capacitorjs.com/docs/updating/5-0#update-androidscheme
     iosScheme: 'ionic',

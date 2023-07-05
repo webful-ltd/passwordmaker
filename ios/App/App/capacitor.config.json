@@ -11,6 +11,9 @@
 			"MixedContentMode": "1"
 		}
 	},
+	"ios": {
+		"scheme": "Webful PasswordMaker"
+	},
 	"server": {
 		"androidScheme": "http",
 		"iosScheme": "ionic"
