@@ -12,6 +12,7 @@
 		}
 	},
 	"server": {
+		"androidScheme": "http",
 		"iosScheme": "ionic"
 	}
 }
