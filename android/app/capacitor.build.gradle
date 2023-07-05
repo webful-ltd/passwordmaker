@@ -16,7 +16,7 @@ dependencies {
     implementation project(':capacitor-haptics')
     implementation project(':capacitor-keyboard')
     implementation project(':capacitor-status-bar')
-
+    implementation "androidx.webkit:webkit:1.4.0"
 }
 
 
