@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace "uk.webful.passwordmaker"
     // See https://stackoverflow.com/a/24336042/2803757 – as of 29/12/21, without this workaround
     // debug builds worked but release ones, even with a cleanly re-added Capacitor platform, hit a lint
     // error and had no actual information in the lint results report.
