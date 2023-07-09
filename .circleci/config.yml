@@ -19,7 +19,7 @@ jobs:
           sudo dpkg -i libu2f-udev_1.1.4-1_all.deb;
           cd ~/project
       - browser-tools/install-chrome:
-          chrome-version: 114.0.5735.90 # https://github.com/puppeteer/puppeteer/blob/main/versions.js # https://github.com/puppeteer/puppeteer/blob/main/versions.js
+          chrome-version: 113.0.5672.63 # https://github.com/puppeteer/puppeteer/blob/main/versions.js # https://github.com/puppeteer/puppeteer/blob/main/versions.js
       - browser-tools/install-chromedriver
       - checkout
       - restore_cache:
