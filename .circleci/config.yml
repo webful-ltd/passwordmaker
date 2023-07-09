@@ -22,14 +22,7 @@ jobs:
           chrome-version: 113.0.5672.63 # https://github.com/puppeteer/puppeteer/blob/main/versions.js # https://github.com/puppeteer/puppeteer/blob/main/versions.js
       - browser-tools/install-chromedriver
       - checkout
-      - restore_cache:
-          keys:
-            - v3-dependencies-{{ checksum "package-lock.json" }}
       - run: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 npm install --quiet
-      - save_cache:
-          paths:
-            - node_modules
-          key: v3-dependencies-{{ checksum "package-lock.json" }}
       - run: npm run ci
 
 workflows:
