@@ -37,7 +37,7 @@
     "@capacitor/status-bar": "^5.0.0",
     "@ionic/angular": "^7.0.1",
     "@ionic/storage-angular": "^4.0.0",
-    "@types/jasmine": "^3.10.3",
+    "@types/jasmine": "^4.3.5",
     "@webful/passwordmaker-lib": "~0.1.4",
     "2ldcheck": "~0.0.6",
     "cordova-android": "^12.0.0",
