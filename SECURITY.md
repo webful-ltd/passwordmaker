@@ -9,7 +9,7 @@
 Due to app stores' distribution mechanisms, the frameworks the app depends upon and limited time available for the project,
 I can't also patch libraries in older versions of the app.
 
-Please update to new point releases whenever offered. If you're not offered the latest version above and your phone cannot
+Please update to new versions whenever offered. If you're not offered the latest version above and your phone cannot
 run a newer operating system than you have now, it might be impossible to get a long-term-secure version of the native app.
 If this is the case, please consider using a web-based alternative to the app to stay safe.
 
