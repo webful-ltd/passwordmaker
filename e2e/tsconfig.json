@@ -1,10 +1,12 @@
 {
     "compilerOptions": {
+        "allowImportingTsExtensions": true,
         "lib": [
             "dom",
             "es7"
         ],
         "module": "ES2020",
+        "moduleResolution": "NodeNext",
         "types": [
             "node",
             "@wdio/globals/types",

@@ -1,6 +1,6 @@
-const IonicPage = require('./ionic-page');
+import { IonicPage } from './ionic-page.ts';
 
-class Ionic$ {
+export class Ionic$ {
   static async $(selector: string): Promise<WebdriverIO.Element> {
     const activePage = await IonicPage.active();
     return activePage.$(selector);
@@ -11,5 +11,3 @@ class Ionic$ {
     return activePage.$$(selector);
   }
 }
-
-module.exports = Ionic$

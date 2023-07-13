@@ -1,13 +1,12 @@
-AppPage = require('./app.po');
+import { AppPage } from './app.po.js';
 
-let page: typeof AppPage;
+const page = new AppPage();
 
 describe('PasswordMaker', () => {
   beforeAll(async () => {
   });
 
   beforeEach(async () => {
-    page = new AppPage();
     await page.setBrowser(browser);
     await page.maximise();
     await page.startOnHomePath();

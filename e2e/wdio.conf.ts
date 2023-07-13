@@ -1,9 +1,7 @@
-const puppeteer = require('puppeteer');
+import puppeteer from 'puppeteer';
 process.env.CHROME_BIN = puppeteer.executablePath();
 
-let AppPage = require('./src/app.po');
-
-exports.config = {
+export const config = {
     //
     // ====================
     // Runner Configuration

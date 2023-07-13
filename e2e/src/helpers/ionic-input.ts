@@ -1,8 +1,8 @@
-const IonicComponent = require('./ionic-component');
-const Ionic$ = require('./ionic$');
-const ElementActionOptions = require('./definitions');
+import { IonicComponent } from './ionic-component.ts';
+import { Ionic$ } from './ionic$.ts';
+import { ElementActionOptions } from './definitions.ts';
 
-class IonicInput extends IonicComponent {
+export class IonicInput extends IonicComponent {
   constructor(name: string) {
     super(`ion-input[name=${name}`);
   }
@@ -36,5 +36,3 @@ class IonicInput extends IonicComponent {
     }
   }
 }
-
-module.exports = IonicInput

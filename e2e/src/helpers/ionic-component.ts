@@ -1,4 +1,4 @@
-class IonicComponent {
+export class IonicComponent {
   constructor(public selector: string | WebdriverIO.Element) {
   }
 
@@ -13,5 +13,3 @@ class IonicComponent {
     };
   }
 }
-
-module.exports = IonicComponent

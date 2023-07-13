@@ -1,6 +1,6 @@
-const IonicInput = require('./helpers/ionic-input');
+import { IonicInput } from './helpers/ionic-input.js';
 
-class AppPage {
+export class AppPage {
   private browser: WebdriverIO.Browser;
 
   /**
@@ -11,7 +11,7 @@ class AppPage {
   };
 
   async maximise() {
-    await browser.setWindowSize(600, 900);
+    await this.browser.setWindowSize(600, 900);
   };
 
   async startOnHomePath() {
@@ -125,5 +125,3 @@ class AppPage {
     return (await $(`app-${pageName}`)).getText();
   };
 }
-
-module.exports = AppPage

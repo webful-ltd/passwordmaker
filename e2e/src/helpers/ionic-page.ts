@@ -1,6 +1,6 @@
-const IonicComponent = require('./ionic-component');
+import { IonicComponent } from './ionic-component.ts';
 
-class IonicPage extends IonicComponent {
+export class IonicPage extends IonicComponent {
   static async active() {
     await driver.waitUntil(
       async () => {
@@ -58,5 +58,3 @@ class IonicPage extends IonicComponent {
     return path;
   }
 }
-
-module.exports = IonicPage

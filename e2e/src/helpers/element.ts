@@ -1,9 +1,7 @@
-const ElementActionOptions = require('./definitions').ElementActionOptions;
+import { ElementActionOptions } from './definitions.ts';
 
-async function waitForElement(selector: string, { visibilityTimeout = 5000 }: ElementActionOptions = {}) {
+export async function waitForElement(selector: string, { visibilityTimeout = 5000 }: ElementActionOptions = {}) {
   const el = await $(selector);
   await el.waitForDisplayed({ timeout: visibilityTimeout });
   return el;
 }
-
-module.exports = { waitForElement }
