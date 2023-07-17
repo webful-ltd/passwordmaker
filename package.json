@@ -43,7 +43,7 @@
     "cordova-android": "^12.0.0",
     "cordova-ios": "^6.3.0",
     "cordova-plugin-cloud-settings": "git://github.com/webful-ltd/cordova-plugin-cloud-settings.git#6c8a220d57fd004a9a2f4b618ea00c3fde4bb989",
-    "cordova-plugin-file": "^7.0.0",
+    "cordova-plugin-file": "^8.0.0",
     "core-js": "^3.31.0",
     "jscodeshift": "^0.13.1",
     "localforage": "^1.9.0",
@@ -93,7 +93,7 @@
     "zone.js": "~0.13.1"
   },
   "overrides": {
-    "optionator" : "0.9.3"
+    "optionator": "0.9.3"
   },
   "engines": {
     "node": ">=16.18",

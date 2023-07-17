@@ -50,7 +50,18 @@ Java 11). If these things are not true, adjust or delete the `JAVA_HOME` var as 
 * _Product > Archive_
 * _Distribute App_ from the Organizer dialogue.
 
-### Resources update
+## Plugins
+
+In addition to the Ionic-standard Capacitor plugins and Clipboard (for copying passwords),
+we need to build with Cordova in order to get the Cloud Settings plugin.
+
+There is an additional Cordova dependency of that plugin, `cordova-plugin-file`. If you have
+not done a settings restore, the Android build seems to work fine without the Files & Media
+permission which this plugin presumably adds as an option (at least on Android 11) – but
+there might be a need for the permission if you _do_ restore settings, so we have not made
+efforts to override the permission request from the plugin.
+
+## Resources update
 
 Icon and splash screen shouldn't need regenerating on each build. But if they change (in `resources/`), run:
 
