@@ -30,7 +30,7 @@ export class AppComponent {
 
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
       this.toggleDarkTheme(prefersDark.matches);
-      prefersDark.addListener(mediaQuery => this.toggleDarkTheme(mediaQuery.matches));
+      prefersDark.addEventListener('change', event => this.toggleDarkTheme(event.matches));
     });
   }
 
