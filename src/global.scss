@@ -10,18 +10,24 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-ion-toast.error {
-  --background: var(--ion-color-danger);
-  --button-color: var(--ion-color-danger-contrast) ;
-  --color: var(--ion-color-danger-contrast);
-
-  &::part(button) {
-    color: var(--ion-color-danger-contrast);
+:root {
+  ion-input {
+    --highlight-color-valid: var(--ion-color-primary);
   }
-}
 
-ion-title {
-  color: var(--ion-color-primary-contrast);
+  ion-title {
+    color: var(--ion-color-primary-contrast);
+  }
+
+  ion-toast.error {
+    --background: var(--ion-color-danger);
+    --button-color: var(--ion-color-danger-contrast) ;
+    --color: var(--ion-color-danger-contrast);
+  
+    &::part(button) {
+      color: var(--ion-color-danger-contrast);
+    }
+  } 
 }
 
 p > ion-icon {
@@ -53,8 +59,7 @@ p.warning {
  * Dark Colors – Adapted from https://ionicframework.com/docs/theming/dark-mode#ionic-dark-theme
  * with some existing light mode colours kept as they are.
  */
-
- body.dark {
+body.dark {
   // We use the dark purple and quite dark pink as our primary + secondary colours
   // in dark mode *but* swap them, for better visiblity on things like the tab bar.
   --ion-color-primary: #ff4f79;
