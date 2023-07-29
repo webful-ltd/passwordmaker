@@ -11,7 +11,7 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 :root {
-  ion-input {
+  ion-input, ion-select {
     --highlight-color-valid: var(--ion-color-primary);
   }
 
