@@ -30,10 +30,6 @@ We currently run:
 
 ### Android
 
-These steps contain an assumption you should adjust for your local dev situation. The example is based on
-using macOS and Android Studio having your most appropriate 'new' Java (new Gradle versions require
-Java 11). If these things are not true, adjust or delete the `JAVA_HOME` var as appropriate.
-
 * Set new `versionCode` and `versionName` in [android/app/build.gradle](../android/app/build.gradle)
 * `ionic capacitor build android --prod`
 * _If first build,_ in Android Studio choose _Build > Select Build Variant..._ and choose `release`.
