@@ -69,7 +69,7 @@
     "@capacitor/cli": "^5.0.0",
     "@ionic/angular-toolkit": "^9.0.0",
     "@ionic/cordova-builders": "^10.0.0",
-    "@types/node": "^16.18.0",
+    "@types/node": "^20.9.0",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.2",
     "@wdio/cli": "^8.3.5",
@@ -96,7 +96,7 @@
     "optionator": "0.9.3"
   },
   "engines": {
-    "node": ">=16.18",
+    "node": ">=18",
     "npm": ">=8.0"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
