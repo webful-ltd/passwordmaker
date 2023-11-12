@@ -17,6 +17,7 @@ jobs:
           cd /tmp;
           wget http://archive.ubuntu.com/ubuntu/pool/main/libu/libu2f-host/libu2f-udev_1.1.4-1_all.deb;
           sudo dpkg -i libu2f-udev_1.1.4-1_all.deb;
+          sudo apt -y update;
           sudo apt-get install -y libvulkan1;
           cd ~/project
       - browser-tools/install-chrome:
