@@ -108,5 +108,14 @@
       "ios",
       "android"
     ]
-  }
+  },
+  "browserslist": [
+    "Chrome >=60",
+    "ChromeAndroid >=60",
+    "Firefox >=63",
+    "Firefox ESR",
+    "Edge >=79",
+    "Safari >=13",
+    "iOS >=13"
+  ]
 }
