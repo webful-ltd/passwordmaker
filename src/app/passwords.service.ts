@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as urlParse from 'url-parse/dist/url-parse'; // https://github.com/unshiftio/url-parse/issues/150#issuecomment-403150854
 import * as makePassword from '@webful/passwordmaker-lib';
 import * as isSecondLevelDomain from '2ldcheck';
 
@@ -42,7 +41,13 @@ export class PasswordsService {
       content = `https://${content}`;
     }
 
-    const parsedUrl = urlParse(content);
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(content);
+    } catch (ex) {
+      return '';
+    }
+
     const parsedHost = parsedUrl.hostname;
 
     // If the parsed host is local it's probably because we passed in dodgy input and the url-parse lib fell
