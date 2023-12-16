@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular/standalone';
 import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import { Storage } from '@ionic/storage-angular';
 import { Subject } from 'rxjs';
@@ -128,8 +128,7 @@ export class SettingsService {
             throw new Error('Storage not ready after 30 seconds');
           }
         }, 30000);
-         // Not ready yet -> try again in 1s and resolve
-         // with result.
+        // Not ready yet -> try again in 1s and resolve with result.
         setTimeout(() => this.getCurrentSettings().then(result => resolve(result)), 1000);
       });
     }
@@ -151,7 +150,7 @@ export class SettingsService {
                     message: ('Previous settings loaded from backup'),
                     duration: 3000,
                     position: 'middle',
-                    buttons: [{ text: 'OK', role: 'cancel'}],
+                    buttons: [{ text: 'OK', role: 'cancel' }],
                   }).then(successToast => successToast.present());
 
                   resolve(loadedFromCloud);
@@ -162,7 +161,7 @@ export class SettingsService {
                     duration: 6000,
                     position: 'middle',
                     cssClass: 'error',
-                    buttons: [{ text: 'OK', role: 'cancel'}],
+                    buttons: [{ text: 'OK', role: 'cancel' }],
                   }).then(errorToast => errorToast.present());
 
                   resolve(this.loadDefaults());

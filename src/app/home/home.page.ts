@@ -1,7 +1,9 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Clipboard } from '@capacitor/clipboard';
 import { Keyboard } from '@capacitor/keyboard';
-import { LoadingController, Platform, ToastController } from '@ionic/angular';
+import { LoadingController, Platform, ToastController } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { informationCircleOutline, warning, copy } from 'ionicons/icons';
 
 import { Input } from '../../models/Input';
 import { PasswordsService } from '../passwords.service';
@@ -35,7 +37,9 @@ export class HomePageComponent implements OnInit {
     private settingsService: SettingsService,
     public toast: ToastController,
     private zone: NgZone,
-  ) {}
+  ) {
+    addIcons({ informationCircleOutline, warning, copy });
+  }
 
   async ngOnInit() {
     this.loading = await this.loadingController.create();
@@ -70,7 +74,7 @@ export class HomePageComponent implements OnInit {
         message: (`Could not load settings: ${err.message}`),
         position: 'middle',
         cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel'}],
+        buttons: [{ text: 'OK', role: 'cancel' }],
       }).then(errorToast => errorToast.present());
       this.loading.dismiss();
 
@@ -118,7 +122,7 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  switchProfile (event: any) {
+  switchProfile(event: any) {
     if (this.settings instanceof SettingsAdvanced) {
       this.settings.setActiveProfile(event.detail.value);
       this.settingsService.save(this.settings);
@@ -131,7 +135,7 @@ export class HomePageComponent implements OnInit {
         message: ('Copied to clipboard!'),
         duration: 2000,
         position: 'middle',
-        buttons: [{ text: 'OK', role: 'cancel'}],
+        buttons: [{ text: 'OK', role: 'cancel' }],
       }).then(successToast => successToast.present());
     });
   }

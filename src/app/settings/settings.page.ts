@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Browser } from '@capacitor/browser';
-import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { informationCircleOutline, cog, warning, checkmarkCircleOutline, addCircleOutline } from 'ionicons/icons';
 
 import { Profile } from '../../models/Profile';
 import { ProfilePageComponent } from '../profile/profile.page';
@@ -22,20 +24,22 @@ export class SettingsPageComponent implements OnInit {
   profiles: Profile[] = [];
   settingsLoaded = false;
 
-  advancedConfirmationButtons = [{
-    text: 'Use Advanced mode permanently',
-    icon: 'cog',
-    handler: () => this.addFirstProfile(),
-  }, {
-    text: 'Learn more first',
-    icon: 'help',
-    handler: () => this.openAdvancedInfo(),
-  }
-  , {
-    text: 'Cancel',
-    icon: 'close',
-    role: 'cancel',
-  }];
+  advancedConfirmationButtons = [
+    {
+      text: 'Use Advanced mode permanently',
+      icon: 'cog',
+      handler: () => this.addFirstProfile(),
+    }, {
+      text: 'Learn more first',
+      icon: 'help',
+      handler: () => this.openAdvancedInfo(),
+    }
+    , {
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel',
+    },
+  ];
   isAdvancedConfirmationOpen = false;
 
   private loading: HTMLIonLoadingElement;
@@ -61,6 +65,7 @@ export class SettingsPageComponent implements OnInit {
       added_number_on: [false],
       added_number: [0],
     });
+    addIcons({ informationCircleOutline, cog, warning, checkmarkCircleOutline, addCircleOutline });
   }
 
   async ngOnInit() {
@@ -82,7 +87,7 @@ export class SettingsPageComponent implements OnInit {
         message: (`Could not load settings for profile creation: ${err.message}`),
         position: 'middle',
         cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel'}],
+        buttons: [{ text: 'OK', role: 'cancel' }],
       }).then(errorToast => errorToast.present());
       this.loading.dismiss();
 
@@ -143,7 +148,7 @@ export class SettingsPageComponent implements OnInit {
         duration: 8000,
         position: 'middle',
         cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel'}],
+        buttons: [{ text: 'OK', role: 'cancel' }],
       }).then(errorToast => errorToast.present());
 
       return;
@@ -156,7 +161,7 @@ export class SettingsPageComponent implements OnInit {
             message: ('Settings saved!'),
             duration: 2000,
             position: 'middle',
-            buttons: [{ text: 'OK', role: 'cancel'}],
+            buttons: [{ text: 'OK', role: 'cancel' }],
           }).then(successToast => successToast.present());
         },
         (reason) => {
@@ -165,7 +170,7 @@ export class SettingsPageComponent implements OnInit {
             duration: 6000,
             position: 'middle',
             cssClass: 'error',
-            buttons: [{ text: 'OK', role: 'cancel'}],
+            buttons: [{ text: 'OK', role: 'cancel' }],
           }).then(errorToast => errorToast.present());
         }
       );
@@ -188,39 +193,39 @@ export class SettingsPageComponent implements OnInit {
         message: (`Could not load settings for update: ${err.message}`),
         position: 'middle',
         cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel'}],
+        buttons: [{ text: 'OK', role: 'cancel' }],
       }).then(errorToast => errorToast.present());
       this.loading.dismiss();
 
       return;
     }
-  
-      this.advanced_mode = (settings instanceof SettingsAdvanced);
 
-      const formValues: any = {
-        remember_minutes: settings.remember_minutes,
-      };
+    this.advanced_mode = (settings instanceof SettingsAdvanced);
 
-      if (settings instanceof SettingsSimple) {
-        formValues.added_number_on = settings.added_number_on;
-        if (settings.added_number_on) {
-          formValues.added_number = settings.added_number;
-        } else {
-          formValues.added_number = undefined;
-        }
-        formValues.algorithm = settings.getAlgorithm();
-        formValues.domain_only = settings.isDomainOnly();
-        formValues.output_character_set = settings.getOutputCharacterSet();
-        formValues.output_length = settings.getOutputLength();
-      } else if (settings instanceof SettingsAdvanced) {
-        this.profiles = settings.profiles;
+    const formValues: any = {
+      remember_minutes: settings.remember_minutes,
+    };
+
+    if (settings instanceof SettingsSimple) {
+      formValues.added_number_on = settings.added_number_on;
+      if (settings.added_number_on) {
+        formValues.added_number = settings.added_number;
+      } else {
+        formValues.added_number = undefined;
       }
+      formValues.algorithm = settings.getAlgorithm();
+      formValues.domain_only = settings.isDomainOnly();
+      formValues.output_character_set = settings.getOutputCharacterSet();
+      formValues.output_length = settings.getOutputLength();
+    } else if (settings instanceof SettingsAdvanced) {
+      this.profiles = settings.profiles;
+    }
 
-      this.settingsForm.patchValue(formValues);
+    this.settingsForm.patchValue(formValues);
 
-      this.settingsLoaded = true;
-      if (this.loading) {
-        this.loading.dismiss();
-      }
+    this.settingsLoaded = true;
+    if (this.loading) {
+      this.loading.dismiss();
+    }
   }
 }

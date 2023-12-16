@@ -18,7 +18,13 @@
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
-      "rules": {}
+      "rules": {
+        "indent": [
+          "error",
+          2
+        ],
+        "quotes": [2, "single", { "allowTemplateLiterals": true, "avoidEscape": true }]
+      }
     },
     {
       "files": [
