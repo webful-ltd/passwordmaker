@@ -88,7 +88,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "puppeteer": "21.5.0",
     "ts-node": "^10.9",
-    "typescript": "^5.2",
+    "typescript": "5.2.*",
     "wdio-chromedriver-service": "^8.1.1",
     "zone.js": "~0.14.2"
   },
