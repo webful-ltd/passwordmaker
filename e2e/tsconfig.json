@@ -6,7 +6,7 @@
             "es7"
         ],
         "module": "ES2020",
-        "moduleResolution": "NodeNext",
+        "moduleResolution": "Node",
         "types": [
             "node",
             "@wdio/globals/types",

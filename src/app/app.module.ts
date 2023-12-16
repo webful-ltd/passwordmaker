@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicRouteStrategy, provideIonicAngular, IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
@@ -15,16 +15,18 @@ import { SettingsService } from './settings.service';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
     IonicStorageModule.forRoot({
       driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB],
     }),
     AppRoutingModule,
+    IonApp,
+    IonRouterOutlet
   ],
   providers: [
     CloudSettings,
     SettingsService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideIonicAngular()
   ],
   bootstrap: [AppComponent]
 })

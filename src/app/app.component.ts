@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StatusBar } from '@capacitor/status-bar';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 
 import { SettingsService } from './settings.service';
 

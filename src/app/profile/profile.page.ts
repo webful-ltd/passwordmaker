@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { close, key, informationCircleOutline, warning, checkmarkCircleOutline, trashOutline } from 'ionicons/icons';
 
 import { Profile } from '../../models/Profile';
 import { SettingsService } from '../settings.service';
@@ -59,6 +61,7 @@ export class ProfilePageComponent implements OnInit {
     this.profile.get('output_character_set_preset').valueChanges.subscribe(() => {
       this.profile.get('output_character_set_custom').updateValueAndValidity();
     });
+    addIcons({ close, key, informationCircleOutline, warning, checkmarkCircleOutline, trashOutline });
   }
 
   ngOnInit() {
@@ -79,7 +82,7 @@ export class ProfilePageComponent implements OnInit {
         duration: 8000,
         position: 'middle',
         cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel'}],
+        buttons: [{ text: 'OK', role: 'cancel' }],
       }).then(errorToast => errorToast.present());
 
       return;
@@ -91,7 +94,7 @@ export class ProfilePageComponent implements OnInit {
         duration: 6000,
         position: 'middle',
         cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel'}],
+        buttons: [{ text: 'OK', role: 'cancel' }],
       }).then(errorToast => errorToast.present());
 
       return;
@@ -105,7 +108,7 @@ export class ProfilePageComponent implements OnInit {
             message: ('Profile saved!'),
             duration: 3000,
             position: 'middle',
-            buttons: [{ text: 'OK', role: 'cancel'}],
+            buttons: [{ text: 'OK', role: 'cancel' }],
           }).then(successToast => successToast.present());
           this.close();
         },
@@ -115,7 +118,7 @@ export class ProfilePageComponent implements OnInit {
             duration: 6000,
             position: 'middle',
             cssClass: 'error',
-            buttons: [{ text: 'OK', role: 'cancel'}],
+            buttons: [{ text: 'OK', role: 'cancel' }],
           }).then(errorToast => errorToast.present());
         }
       );
@@ -137,7 +140,7 @@ export class ProfilePageComponent implements OnInit {
             message: ('Profile deleted!'),
             duration: 3000,
             position: 'middle',
-            buttons: [{ text: 'OK', role: 'cancel'}],
+            buttons: [{ text: 'OK', role: 'cancel' }],
           }).then(successToast => successToast.present());
           this.close();
         },
@@ -147,7 +150,7 @@ export class ProfilePageComponent implements OnInit {
             duration: 6000,
             position: 'middle',
             cssClass: 'error',
-            buttons: [{ text: 'OK', role: 'cancel'}],
+            buttons: [{ text: 'OK', role: 'cancel' }],
           }).then(errorToast => errorToast.present());
         }
       );

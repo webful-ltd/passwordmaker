@@ -1,16 +1,29 @@
-import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonButton, IonItem, IonInput, IonSelect, IonSelectOption, IonToggle, IonRange, IonActionSheet } from '@ionic/angular/standalone';
+
 import { SettingsPageComponent } from './settings.page';
 
 @NgModule({
   imports: [
-    IonicModule,
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild([{ path: '', component: SettingsPageComponent }])
+    RouterModule.forChild([{ path: '', component: SettingsPageComponent }]),
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonIcon,
+    IonButton,
+    IonItem,
+    IonInput,
+    IonSelect,
+    IonSelectOption,
+    IonToggle,
+    IonRange,
+    IonActionSheet
   ],
   declarations: [SettingsPageComponent]
 })

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonTabs, Platform } from '@ionic/angular';
+import { IonTabs, Platform } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { key, settings } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tabs',
@@ -8,7 +10,9 @@ import { IonTabs, Platform } from '@ionic/angular';
 export class TabsPageComponent implements OnInit {
   @ViewChild('tabs') tab: IonTabs;
 
-  constructor(private platform: Platform) {}
+  constructor(private platform: Platform) {
+    addIcons({ key, settings });
+  }
 
   ngOnInit() {
     /**
