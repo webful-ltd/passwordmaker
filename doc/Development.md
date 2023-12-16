@@ -35,7 +35,7 @@ We currently run:
 * _If first build,_ in Android Studio choose _Build > Select Build Variant..._ and choose `release`.
 * In Android Studio, go to _Build > Generate Signed Bundle / APK...
 * Choose to make an Android App Bundle and use your keystore
-* Upload the signed [`app-release.aab`](../android/app/release/app-release.aab) [in Google Play Console](https://play.google.com/console/u/0/developers)
+* Upload the signed [`app-release.aab`](../android/app/release/app-release.aab) [in Google Play Console](https://play.google.com/console/u/0/developers/app-list)
 
 ### iOS
 
