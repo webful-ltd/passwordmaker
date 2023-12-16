@@ -88,15 +88,15 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "puppeteer": "21.5.0",
     "ts-node": "^10.9",
-    "typescript": "^5.1.6",
+    "typescript": "^5.2",
     "wdio-chromedriver-service": "^8.1.1",
-    "zone.js": "~0.13.1"
+    "zone.js": "~0.14.2"
   },
   "overrides": {
     "optionator": "0.9.3"
   },
   "engines": {
-    "node": ">=18",
+    "node": ">=18.13",
     "npm": ">=8.0"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
