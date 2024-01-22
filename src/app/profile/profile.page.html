@@ -3,200 +3,196 @@
     <ion-title color="light">Profile Settings</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="close()">
-          <ion-icon name="close"></ion-icon>
+        <ion-icon name="close"></ion-icon>
       </ion-button>
-  </ion-buttons>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" *ngIf="profileModel">
-  <ion-card>
-    <ion-card-content>
-      <p>A Profile here means a group of settings to do with <em>how</em> your passwords get made.</p>
-      <p>You can maintain more than one to help satisfy different sites' rules, or gradually upgrade your approach to something even more secure.</p>
-      <p>Once you have more than one Profile you can quickly switch between them on the <strong><ion-icon name="key"></ion-icon> Make a Password</strong> tab.</p>
-    </ion-card-content>
-  </ion-card>
-  <form [formGroup]="profile" (ngSubmit)="save(profile)" novalidate>
-    <ion-list>
-      <ion-item>
-        <ion-input
-          label="Profile Name"
-          labelPlacement="stacked"
-          name="name"
-          formControlName="name"
-        ></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input
-          label="Length of passwords"
-          labelPlacement="stacked"
-          name="output_length"
-          formControlName="output_length"
-          type="number"
-          min="8"
-          max="200"
-        ></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-select
-          label="Possible characters"
-          labelPlacement="stacked"
-          name="output_character_set_preset"
-          formControlName="output_character_set_preset"
+@if (profileModel) {
+  <ion-content class="ion-padding">
+    <ion-card>
+      <ion-card-content>
+        <p>A Profile here means a group of settings to do with <em>how</em> your passwords get made.</p>
+        <p>You can maintain more than one to help satisfy different sites' rules, or gradually upgrade your approach to something even more secure.</p>
+        <p>Once you have more than one Profile you can quickly switch between them on the <strong><ion-icon name="key"></ion-icon> Make a Password</strong> tab.</p>
+      </ion-card-content>
+    </ion-card>
+    <form [formGroup]="profile" (ngSubmit)="save(profile)" novalidate>
+      <ion-list>
+        <ion-item>
+          <ion-input
+            label="Profile Name"
+            labelPlacement="stacked"
+            name="name"
+            formControlName="name"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="Length of passwords"
+            labelPlacement="stacked"
+            name="output_length"
+            formControlName="output_length"
+            type="number"
+            min="8"
+            max="200"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-select
+            label="Possible characters"
+            labelPlacement="stacked"
+            name="output_character_set_preset"
+            formControlName="output_character_set_preset"
+            >
+            <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Alphanum + symbols</ion-select-option>
+            <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789">Alphanumeric</ion-select-option>
+            <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz">Letters</ion-select-option>
+            <ion-select-option value="0123456789">Numbers</ion-select-option>
+            <ion-select-option value="0123456789abcdef">Numbers + a-f</ion-select-option>
+            <ion-select-option value="`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Symbols</ion-select-option>
+            <ion-select-option value="none">Custom</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <p class="help">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          &nbsp;<em>Custom</em> lets you define exactly which letters and numbers can be in passwords, instead of
+          using a preset group.
+        </p>
+        @if (profile.get('output_character_set_preset').value === 'none') {
+          <ion-item>
+            <ion-input
+              label="Possible characters"
+              labelPlacement="stacked"
+              name="output_character_set_custom"
+              formControlName="output_character_set_custom"
+            ></ion-input>
+          </ion-item>
+        }
+        <ion-item>
+          <ion-select
+            label="Hash algorithm"
+            labelPlacement="stacked"
+            name="algorithm"
+            formControlName="algorithm"
+            >
+            <ion-select-option value="hmac-sha256">HMAC-SHA256</ion-select-option>
+            <ion-select-option value="sha256">SHA256</ion-select-option>
+            <ion-select-option value="hmac-sha1">HMAC-SHA1</ion-select-option>
+            <ion-select-option value="sha1">SHA1</ion-select-option>
+            <ion-select-option value="hmac-md5">HMAC-MD5</ion-select-option>
+            <ion-select-option value="md5">MD5</ion-select-option>
+            <ion-select-option value="hmac-ripemd160">HMAC-RIPEMD160</ion-select-option>
+            <ion-select-option value="ripemd160">RIPEMD160</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-select
+            label="Use l33t?"
+            labelPlacement="stacked"
+            name="leet_location"
+            formControlName="leet_location"
+            >
+            <ion-select-option value="none">No</ion-select-option>
+            <ion-select-option value="before-hashing">Before generating password</ion-select-option>
+            <ion-select-option value="after-hashing">After generating password</ion-select-option>
+            <ion-select-option value="both">Before and after generating password</ion-select-option>
+          </ion-select>
+        </ion-item>
+        @if (profile.get('leet_location').value !== 'none') {
+          <ion-item>
+            <ion-range
+              name="leet_level"
+              formControlName="leet_level"
+              label="l33t level"
+              min="1"
+              max="9"
+              color="primary"
+              snaps="true"
+              pin="true"
+            ></ion-range>
+          </ion-item>
+        }
+        <ion-item>
+          <ion-input
+            label="Username / Modifier"
+            labelPlacement="stacked"
+            name="modifier"
+            formControlName="modifier"
+          ></ion-input>
+        </ion-item>
+        <p class="help">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          Used both in a different app? Just enter your Username followed by your Modifier for the same output.
+        </p>
+        <ion-item>
+          <ion-input
+            label="Prefix"
+            labelPlacement="stacked"
+            name="prefix"
+            formControlName="prefix"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="Suffix"
+            labelPlacement="stacked"
+            name="suffix"
+            formControlName="suffix"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="Post-processing suffix"
+            labelPlacement="stacked"
+            name="post_processing_suffix"
+            formControlName="post_processing_suffix"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-toggle
+            name="domain_only"
+            formControlName="domain_only"
+            [checked]="profile.get('domain_only').value"
+            color="primary"
+            enable-on-off-labels="true"
+          >Use just domain name?</ion-toggle>
+        </ion-item>
+      </ion-list>
+      @if (profile.invalid) {
+        <p class="warning">
+          <ion-icon name="warning"></ion-icon>
+          Profile not valid. Please check fields above are complete including name, and that your chosen Length is between 8 and 200 characters.
+        </p>
+      }
+      <ion-button
+        name="save"
+        type="submit"
+        color="primary"
+        expand="block"
+        [disabled]="profile.invalid"
         >
-          <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Alphanum + symbols</ion-select-option>
-          <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789">Alphanumeric</ion-select-option>
-          <ion-select-option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz">Letters</ion-select-option>
-          <ion-select-option value="0123456789">Numbers</ion-select-option>
-          <ion-select-option value="0123456789abcdef">Numbers + a-f</ion-select-option>
-          <ion-select-option value="`~!@#$%^&*()_-+={}|[]\:&quot;;'&lt;&gt;?,./">Symbols</ion-select-option>
-          <ion-select-option value="none">Custom</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <p class="help">
-        <ion-icon name="information-circle-outline"></ion-icon>
-        &nbsp;<em>Custom</em> lets you define exactly which letters and numbers can be in passwords, instead of
-        using a preset group.
-      </p>
-      <ion-item *ngIf="profile.get('output_character_set_preset').value === 'none'">
-        <ion-input
-          label="Possible characters"
-          labelPlacement="stacked"
-          name="output_character_set_custom"
-          formControlName="output_character_set_custom"
-        ></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-select
-          label="Hash algorithm"
-          labelPlacement="stacked"
-          name="algorithm"
-          formControlName="algorithm"
-        >
-          <ion-select-option value="hmac-sha256">HMAC-SHA256</ion-select-option>
-          <ion-select-option value="sha256">SHA256</ion-select-option>
-          <ion-select-option value="hmac-sha1">HMAC-SHA1</ion-select-option>
-          <ion-select-option value="sha1">SHA1</ion-select-option>
-          <ion-select-option value="hmac-md5">HMAC-MD5</ion-select-option>
-          <ion-select-option value="md5">MD5</ion-select-option>
-          <ion-select-option value="hmac-ripemd160">HMAC-RIPEMD160</ion-select-option>
-          <ion-select-option value="ripemd160">RIPEMD160</ion-select-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-select
-          label="Use l33t?"
-          labelPlacement="stacked"
-          name="leet_location"
-          formControlName="leet_location"
-        >
-          <ion-select-option value="none">No</ion-select-option>
-          <ion-select-option value="before-hashing">Before generating password</ion-select-option>
-          <ion-select-option value="after-hashing">After generating password</ion-select-option>
-          <ion-select-option value="both">Before and after generating password</ion-select-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item *ngIf="profile.get('leet_location').value !== 'none'">
-        <ion-range
-          name="leet_level"
-          formControlName="leet_level"
-          label="l33t level"
-          min="1"
-          max="9"
-          color="primary"
-          snaps="true"
-          pin="true"
-        ></ion-range>
-      </ion-item>
-
-      <ion-item>
-        <ion-input
-          label="Username / Modifier"
-          labelPlacement="stacked"
-          name="modifier"
-          formControlName="modifier"
-        ></ion-input>
-      </ion-item>
-      <p class="help">
-        <ion-icon name="information-circle-outline"></ion-icon>
-        Used both in a different app? Just enter your Username followed by your Modifier for the same output.
-      </p>
-
-      <ion-item>
-        <ion-input
-          label="Prefix"
-          labelPlacement="stacked"
-          name="prefix"
-          formControlName="prefix"
-        ></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input
-          label="Suffix"
-          labelPlacement="stacked"
-          name="suffix"
-          formControlName="suffix"
-        ></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input
-          label="Post-processing suffix"
-          labelPlacement="stacked"
-          name="post_processing_suffix"
-          formControlName="post_processing_suffix"
-        ></ion-input>
-      </ion-item>
-  
-      <ion-item>
-        <ion-toggle
-          name="domain_only"
-          formControlName="domain_only"
-          [checked]="profile.get('domain_only').value"
-          color="primary"
-          enable-on-off-labels="true"
-        >Use just domain name?</ion-toggle>
-      </ion-item>
-    </ion-list>
-
-    <p *ngIf="profile.invalid" class="warning">
-      <ion-icon name="warning"></ion-icon>
-      Profile not valid. Please check above for options highlighted with a pink underline.
-    </p>
-    <ion-button
-      name="save"
-      type="submit"
-      color="primary"
-      expand="block"
-      [disabled]="profile.invalid"
-    >
-      <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-      Save
-    </ion-button>
-
-    <ion-button
-      *ngIf="profileCount > 1"
-      (click)="confirmDelete()"
-      name="delete"
-      color="secondary"
-      expand="block"
-    >
-      <ion-icon slot="start" name="trash-outline"></ion-icon>
-      Delete
-    </ion-button>
-
-    <ion-action-sheet
-      [isOpen]="isDeleteConfirmationOpen"
-      header="Are you sure you want to delete this profile?"
-      [buttons]="deleteConfirmationButtons"
-      (didDismiss)="dismissDelete()"
-    ></ion-action-sheet>
-  </form>
-</ion-content>
+        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+        Save
+      </ion-button>
+      @if (profileCount > 1) {
+        <ion-button
+          (click)="confirmDelete()"
+          name="delete"
+          color="secondary"
+          expand="block"
+          >
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Delete
+        </ion-button>
+      }
+      <ion-action-sheet
+        [isOpen]="isDeleteConfirmationOpen"
+        header="Are you sure you want to delete this profile?"
+        [buttons]="deleteConfirmationButtons"
+        (didDismiss)="dismissDelete()"
+      ></ion-action-sheet>
+    </form>
+  </ion-content>
+}

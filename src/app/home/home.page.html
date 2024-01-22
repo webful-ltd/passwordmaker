@@ -40,45 +40,58 @@
       to generate and recall separate login details for each service you use
     </p>
 
-    <p *ngIf="non_domain_warning" class="warning">
-      <ion-icon name="warning"></ion-icon>
-      Your <em>URL or domain</em> doesn't look one. If it is, for example, an app name, you can use that as long
-      as it's <em>exactly</em> the same each time, but it may be easier to use a related domain name, e.g.
-      <em>spotify.com</em> instead of <em>spotify</em>.
-    </p>
+    @if (non_domain_warning) {
+      <p class="warning">
+        <ion-icon name="warning"></ion-icon>
+        Your <em>URL or domain</em> doesn't look one. If it is, for example, an app name, you can use that as long
+        as it's <em>exactly</em> the same each time, but it may be easier to use a related domain name, e.g.
+        <em>spotify.com</em> instead of <em>spotify</em>.
+      </p>
+    }
 
-    <ion-item *ngIf="advanced_mode">
-      <ion-select
-        label="Profile"
-        labelPlacement="stacked"
-        name="profile"
-        (ionChange)="switchProfile($event)"
-        [(ngModel)]="input.active_profile_id"
-      >
-        <ion-select-option
-          *ngFor="let profile of settings.profiles"
-          [value]="profile.profile_id"
-        >{{ profile.name }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <p *ngIf="literal_input_warning" class="warning">
-      <ion-icon name="warning"></ion-icon>
-      Because you have <em>Use just domain name?</em> switched off in Settings, every URL you
-      enter will give you a different password - your input is <em>literal</em>. If you
-      didn't change this on purpose it may mean you can't use your passwords.
-    </p>
-
-    <div *ngIf="output_password">
-      <ion-item class="output_password_outer">
-        <ion-label position="stacked">Per-site password</ion-label>
-        <div class="output_password">{{ output_password }}</div>
+    @if (advanced_mode) {
+      <ion-item>
+        <ion-select
+          label="Profile"
+          labelPlacement="stacked"
+          name="profile"
+          (ionChange)="switchProfile($event)"
+          [(ngModel)]="input.active_profile_id"
+        >
+          @for (profile of advancedSettings.profiles; track profile.profile_id) {
+            <ion-select-option
+              [value]="profile.profile_id"
+            >{{ profile.name }}</ion-select-option>
+          }
+        </ion-select>
       </ion-item>
-      <ion-button *ngIf="clipboard_available" (click)="copy()" color="primary" expand="block">
-        <ion-icon slot="start" name="copy"></ion-icon>
-        Copy
-      </ion-button>
-    </div>
-    <p *ngIf="!output_password">Fill out the above fields to generate a unique, secure password for each service you register with online.</p>
+    }
+
+    @if (literal_input_warning) {
+      <p class="warning">
+        <ion-icon name="warning"></ion-icon>
+        Because you have <em>Use just domain name?</em> switched off in Settings, every URL you
+        enter will give you a different password - your input is <em>literal</em>. If you
+        didn't change this on purpose it may mean you can't use your passwords.
+      </p>
+    }
+
+    @if (output_password) {
+      <div>
+        <ion-item class="output_password_outer">
+          <ion-label position="stacked">Per-site password</ion-label>
+          <div class="output_password">{{ output_password }}</div>
+        </ion-item>
+        @if (clipboard_available) {
+          <ion-button (click)="copy()" color="primary" expand="block">
+            <ion-icon slot="start" name="copy"></ion-icon>
+            Copy
+          </ion-button>
+        }
+      </div>
+    }
+    @if (!output_password) {
+      <p>Fill out the above fields to generate a unique, secure password for each service you register with online.</p>
+    }
   </form>
 </ion-content>
