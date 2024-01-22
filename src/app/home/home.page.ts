@@ -23,11 +23,11 @@ export class HomePageComponent implements OnInit {
   literal_input_warning = false;
   non_domain_warning = false;
   output_password?: string;
+  settings: Settings;
 
   private expire_password_on_context_change = false;
   private expiry_timer_id: number;
   private loading: HTMLIonLoadingElement;
-  private settings: Settings;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -148,6 +148,10 @@ export class HomePageComponent implements OnInit {
     if (window.hasOwnProperty('cordova')) {
       Keyboard.hide();
     }
+  }
+
+  get advancedSettings(): SettingsAdvanced {
+    return this.settings as SettingsAdvanced;
   }
 
   private updateExpiryTimer() {

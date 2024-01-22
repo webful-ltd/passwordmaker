@@ -57,8 +57,8 @@
           name="profile"
           (ionChange)="switchProfile($event)"
           [(ngModel)]="input.active_profile_id"
-          >
-          @for (profile of settings.profiles; track profile.profile_id) {
+        >
+          @for (profile of advancedSettings.profiles; track profile.profile_id) {
             <ion-select-option
               [value]="profile.profile_id"
             >{{ profile.name }}</ion-select-option>

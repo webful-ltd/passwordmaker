@@ -100,7 +100,7 @@
             <ion-toggle
               name="domain_only"
               formControlName="domain_only"
-              [checked]="isDomainOnly"
+              [checked]="settingsForm.get('domain_only').value"
               color="primary"
               enable-on-off-labels="true"
             >Use just domain name?</ion-toggle>
