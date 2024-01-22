@@ -144,7 +144,7 @@ export class SettingsPageComponent implements OnInit {
   save({ value, valid }: { value: Settings, valid: boolean }) {
     if (!valid) {
       this.toast.create({
-        message: ('Settings not valid. Please review options highlighted with a pink underline and check your chosen Length is between 8 and 200 characters.'),
+        message: ('Settings not valid. Please check fields are complete and that your chosen Length is between 8 and 200 characters.'),
         duration: 8000,
         position: 'middle',
         cssClass: 'error',
