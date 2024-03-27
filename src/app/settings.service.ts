@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular/standalone';
+import { Platform, ToastController } from '@ionic/angular/standalone';
 import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import { Storage } from '@ionic/storage-angular';
 import { Subject } from 'rxjs';
@@ -22,6 +22,7 @@ export class SettingsService {
 
   constructor(
     private cloudSettings: CloudSettings,
+    private platform: Platform,
     private storage: Storage,
     public toast: ToastController,
   ) {}
@@ -46,7 +47,7 @@ export class SettingsService {
     // Tell listening pages (e.g. Home) that the settings changed
     savePromise.then(() => {
       this.saveSubject.next();
-      if (window.hasOwnProperty('cordova')) { // No cloud settings without a device
+      if (this.platform.is('capacitor')) { // No cloud settings without a device
         this.cloudSettings.save(settings, true);
       }
     });
@@ -138,7 +139,7 @@ export class SettingsService {
     this.currentPromise = this.storage.get(SettingsService.storageKey).then(settings => {
       if (settings === null) {
         return new Promise(resolve => {
-          if (!window.hasOwnProperty('cordova')) { // No cloud settings without a device
+          if (!this.platform.is('capacitor')) { // No cloud settings without a device
             return resolve(this.loadDefaults());
           }
 

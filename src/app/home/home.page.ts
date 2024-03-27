@@ -45,7 +45,7 @@ export class HomePageComponent implements OnInit {
     this.loading = await this.loadingController.create();
     await this.loading.present();
 
-    if (window.hasOwnProperty('cordova')) {
+    if (this.platform.is('capacitor')) {
       // @capacitor/clipboard "is not implemented on web Wrapper" for now.
       this.clipboard_available = true;
 
@@ -145,7 +145,7 @@ export class HomePageComponent implements OnInit {
    * the keyboard to see the password and Copy button.
    */
   hideKeyboard() {
-    if (window.hasOwnProperty('cordova')) {
+    if (this.platform.is('capacitor')) {
       Keyboard.hide();
     }
   }

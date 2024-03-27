@@ -24,7 +24,7 @@ export class AppComponent {
     this.settings.init();
 
     this.platform.ready().then(() => {
-      if (window.hasOwnProperty('cordova')) { // Don't crash on web platform.
+      if (this.platform.is('capacitor')) { // Don't crash on web platform.
         StatusBar.setBackgroundColor({ color: '#a11692' });
       }
 
