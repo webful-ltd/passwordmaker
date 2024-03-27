@@ -8,12 +8,16 @@ import { AppComponent } from './app.component';
 import { SettingsSimple } from '../models/SettingsSimple';
 
 describe('AppComponent', () => {
-  let platformReadySpy, platformSpy, storageSpy;
+  let platformIsSpy, platformReadySpy, platformSpy, storageSpy;
   const mockSettings = new SettingsSimple();
 
   beforeEach(waitForAsync(() => {
+    platformIsSpy = false;
     platformReadySpy = Promise.resolve();
-    platformSpy = jasmine.createSpyObj('Platform', { ready: platformReadySpy });
+    platformSpy = jasmine.createSpyObj('Platform', {
+      is: platformIsSpy, // not capacitor / mobile
+      ready: platformReadySpy,
+    });
     storageSpy = jasmine.createSpyObj('Storage', {
       create: () => Promise.resolve(true),
       get: () => mockSettings,
