@@ -43,6 +43,9 @@ jobs:
     - name: Globally install Ionic and Capacitor
       run: npm install -g @ionic/cli @capacitor/cli
 
+    - name: Install dependencies
+      run: npm install
+
     - name: Ionic build android
       run: ionic cap build android
 
