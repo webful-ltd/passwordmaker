@@ -23,6 +23,11 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
 
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
@@ -34,6 +39,12 @@ jobs:
     # the head of the pull request instead of the merge commit.
     - run: git checkout HEAD^2
       if: ${{ github.event_name == 'pull_request' }}
+
+    - name: Globally install Ionic and Capacitor
+      run: npm install -g @ionic/cli @capacitor/cli
+
+    - name: Ionic build android
+      run: ionic cap build android
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
