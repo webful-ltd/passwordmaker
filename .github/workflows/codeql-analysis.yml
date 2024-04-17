@@ -47,7 +47,7 @@ jobs:
       run: npm install
 
     - name: Ionic build android
-      run: ionic cap build android
+      run: ionic cap build android --no-open
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
