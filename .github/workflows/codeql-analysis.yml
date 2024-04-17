@@ -17,6 +17,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Setup Java JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
@@ -34,6 +39,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: javascript, java # includes TS
+        java-version: 17
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
@@ -41,6 +47,7 @@ jobs:
       uses: github/codeql-action/autobuild@v3
       with:
         languages: javascript, java # includes TS
+        java-version: 17
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
@@ -57,3 +64,4 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         languages: javascript, java # includes TS
+        java-version: 17
