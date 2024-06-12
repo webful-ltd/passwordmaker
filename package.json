@@ -46,7 +46,7 @@
     "cordova-plugin-cloud-settings": "git://github.com/webful-ltd/cordova-plugin-cloud-settings.git#6c8a220d57fd004a9a2f4b618ea00c3fde4bb989",
     "cordova-plugin-file": "^8.0.0",
     "core-js": "^3.31.0",
-    "jscodeshift": "^0.13.1",
+    "jscodeshift": "^0.15.2",
     "localforage": "^1.9.0",
     "localforage-cordovasqlitedriver": "^1.8.0",
     "rxjs": "^7.5.0",
