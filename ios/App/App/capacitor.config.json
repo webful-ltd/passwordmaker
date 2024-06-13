@@ -17,5 +17,15 @@
 	"server": {
 		"androidScheme": "http",
 		"iosScheme": "ionic"
-	}
+	},
+	"packageClassList": [
+		"CapacitorSQLitePlugin",
+		"AppPlugin",
+		"CAPBrowserPlugin",
+		"ClipboardPlugin",
+		"HapticsPlugin",
+		"KeyboardPlugin",
+		"StatusBarPlugin",
+		"CDVPlugin"
+	]
 }
