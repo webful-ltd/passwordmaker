@@ -14,11 +14,18 @@
 	"ios": {
 		"scheme": "Webful PasswordMaker"
 	},
+	"plugins": {
+		"PrivacyScreen": {
+			"enable": true,
+			"imageName": "Splashscreen"
+		}
+	},
 	"server": {
 		"androidScheme": "http",
 		"iosScheme": "ionic"
 	},
 	"packageClassList": [
+		"PrivacyScreenPlugin",
 		"CapacitorSQLitePlugin",
 		"AppPlugin",
 		"CAPBrowserPlugin",

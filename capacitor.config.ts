@@ -16,6 +16,12 @@ const config: CapacitorConfig = {
   ios: {
     scheme: 'Webful PasswordMaker',
   },
+  plugins: {
+    PrivacyScreen: {
+      enable: true,
+      imageName: 'Splashscreen',
+    },
+  },
   server: {
     androidScheme: 'http', // https://capacitorjs.com/docs/updating/5-0#update-androidscheme
     iosScheme: 'ionic',

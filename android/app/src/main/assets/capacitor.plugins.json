@@ -1,5 +1,9 @@
 [
 	{
+		"pkg": "@capacitor-community/privacy-screen",
+		"classpath": "com.getcapacitor.plugin.privacyscreen.PrivacyScreenPlugin"
+	},
+	{
 		"pkg": "@capacitor-community/sqlite",
 		"classpath": "com.getcapacitor.community.database.sqlite.CapacitorSQLitePlugin"
 	},
