@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as makePassword from '@webful/passwordmaker-lib';
-import * as isSecondLevelDomain from '2ldcheck';
+import makePassword from '@webful/passwordmaker-lib';
+import isSecondLevelDomain from '2ldcheck';
 
 import { Settings } from '../models/Settings';
 

@@ -3,8 +3,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'uk.webful.passwordmaker',
   appName: 'Webful PasswordMaker',
-  webDir: 'www',
-  bundledWebRuntime: false,
+  webDir: 'www/browser',
   cordova: {
     preferences: {
       permissions: 'none',
@@ -15,6 +14,12 @@ const config: CapacitorConfig = {
   },
   ios: {
     scheme: 'Webful PasswordMaker',
+  },
+  plugins: {
+    PrivacyScreen: {
+      enable: true,
+      imageName: 'Splashscreen',
+    },
   },
   server: {
     androidScheme: 'http', // https://capacitorjs.com/docs/updating/5-0#update-androidscheme

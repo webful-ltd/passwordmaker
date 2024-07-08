@@ -1,8 +1,7 @@
 {
 	"appId": "uk.webful.passwordmaker",
 	"appName": "Webful PasswordMaker",
-	"webDir": "www",
-	"bundledWebRuntime": false,
+	"webDir": "www/browser",
 	"cordova": {
 		"preferences": {
 			"permissions": "none",
@@ -13,6 +12,12 @@
 	},
 	"ios": {
 		"scheme": "Webful PasswordMaker"
+	},
+	"plugins": {
+		"PrivacyScreen": {
+			"enable": true,
+			"imageName": "Splashscreen"
+		}
 	},
 	"server": {
 		"androidScheme": "http",
