@@ -89,7 +89,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "puppeteer": "22.11.*",
     "ts-node": "^10.9",
-    "typescript": "5.2.*",
+    "typescript": "5.4.*",
     "wdio-chromedriver-service": "^8.1.1",
     "zone.js": "~0.14.2"
   },
@@ -97,8 +97,8 @@
     "optionator": "0.9.3"
   },
   "engines": {
-    "node": ">=18.13",
-    "npm": ">=8.0"
+    "node": ">=20.9",
+    "npm": ">=10"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
   "cordova": {
