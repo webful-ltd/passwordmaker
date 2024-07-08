@@ -3,8 +3,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'uk.webful.passwordmaker',
   appName: 'Webful PasswordMaker',
-  webDir: 'www',
-  bundledWebRuntime: false,
+  webDir: 'www/browser',
   cordova: {
     preferences: {
       permissions: 'none',
