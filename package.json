@@ -27,7 +27,7 @@
     "@awesome-cordova-plugins/cloud-settings": "^6.3.0",
     "@awesome-cordova-plugins/core": "^6.3.0",
     "@capacitor-community/privacy-screen": "^5.0.0",
-    "@capacitor-community/sqlite": "6.0.0",
+    "@capacitor-community/sqlite": "^6.0.1",
     "@capacitor/android": "^6.0.0",
     "@capacitor/app": "^6.0.0",
     "@capacitor/browser": "^6.0.0",
@@ -111,12 +111,11 @@
     ]
   },
   "browserslist": [
-    "Chrome >=60",
-    "ChromeAndroid >=60",
-    "Firefox >=63",
-    "Firefox ESR",
-    "Edge >=79",
-    "Safari >=13",
-    "iOS >=13"
+    "Chrome >=89",
+    "ChromeAndroid >=89",
+    "Firefox >=75",
+    "Edge >=89",
+    "Safari >=15",
+    "iOS >=15"
   ]
 }

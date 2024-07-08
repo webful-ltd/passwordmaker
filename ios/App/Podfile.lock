@@ -3,20 +3,20 @@ PODS:
     - CapacitorCordova
   - CapacitorApp (6.0.0):
     - Capacitor
-  - CapacitorBrowser (6.0.0):
+  - CapacitorBrowser (6.0.1):
     - Capacitor
   - CapacitorClipboard (6.0.0):
     - Capacitor
   - CapacitorCommunityPrivacyScreen (5.0.0):
     - Capacitor
-  - CapacitorCommunitySqlite (6.0.0):
+  - CapacitorCommunitySqlite (6.0.1):
     - Capacitor
     - SQLCipher
     - ZIPFoundation
   - CapacitorCordova (6.1.0)
   - CapacitorHaptics (6.0.0):
     - Capacitor
-  - CapacitorKeyboard (6.0.0):
+  - CapacitorKeyboard (6.0.1):
     - Capacitor
   - CapacitorStatusBar (6.0.0):
     - Capacitor
@@ -78,13 +78,13 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Capacitor: 187bd7847b6f71467015a20200a1a071be3e5f14
   CapacitorApp: 9d53aec7101f7b030a950c5bdc4df8612576b279
-  CapacitorBrowser: 7e1e2cdbb3e372f09f0bad0c4c21a6d187b679ad
+  CapacitorBrowser: 473c7fd70ddbe541608ff09ec1be14da0078279e
   CapacitorClipboard: 80282f684154124b9019ebf401235b70b0cf4994
   CapacitorCommunityPrivacyScreen: 307d4713e8f085b292e4e7b42daf7eb8016904b2
-  CapacitorCommunitySqlite: fdbfb423d23a1e76a568146f61366cb134a98136
+  CapacitorCommunitySqlite: d0b543e12a06ee6fd0dc287c389e6b435ec4acdf
   CapacitorCordova: be703980ca797f847c3356f78fa175d21c8330c2
   CapacitorHaptics: 9ebc9363f0e9b8eb4295088a0b474530acf1859b
-  CapacitorKeyboard: deacbd09d8d1029c3681197fb05d206b721d5f73
+  CapacitorKeyboard: 5f32a712adf41e07a61caafb82cf29fb6d8ba123
   CapacitorStatusBar: 2e4369f99166125435641b1908d05f561eaba6f6
   CordovaPlugins: 899118e3ce52b7f9fcd4b9887cf70ce462f9bdb4
   CordovaPluginsResources: 0c211f770ed91763a179ebcd9b9346e120b70662
