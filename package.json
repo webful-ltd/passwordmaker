@@ -37,7 +37,7 @@
     "@capacitor/ios": "^6.0.0",
     "@capacitor/keyboard": "^6.0.0",
     "@capacitor/status-bar": "^6.0.0",
-    "@ionic/angular": "^7.0.1",
+    "@ionic/angular": "^8.2.5",
     "@ionic/storage-angular": "^4.0.0",
     "@types/jasmine": "^4.3.5",
     "@webful/passwordmaker-lib": "~0.1.7",
