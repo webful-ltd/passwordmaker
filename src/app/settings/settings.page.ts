@@ -3,7 +3,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Browser } from '@capacitor/browser';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { informationCircleOutline, cog, warning, checkmarkCircleOutline, addCircleOutline } from 'ionicons/icons';
+import {
+  addCircleOutline,
+  checkmarkCircleOutline,
+  close,
+  cog,
+  help,
+  informationCircleOutline,
+  warning,
+} from 'ionicons/icons';
 
 import { Profile } from '../../models/Profile';
 import { ProfilePageComponent } from '../profile/profile.page';
@@ -27,16 +35,16 @@ export class SettingsPageComponent implements OnInit {
   advancedConfirmationButtons = [
     {
       text: 'Use Advanced mode permanently',
-      icon: 'cog',
+      icon: cog.toString(),
       handler: () => this.addFirstProfile(),
     }, {
       text: 'Learn more first',
-      icon: 'help',
+      icon: help.toString(),
       handler: () => this.openAdvancedInfo(),
     }
     , {
       text: 'Cancel',
-      icon: 'close',
+      icon: close.toString(),
       role: 'cancel',
     },
   ];
@@ -65,7 +73,13 @@ export class SettingsPageComponent implements OnInit {
       added_number_on: [false],
       added_number: [0],
     });
-    addIcons({ informationCircleOutline, cog, warning, checkmarkCircleOutline, addCircleOutline });
+    addIcons({
+      addCircleOutline,
+      checkmarkCircleOutline,
+      cog,
+      informationCircleOutline,
+      warning,
+    });
   }
 
   async ngOnInit() {

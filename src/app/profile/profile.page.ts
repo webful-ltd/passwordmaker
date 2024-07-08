@@ -18,11 +18,11 @@ export class ProfilePageComponent implements OnInit {
 
   deleteConfirmationButtons = [{
     text: 'Delete permanently',
-    icon: 'trash-outline',
+    icon: trashOutline.toString(),
     handler: () => this.delete(),
   }, {
     text: 'Cancel',
-    icon: 'close',
+    icon: close.toString(),
     role: 'cancel',
   }];
   isDeleteConfirmationOpen = false;
