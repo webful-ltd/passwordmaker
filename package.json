@@ -70,7 +70,7 @@
     "@capacitor/cli": "^6.0.0",
     "@ionic/angular-toolkit": "11.0.1",
     "@ionic/cordova-builders": "^11.0.0",
-    "@types/node": "^20.9.0",
+    "@types/node": "^20.14.8",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@wdio/cli": "^8.3.5",
@@ -78,7 +78,7 @@
     "@wdio/jasmine-framework": "^8.11.3",
     "@wdio/local-runner": "^8.3.5",
     "@wdio/spec-reporter": "^8.3.0",
-    "chromedriver": "^126.0.0",
+    "chromedriver": "^127.0.0",
     "eslint": "^8.57.0",
     "jasmine-core": "^5.0.1",
     "jasmine-spec-reporter": "^7.0.0",
@@ -87,7 +87,7 @@
     "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
-    "puppeteer": "22.11.*",
+    "puppeteer": "23.1.*",
     "ts-node": "^10.9",
     "typescript": "5.4.*",
     "wdio-chromedriver-service": "^8.1.1",
@@ -97,7 +97,7 @@
     "optionator": "0.9.3"
   },
   "engines": {
-    "node": ">=20.9",
+    "node": ">=20.16",
     "npm": ">=10"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
