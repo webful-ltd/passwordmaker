@@ -47,8 +47,8 @@ export class AppPage {
   populateIonicSelect(elementName: string, valueLabel: string): Promise<boolean> {
     return new Promise(async resolve => {
       const ionicSelect = await $(`ion-select[name="${elementName}"]`);
-      ionicSelect.click();
-      await browser.pause(400); // Wait for select to be interactible.
+      await ionicSelect.click();
+      await ionicSelect.waitForStable();
 
       return $$('div.alert-radio-group > button').map(possibleRadio => {
         possibleRadio.getText().then(async possibleRadioText => {
@@ -58,8 +58,6 @@ export class AppPage {
             // ion-select OK button, inside the alert group overlay, now has its copy in an inner span.
             // But Webdriver.io v9+ is smart enough that we can just click whatever has 'OK' text.
             await $('=OK').click();
-
-            await browser.pause(200); // Wait for overlay's close animation so it doesn't steal focus
             resolve(true);
           }
         }).catch(error => {
