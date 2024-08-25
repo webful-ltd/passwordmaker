@@ -56,7 +56,8 @@ export class AppPage {
             possibleRadio.click();
 
             // ion-select OK button, inside the alert group overlay, now has its copy in an inner span.
-            await $('span*=OK').parentElement().click();
+            // But Webdriver.io v9+ is smart enough that we can just click whatever has 'OK' text.
+            await $('=OK').click();
 
             await browser.pause(200); // Wait for overlay's close animation so it doesn't steal focus
             resolve(true);
@@ -74,7 +75,7 @@ export class AppPage {
     const ionicInput = await $(`ion-toggle[name="${elementName}"]`);
 
     return new Promise<boolean>(async resolve => {
-      const currentValue = await $(ionicInput).$('>>> input[type="checkbox"]').getAttribute('aria-checked');
+      const currentValue = await $(ionicInput).$('input[type="checkbox"]').getAttribute('aria-checked');
 
       if (currentValue === shouldBeChecked.toString()) {
         resolve(true);

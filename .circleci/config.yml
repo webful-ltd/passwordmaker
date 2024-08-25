@@ -5,6 +5,7 @@ orbs:
 
 jobs:
   test:
+    resource_class: large
     docker:
       - image: cimg/node:20.16-browsers
         auth:
@@ -17,11 +18,42 @@ jobs:
           chrome-version: 127.0.6533.119 # https://github.com/puppeteer/puppeteer/blob/main/versions.json
       - browser-tools/install-chromedriver
       - checkout
-      - run: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 npm install --quiet
-      - run: npm run ci
+      - restore_cache:
+          keys:
+            - node20-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install dependencies
+          command: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 npm install --quiet
+      - save_cache:
+          paths:
+            - node_modules
+          key: node20-{{ checksum "package-lock.json" }}
+      - run:
+          name: Lint
+          command: npm run lint
+      - run:
+          name: Unit test
+          command: npm run test:once
+      - run:
+          name: Start app for e2e's
+          command: npm run start
+          background: true
+      - run:
+          name: Wait for app to be reachable
+          command: |
+            for i in `seq 1 30`;
+            do
+              nc -z localhost 4200 && echo Ready! && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for app && exit 1
+      - run:
+          name: e2e test
+          command: npm run e2e
 
 workflows:
-  test:
+  all:
     jobs:
       - test:
           context:

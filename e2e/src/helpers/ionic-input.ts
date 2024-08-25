@@ -11,7 +11,7 @@ export class IonicInput extends IonicComponent {
     value: string,
     { visibilityTimeout = 5000 }: ElementActionOptions = {}
   ) {
-    const el = await Ionic$.$(this.selector as string);
+    const el = await Ionic$.$(this.selector);
     await el.waitForDisplayed({ timeout: visibilityTimeout });
 
     const ionTags = ['ion-input', 'ion-textarea'];
@@ -24,7 +24,7 @@ export class IonicInput extends IonicComponent {
   }
 
   async getValue({ visibilityTimeout = 5000 }: ElementActionOptions = {}) {
-    const el = await Ionic$.$(this.selector as string);
+    const el = await Ionic$.$(this.selector);
     await el.waitForDisplayed({ timeout: visibilityTimeout });
 
     const ionTags = ['ion-input', 'ion-textarea'];
