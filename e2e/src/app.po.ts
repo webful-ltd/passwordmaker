@@ -56,7 +56,8 @@ export class AppPage {
             possibleRadio.click();
 
             // ion-select OK button, inside the alert group overlay, now has its copy in an inner span.
-            await $('span*=OK').parentElement().click();
+            // But Webdriver.io v9+ is smart enough that we can just click whatever has 'OK' text.
+            await $('=OK').click();
 
             await browser.pause(200); // Wait for overlay's close animation so it doesn't steal focus
             resolve(true);
