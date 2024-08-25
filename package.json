@@ -11,8 +11,7 @@
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "e2e": "wdio run e2e/wdio.conf.ts",
-    "sleep5s": "node -e \"setTimeout(() => process.exit(0), 5000)\"",
-    "ci": "npm run lint && npm run test:once && (npm run start) & npm run sleep5s && npm run e2e",
+    "ci": "npm run lint && npm run test:once && (npm run start&) && npm run e2e",
     "resources": "npx @capacitor/assets generate"
   },
   "license": "GPL-3.0-or-later",
