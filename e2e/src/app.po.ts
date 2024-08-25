@@ -106,12 +106,11 @@ export class AppPage {
   };
 
   async getOutputPassword() {
-    // With the Ionic + Angular + Chromedriver updates August 2019, browser.waitForAngular() alone
-    // seemed to stop working for ensuring that div.output_password is available, so had to add an
-    // explicit pause here too.
-    await browser.pause(200);
+    const outputElement = $('div.output_password');
+    await outputElement.waitForExist();
+    await outputElement.waitForStable();
 
-    return $('div.output_password').getText();
+    return outputElement.getText();
   };
 
   async confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
