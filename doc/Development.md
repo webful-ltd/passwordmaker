@@ -15,9 +15,13 @@
 
 ## Test locally
 
-To run all tests as CI does:
+To run all tests roughly similarly to how CI does:
 
 * `npm run ci`
+
+Note that background-ing inside the `npm` task stopped working on CircleCI with the move to WebdriverIO 9
+'BiDi' runner and latest libraries, so the actual CI job now has its steps broken into individual steps with
+the app start using `background`. This also gives more legible output.
 
 ### Test runtime environments
 
