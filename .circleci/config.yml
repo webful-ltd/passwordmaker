@@ -33,13 +33,13 @@ jobs:
       - run:
           name: Wait for app to be reachable
           command: |
-            for i in `seq 1 10`;
+            for i in `seq 1 15`;
             do
               nc -z localhost 4200 && echo Ready! && exit 0
               echo -n .
               sleep 1
             done
-            echo Failed waiting for app && exit 
+            echo Failed waiting for app && exit 1
       - run:
           name: e2e test
           command: npm run e2e
