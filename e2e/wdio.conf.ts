@@ -1,7 +1,6 @@
-import puppeteer from 'puppeteer';
-process.env.CHROME_BIN = puppeteer.executablePath();
+import type { Options } from '@wdio/types'
 
-export const config = {
+export const config: Options.Testrunner = {
     //
     // ====================
     // Runner Configuration
@@ -25,7 +24,7 @@ export const config = {
         // see https://github.com/TypeStrong/ts-node#cli-and-programmatic-options
         // for all available options
         tsNodeOpts: {
-            // transpileOnly: true,
+            transpileOnly: true,
             project: 'e2e/tsconfig.json'
         }
         // tsconfig-paths is only used if "tsConfigPathsOpts" are provided, if you
@@ -87,25 +86,10 @@ export const config = {
         maxInstances: 5,
         //
         browserName: 'chrome',
-        'goog:chromeOptions': {
-            args: [
-                '--headless', // Comment both --headless flags for real browser local testing
-                '--no-sandbox',
-                '--start-maximised',
-                '--disable-gpu',
-                '--whitelisted-ips=',
-                '--disable-dev-shm-usage',
-                '--allow-insecure-localhost',
-                '--disable-web-security',
-                '--ignore-certificate-errors',
-                '--allow-running-insecure-content',
-            ],
-            extensions: [],
-        },
         acceptInsecureCerts: true,
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
-        excludeDriverLogs: ['*'], // exclude all driver session logs
+        // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
         // excludeDriverLogs: ['bugreport', 'server'],
     }],
     //
@@ -183,10 +167,9 @@ export const config = {
 
 
     //
-    // Options to be passed to Mocha.
-    // See the full list at http://mochajs.org/
+    // Options to be passed to Jasmine.
     jasmineOpts: {
-        defaultTimeoutInterval: 30000,
+        defaultTimeoutInterval: 60000,
         // For now, we have some test rely on the length etc. from the previous ones, so we need the side
         // effects and therefore a specific order. We should add a 'reset' helper in the future so we can
         // turn on randomisation and better guarantee non-flaky tests.
@@ -235,8 +218,8 @@ export const config = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {Object}         browser      instance of created browser/device session
      */
-    before: function (capabilities, specs) {
-    },
+    // before: function (capabilities, specs) {
+    // },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {String} commandName hook command name
