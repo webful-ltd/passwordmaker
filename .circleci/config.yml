@@ -5,6 +5,7 @@ orbs:
 
 jobs:
   test:
+    resource_class: large
     docker:
       - image: cimg/node:20.16-browsers
         auth:
