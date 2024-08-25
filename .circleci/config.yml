@@ -33,7 +33,7 @@ jobs:
       - run:
           name: Wait for app to be reachable
           command: |
-            for i in `seq 1 15`;
+            for i in `seq 1 30`;
             do
               nc -z localhost 4200 && echo Ready! && exit 0
               echo -n .
