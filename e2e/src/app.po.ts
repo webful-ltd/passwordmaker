@@ -74,7 +74,7 @@ export class AppPage {
     const ionicInput = await $(`ion-toggle[name="${elementName}"]`);
 
     return new Promise<boolean>(async resolve => {
-      const currentValue = await $(ionicInput).$('>>> input[type="checkbox"]').getAttribute('aria-checked');
+      const currentValue = await $(ionicInput).$('input[type="checkbox"]').getAttribute('aria-checked');
 
       if (currentValue === shouldBeChecked.toString()) {
         resolve(true);

@@ -156,16 +156,6 @@ export const config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     services: [
-        ['chromedriver', {
-            outputDir: '/tmp/chromedriver-logs',
-            logFileName: 'wdio-chromedriver.log',
-            args: [
-                '--headless', // Comment both --headless flags for real browser local testing
-                '--no-sandbox',
-                '--disable-dev-shm-usage',
-                '--whitelisted-ips=',
-            ],
-        }],
     ],
 
     // Framework you want to run your specs with.
