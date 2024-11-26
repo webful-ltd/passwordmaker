@@ -50,20 +50,29 @@ export class AppPage {
       await ionicSelect.click();
       await ionicSelect.waitForStable();
 
-      return $$('div.alert-radio-group > button').map(possibleRadio => {
+      const possibleRadios = await $$('>>>.alert-radio-group > button'); // inc. label, clickable
+      const possibleOkButtons = await $$('>>>button.alert-button');
+
+      possibleRadios.map(possibleRadio => {
         possibleRadio.getText().then(async possibleRadioText => {
           if (possibleRadioText === valueLabel) {
             possibleRadio.click();
-
-            // ion-select OK button, inside the alert group overlay, now has its copy in an inner span.
-            // But Webdriver.io v9+ is smart enough that we can just click whatever has 'OK' text.
-            await $('=OK').click();
-            resolve(true);
           }
         }).catch(error => {
           // If we already found the desired radio button in another elements from the `map` and
           // clicked OK, this one won't have an element to `getText()` from any more. This is fine
           // and we just need to catch the WebDriver error so the test can proceed.
+        });
+      });
+
+      await ionicSelect.waitForStable();
+
+      possibleOkButtons.map(possibleOkButton => {
+        possibleOkButton.getText().then(async possibleOkButtonText => {
+          if (possibleOkButtonText === 'OK') {
+            possibleOkButton.click();
+            resolve(true);
+          }
         });
       });
     });
@@ -112,11 +121,8 @@ export class AppPage {
   };
 
   async confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
-    if (expectedToBeVisible) {
-      expect($(`ion-range[ng-reflect-name="${elementName}"]`)).toExist();
-    } else {
-      expect($(`ion-range[ng-reflect-name="${elementName}"]`)).not.toExist();
-    }
+    const rangeElements = await $$(`ion-range[ng-reflect-name="${elementName}"]`);
+    expect(await rangeElements.length).toEqual(expectedToBeVisible ? 1 : 0);
   };
 
   async getPageText(pageName: string): Promise<string> {
