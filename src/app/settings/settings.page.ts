@@ -24,6 +24,7 @@ import { SettingsSimple } from '../../models/SettingsSimple';
   selector: 'app-settings',
   styleUrls: ['./settings.page.scss'],
   templateUrl: 'settings.page.html',
+  standalone: false
 })
 
 export class SettingsPageComponent implements OnInit {

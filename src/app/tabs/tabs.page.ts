@@ -6,6 +6,7 @@ import { key, settings } from 'ionicons/icons';
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
+  standalone: false
 })
 export class TabsPageComponent implements OnInit {
   @ViewChild('tabs') tab: IonTabs;

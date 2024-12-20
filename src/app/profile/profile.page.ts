@@ -11,6 +11,7 @@ import { SettingsService } from '../settings.service';
   selector: 'profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
+  standalone: false
 })
 export class ProfilePageComponent implements OnInit {
   @Input() profileModel: Profile;

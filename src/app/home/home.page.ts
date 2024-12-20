@@ -15,6 +15,7 @@ import { SettingsService } from '../settings.service';
   selector: 'app-home',
   styleUrls: ['./home.page.scss'],
   templateUrl: 'home.page.html',
+  standalone: false
 })
 export class HomePageComponent implements OnInit {
   advanced_mode = false;
