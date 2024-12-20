@@ -6,6 +6,9 @@
 # Don't check in production Android builds
 PasswordMaker.apk
 
+# Or iOS profile
+PasswordMaker_App_Store_provisioning.mobileprovision
+
 *~
 *.sw[mnpcod]
 *.log
