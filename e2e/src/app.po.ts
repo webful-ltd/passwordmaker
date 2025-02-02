@@ -50,6 +50,8 @@ export class AppPage {
       await ionicSelect.click();
       await ionicSelect.waitForStable();
 
+      await browser.pause(500); // CI needs a bit of time for inner elements to be ready.
+
       const possibleRadios = await $$('>>>.alert-radio-group > button');
       const possibleOkButtons = await $$('>>>.alert-button-group > button');
 
