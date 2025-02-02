@@ -91,6 +91,11 @@ export const config: Options.Testrunner = {
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
         // excludeDriverLogs: ['bugreport', 'server'],
+        
+        // Even though many or all tests fall back to classic at some stage atm, it seems like
+        // we can't use classic exclusively. If we try there are stale element errors, maybe related
+        // to Ionic Select components.
+        'wdio:enforceWebDriverClassic': false,
     }],
     //
     // ===================
