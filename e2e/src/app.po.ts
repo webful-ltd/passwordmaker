@@ -50,8 +50,10 @@ export class AppPage {
       await ionicSelect.click();
       await ionicSelect.waitForStable();
 
-      const possibleRadios = await $$('>>>.alert-radio-group > button'); // inc. label, clickable
-      const possibleOkButtons = await $$('>>>button.alert-button');
+      await browser.pause(500); // CI needs a bit of time for inner elements to be ready.
+
+      const possibleRadios = await $$('>>>.alert-radio-group > button');
+      const possibleOkButtons = await $$('>>>.alert-button-group > button');
 
       possibleRadios.map(possibleRadio => {
         possibleRadio.getText().then(async possibleRadioText => {
