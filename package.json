@@ -70,7 +70,7 @@
     "@ionic/angular-toolkit": "^12.0.0",
     "@ionic/cordova-builders": "^12.0.0",
     "@types/jasmine": "^5.1.4",
-    "@types/node": "^20.14.8",
+    "@types/node": "^22.13",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
     "@typescript-eslint/parser": "^8.18.1",
     "@wdio/cli": "^9.0.7",

@@ -7,7 +7,7 @@ jobs:
   test:
     resource_class: large
     docker:
-      - image: cimg/node:20.16-browsers
+      - image: cimg/node:22.13-browsers
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_ACCESS_TOKEN
@@ -20,14 +20,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node20-{{ checksum "package-lock.json" }}
+            - node22-{{ checksum "package-lock.json" }}
       - run:
           name: Install dependencies
           command: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 npm install --quiet
       - save_cache:
           paths:
             - node_modules
-          key: node20-{{ checksum "package-lock.json" }}
+          key: node22-{{ checksum "package-lock.json" }}
       - run:
           name: Lint
           command: npm run lint
