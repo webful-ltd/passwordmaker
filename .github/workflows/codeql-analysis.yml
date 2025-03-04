@@ -13,7 +13,7 @@ on:
 
 jobs:
   analyse-ts:
-    name: Analyze TypeScript
+    name: Analyse TypeScript
     runs-on: ubuntu-latest
     steps:
       - name: Setup Node
@@ -35,6 +35,8 @@ jobs:
         with:
           build-mode: none
           languages: javascript # includes TS
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
 
   analyse-java:
     name: Analyse Java
