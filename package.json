@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@angular-devkit/architect": "^0.1901.1",
-    "@angular-devkit/build-angular": "^19.0.6",
+    "@angular-devkit/build-angular": "^19.2.0",
     "@angular-devkit/core": "^19.0.6",
     "@angular-devkit/schematics": "^19.0.6",
     "@angular-eslint/builder": "^19.0.2",
@@ -68,7 +68,7 @@
     "@capacitor/assets": "^3.0.1",
     "@capacitor/cli": "^7.0.0",
     "@ionic/angular-toolkit": "^12.0.0",
-    "@ionic/cordova-builders": "^12.0.0",
+    "@ionic/cordova-builders": "^12.2.0",
     "@types/jasmine": "^5.1.4",
     "@types/node": "^22.13",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
