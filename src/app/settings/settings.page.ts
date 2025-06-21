@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Browser } from '@capacitor/browser';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular/standalone';
@@ -28,6 +28,12 @@ import { SettingsSimple } from '../../models/SettingsSimple';
 })
 
 export class SettingsPageComponent implements OnInit {
+  private formBuilder = inject(FormBuilder);
+  loadingController = inject(LoadingController);
+  modalController = inject(ModalController);
+  private settingsService = inject(SettingsService);
+  toast = inject(ToastController);
+
   settingsForm: FormGroup;
   advanced_mode = false;
   profiles: Profile[] = [];
@@ -53,13 +59,7 @@ export class SettingsPageComponent implements OnInit {
 
   private loading: HTMLIonLoadingElement;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    public loadingController: LoadingController,
-    public modalController: ModalController,
-    private settingsService: SettingsService,
-    public toast: ToastController,
-  ) {
+  constructor() {
     this.settingsForm = this.formBuilder.group({
       algorithm: ['hmac-sha256', Validators.required],
       domain_only: [true],

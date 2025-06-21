@@ -2,6 +2,7 @@
 # http://git-scm.com/docs/gitignore
 /.angular/cache
 /dist/out-tsc
+/dist/test-out
 
 # Don't check in production Android builds
 PasswordMaker.apk

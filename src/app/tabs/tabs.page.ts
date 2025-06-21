@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { IonTabs, Platform } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { key, settings } from 'ionicons/icons';
@@ -9,9 +9,11 @@ import { key, settings } from 'ionicons/icons';
   standalone: false
 })
 export class TabsPageComponent implements OnInit {
+  private platform = inject(Platform);
+
   @ViewChild('tabs') tab: IonTabs;
 
-  constructor(private platform: Platform) {
+  constructor() {
     addIcons({ key, settings });
   }
 

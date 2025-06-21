@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, inject } from '@angular/core';
 import { Clipboard } from '@capacitor/clipboard';
 import { Keyboard } from '@capacitor/keyboard';
 import { LoadingController, Platform, ToastController } from '@ionic/angular/standalone';
@@ -18,6 +18,14 @@ import { SettingsService } from '../settings.service';
   standalone: false
 })
 export class HomePageComponent implements OnInit {
+  private changeDetector = inject(ChangeDetectorRef);
+  loadingController = inject(LoadingController);
+  private passwordsService = inject(PasswordsService);
+  private platform = inject(Platform);
+  private settingsService = inject(SettingsService);
+  toast = inject(ToastController);
+  private zone = inject(NgZone);
+
   advanced_mode = false;
   clipboard_available = false;
   input: Input = new Input();
@@ -30,15 +38,7 @@ export class HomePageComponent implements OnInit {
   private expiry_timer_id: number;
   private loading: HTMLIonLoadingElement;
 
-  constructor(
-    private changeDetector: ChangeDetectorRef,
-    public loadingController: LoadingController,
-    private passwordsService: PasswordsService,
-    private platform: Platform,
-    private settingsService: SettingsService,
-    public toast: ToastController,
-    private zone: NgZone,
-  ) {
+  constructor() {
     addIcons({ informationCircleOutline, warning, copy });
   }
 

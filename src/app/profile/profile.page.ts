@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -14,6 +14,11 @@ import { SettingsService } from '../settings.service';
   standalone: false
 })
 export class ProfilePageComponent implements OnInit {
+  private formBuilder = inject(FormBuilder);
+  modalController = inject(ModalController);
+  private settingsService = inject(SettingsService);
+  toast = inject(ToastController);
+
   @Input() profileModel: Profile;
   @Input() profileCount: number; // Total profiles so far
 
@@ -31,12 +36,7 @@ export class ProfilePageComponent implements OnInit {
 
   private profileId: number;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    public modalController: ModalController,
-    private settingsService: SettingsService,
-    public toast: ToastController,
-  ) {
+  constructor() {
     this.profile = this.formBuilder.group({
       name: ['', [Validators.required]], // Uniqueness is checked in save() to keep things performant
       output_length: [15, [

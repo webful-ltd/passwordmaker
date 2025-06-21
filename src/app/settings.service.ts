@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Platform, ToastController } from '@ionic/angular/standalone';
 import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import { Storage } from '@ionic/storage-angular';
@@ -13,19 +13,17 @@ import { SettingsSimple } from '../models/SettingsSimple';
   providedIn: 'root'
 })
 export class SettingsService {
+  private cloudSettings = inject(CloudSettings);
+  private platform = inject(Platform);
+  private storage = inject(Storage);
+  toast = inject(ToastController);
+
   private static storageKey = 'settings';
 
   ready = false;
   saveSubject: Subject<void> = new Subject<void>();
   private currentSettings: Settings;
   private currentPromise?: Promise<any>;
-
-  constructor(
-    private cloudSettings: CloudSettings,
-    private platform: Platform,
-    private storage: Storage,
-    public toast: ToastController,
-  ) {}
 
   async init() {
     await this.storage.create();

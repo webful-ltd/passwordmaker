@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { StatusBar } from '@capacitor/status-bar';
 import { Platform } from '@ionic/angular/standalone';
 
@@ -10,10 +10,10 @@ import { SettingsService } from './settings.service';
   standalone: false
 })
 export class AppComponent {
-  constructor(
-    private platform: Platform,
-    private settings: SettingsService,
-  ) {
+  private platform = inject(Platform);
+  private settings = inject(SettingsService);
+
+  constructor() {
     this.initializeApp();
   }
 
