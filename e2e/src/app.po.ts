@@ -123,7 +123,7 @@ export class AppPage {
   };
 
   async confirmRangeVisibility(elementName: string, expectedToBeVisible: boolean) {
-    const rangeElements = await $$(`ion-range[ng-reflect-name="${elementName}"]`);
+    const rangeElements = await $$(`ion-range[name="${elementName}"]`);
     expect(await rangeElements.length).toEqual(expectedToBeVisible ? 1 : 0);
   };
 
