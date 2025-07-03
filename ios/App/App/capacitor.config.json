@@ -17,6 +17,9 @@
 		"PrivacyScreen": {
 			"enable": true,
 			"imageName": "Splashscreen"
+		},
+		"StatusBar": {
+			"overlaysWebView": false
 		}
 	},
 	"server": {
