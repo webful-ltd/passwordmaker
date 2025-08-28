@@ -26,7 +26,6 @@ export class AppComponent {
 
     this.platform.ready().then(() => {
       if (this.platform.is('capacitor')) { // Don't crash on web platform.
-        // Probably only working on iOS and Android <=14 right now, see `capacitor.config.ts` notes.
         StatusBar.setBackgroundColor({ color: '#a11692' });
       }
 

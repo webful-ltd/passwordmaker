@@ -13,7 +13,7 @@ const config: CapacitorConfig = {
     }
   },
   android: {
-    // See StatusBar notes below and 
+    // See StatusBar notes below.
     adjustMarginsForEdgeToEdge: 'force',
   },
   ios: {
@@ -31,8 +31,8 @@ const config: CapacitorConfig = {
       // https://github.com/ionic-team/ionic-framework/issues/30090
       // Possibly consider @capawesome/capacitor-android-edge-to-edge-support if we find issues
       // beyond the statusbar.
-      // Doesn't seem like we can have a purple statusbar on Android 16 (and maybe 15?) for now, without having layout
-      // problems too. Prioritising keeping everything usable rather than pretty until there are better fixes.
+      // See also `android/app/src/main/res/values/styles.xml` temporary workarounds to allow nice statusbars
+      // on Android 15 and 16 for now.
       overlaysWebView: false,
     }
   },
