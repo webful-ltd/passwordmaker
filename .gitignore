@@ -6,6 +6,9 @@
 
 # Don't check in production Android builds
 PasswordMaker.apk
+# Prior to Aug 2025 we had some subset of output metadata checked in but not baselines and not up to date? Seems better
+# to exclude the whole folder.
+/android/app/release
 
 # Or iOS profile
 PasswordMaker_App_Store_provisioning.mobileprovision
