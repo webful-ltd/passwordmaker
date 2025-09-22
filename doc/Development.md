@@ -40,6 +40,7 @@ We currently run:
 * In Android Studio, go to _Build > Generate Signed Bundle / APK...
 * Choose to make an Android App Bundle and use your keystore
 * Upload the signed [`app-release.aab`](../android/app/release/app-release.aab) [in Google Play Console](https://play.google.com/console/u/0/developers/app-list)
+* Build again and choose APK, uploading that to the [GitHub Release](https://github.com/webful-ltd/passwordmaker/releases)
 
 ### iOS
 

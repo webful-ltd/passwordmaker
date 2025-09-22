@@ -26,8 +26,8 @@
     "@angular/router": "^20.0.4",
     "@awesome-cordova-plugins/cloud-settings": "^6.3.0",
     "@awesome-cordova-plugins/core": "^6.3.0",
-    "@capacitor-community/privacy-screen": "6.0.0",
-    "@capacitor-community/sqlite": "7.0.0",
+    "@capacitor-community/privacy-screen": "^6.0.0",
+    "@capacitor-community/sqlite": "^7.0.1",
     "@capacitor/android": "^7.0.0",
     "@capacitor/app": "^7.0.0",
     "@capacitor/browser": "^7.0.0",
@@ -48,7 +48,6 @@
     "core-js": "^3.31.0",
     "jscodeshift": "^0.15.2",
     "localforage": "^1.9.0",
-    "localforage-cordovasqlitedriver": "^1.8.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.3.0"
   },
