@@ -5,10 +5,11 @@ import { IonicRouteStrategy, provideIonicAngular, IonApp, IonRouterOutlet } from
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
-import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CapacitorSqliteDriverService } from './capacitor-sqlite-driver.service';
+import { LegacyStorageModule } from './legacy-storage.module';
 import { SettingsService } from './settings.service';
 
 @NgModule({
@@ -16,7 +17,12 @@ import { SettingsService } from './settings.service';
   imports: [
     BrowserModule,
     IonicStorageModule.forRoot({
-      driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB],
+      driverOrder: [CapacitorSqliteDriverService._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+    }),
+    // Provide a separate legacy storage instance so both old and new storage
+    // implementations can be injected during a migration.
+    LegacyStorageModule.forRoot({
+      driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
     }),
     AppRoutingModule,
     IonApp,

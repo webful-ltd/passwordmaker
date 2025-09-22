@@ -4,8 +4,8 @@ import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import { IonInput, IonSelect, IonToggle, provideIonicAngular } from '@ionic/angular/standalone';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
-import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
+import { CapacitorSqliteDriverService } from '../capacitor-sqlite-driver.service';
 import { Profile } from '../../models/Profile';
 import { ProfilePageComponent } from './profile.page';
 
@@ -21,7 +21,7 @@ describe('ProfilePageComponent', () => {
         IonSelect,
         IonToggle,
         IonicStorageModule.forRoot({
-          driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB],
+          driverOrder: [CapacitorSqliteDriverService._driver, Drivers.IndexedDB],
         }),
         ReactiveFormsModule,
       ],
