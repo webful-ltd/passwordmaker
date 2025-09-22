@@ -50,19 +50,17 @@ export class SettingsService {
 
     // Log and temporarily toast-alert which driver is in use
     console.log('Using storage ' + this.storage.driver);
-    await this.toast.create({ message: `Using storage driver: ${this.storage.driver}`, duration: 7_000, position: 'middle' }).then(t => t.present());
+    await this.toast.create({ message: `Using storage driver: ${this.storage.driver}`, duration: 2_500, position: 'middle' }).then(t => t.present());
 
     // Attempt migration from legacy storage (if present). Block init until migration
     // completes so callers that rely on `ready` will see migrated data.
     try {
       await this.migrateLegacySettings();
-      console.log('migrated');
-      // // TODO remove toast once beta-tested.
-      await this.toast.create({ message: 'Settings migration completed', duration: 2_000, position: 'middle' }).then(t => t.present());
+      console.log('Migrated if necessary');
     } catch (err) {
       console.error('Migration error', err);
       // Show a friendly toast but keep full details in console for diagnostics
-      await this.toast.create({ message: 'Settings migration failed (see console for details)', duration: 6000, position: 'middle', cssClass: 'error' })
+      await this.toast.create({ message: 'Settings migration failed (see console for details)', duration: 6_000, position: 'middle', cssClass: 'error' })
         .then(t => t.present());
 
       console.log('Migration catch block');
@@ -115,7 +113,7 @@ export class SettingsService {
           }
 
           await this.legacyStorage.remove(SettingsService.storageKey);
-          await this.toast.create({ message: 'Legacy settings removed (already present in new storage)', duration: 3000, position: 'middle' }).then(t => t.present());
+          await this.toast.create({ message: 'Legacy settings removed (already present in new storage)', duration: 6_000, position: 'middle' }).then(t => t.present());
           return true;
         }
 
@@ -131,7 +129,9 @@ export class SettingsService {
       const verify = await this.storage.get(SettingsService.storageKey);
       if (JSON.stringify(verify) === JSON.stringify(legacyValue)) {
         await this.legacyStorage.remove(SettingsService.storageKey);
-        await this.toast.create({ message: 'Settings migrated from legacy storage', duration: 3000, position: 'middle' }).then(t => t.present());
+        // TODO remove toasts once beta-tested.
+        await this.toast.create({ message: 'Settings migration completed', duration: 6_000, position: 'middle' }).then(t => t.present());
+
         return true;
       }
 
@@ -271,35 +271,36 @@ export class SettingsService {
             return resolve(this.loadDefaults());
           }
 
-          // this.cloudSettings.exists().then(exists => {
-          //   if (exists) {
-          //     this.cloudSettings.load()
-          //       .then(loadedFromCloud => { // Success: load past settings
-          //         this.toast.create({
-          //           message: ('Previous settings loaded from backup'),
-          //           duration: 3000,
-          //           position: 'middle',
-          //           buttons: [{ text: 'OK', role: 'cancel' }],
-          //         }).then(successToast => successToast.present());
+          this.cloudSettings.exists().then(exists => {
+            if (exists) {
+              this.cloudSettings.load()
+                .then(loadedFromCloud => { // Success: load past settings
+                  this.toast.create({
+                    message: ('Previous settings loaded from backup'),
+                    duration: 3000,
+                    position: 'middle',
+                    buttons: [{ text: 'OK', role: 'cancel' }],
+                  }).then(successToast => successToast.present());
 
-          //         resolve(loadedFromCloud);
-          //       })
-          //       .catch(error => { // Load error
-          //         this.toast.create({
-          //           message: (`Could not load previous settings: ${error}`),
-          //           duration: 6000,
-          //           position: 'middle',
-          //           cssClass: 'error',
-          //           buttons: [{ text: 'OK', role: 'cancel' }],
-          //         }).then(errorToast => errorToast.present());
+                  resolve(loadedFromCloud);
+                })
+                .catch(error => { // Load error
+                  this.toast.create({
+                    message: (`Could not load previous settings: ${error}`),
+                    duration: 6000,
+                    position: 'middle',
+                    cssClass: 'error',
+                    buttons: [{ text: 'OK', role: 'cancel' }],
+                  }).then(errorToast => errorToast.present());
 
-          //         resolve(this.loadDefaults());
-          //       });
-          //     return;
-          //   }
-          // Else existence check worked but no past settings in the cloud
-          resolve(this.loadDefaults());
-          // }).catch(() => resolve(this.loadDefaults())); // Existence check error
+                  resolve(this.loadDefaults());
+                });
+              return;
+            }
+
+            // Else existence check worked but no past settings in the cloud
+            resolve(this.loadDefaults());
+          }).catch(() => resolve(this.loadDefaults())); // Existence check error
         });
       }
 
