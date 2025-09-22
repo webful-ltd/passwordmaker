@@ -17,12 +17,12 @@ import { SettingsService } from './settings.service';
   imports: [
     BrowserModule,
     IonicStorageModule.forRoot({
-      driverOrder: [CapacitorSqliteDriverService._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+      driverOrder: [CapacitorSqliteDriverService._driver, Drivers.IndexedDB]
     }),
     // Provide a separate legacy storage instance so both old and new storage
     // implementations can be injected during a migration.
     LegacyStorageModule.forRoot({
-      driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
+      driverOrder: [Drivers.IndexedDB],
     }),
     AppRoutingModule,
     IonApp,
