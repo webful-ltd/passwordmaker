@@ -326,14 +326,7 @@ export class SettingsService {
       settingsService.currentSettings = loadedSettings;
 
       return settingsService.currentSettings;
-    })
-      .catch(
-      // Logs and try again after 1s
-        error => {
-          console.error('Error loading settings:', error);
-          setTimeout(() => this.getCurrentSettings(), 1000);
-        }
-      );
+    });
 
     return this.currentPromise;
   }
