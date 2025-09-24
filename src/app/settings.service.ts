@@ -49,8 +49,7 @@ export class SettingsService {
     }
 
     // Log and temporarily toast-alert which driver is in use
-    console.log('Using storage ' + this.storage.driver);
-    await this.toast.create({ message: `Using storage driver: ${this.storage.driver}`, duration: 2_500, position: 'middle' }).then(t => t.present());
+    console.log('Using storage driver ' + this.storage.driver);
 
     // Attempt migration from legacy storage (if present). Block init until migration
     // completes so callers that rely on `ready` will see migrated data.
@@ -129,8 +128,6 @@ export class SettingsService {
       const verify = await this.storage.get(SettingsService.storageKey);
       if (JSON.stringify(verify) === JSON.stringify(legacyValue)) {
         await this.legacyStorage.remove(SettingsService.storageKey);
-        // TODO remove toasts once beta-tested.
-        await this.toast.create({ message: 'Settings migration completed', duration: 6_000, position: 'middle' }).then(t => t.present());
 
         return true;
       }
