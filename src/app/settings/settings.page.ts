@@ -156,7 +156,7 @@ export class SettingsPageComponent implements OnInit {
     this.isAdvancedConfirmationOpen = false;
   }
 
-  save({ value, valid }: { value: Settings, valid: boolean }) {
+  async save({ value, valid }: { value: Settings, valid: boolean }) {
     if (!valid) {
       this.toast.create({
         message: ('Settings not valid. Please check fields are complete and that your chosen Length is between 8 and 200 characters.'),
@@ -169,7 +169,13 @@ export class SettingsPageComponent implements OnInit {
       return;
     }
 
-    this.settingsService.save(value)
+    let saveReadyValue = value;
+    if (this.advanced_mode) {
+      saveReadyValue = await this.settingsService.getCurrentSettings();
+      saveReadyValue.remember_minutes = value.remember_minutes;
+    }
+
+    this.settingsService.save(saveReadyValue)
       .then(
         () => {
           this.toast.create({
@@ -217,6 +223,11 @@ export class SettingsPageComponent implements OnInit {
 
     this.advanced_mode = (settings instanceof SettingsAdvanced);
 
+    // If we have more than one setting become common between the top level of the two
+    // Settings types, we may want to DRY up the logic between initialisation here
+    // and the preparation for calling SettingsService.save(). Doesn't seem too crucial for now.
+    // TODO probably improve when doing https://github.com/webful-ltd/passwordmaker/issues/92
+    // console.log('class check', settings.hasOwnProperty('output_character_set'));
     const formValues: any = {
       remember_minutes: settings.remember_minutes,
     };
