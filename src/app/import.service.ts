@@ -186,7 +186,11 @@ export class ImportService {
       const result = await Filesystem.writeFile({
         path: fileName,
         data: content,
-        directory: Directory.Documents,
+        // No one enum seemed quite right for both platforms, so going with:
+        // on Android, Document: "it's the Public Documents folder, so it's accessible from other apps. ... On Android 11 or newer the app can only access the files/folders the app created."
+        // on iOS, External: "the [general] Documents directory".
+        // https://capacitorjs.com/docs/apis/filesystem#enums
+        directory: this.platform.is('ios') ? Directory.External : Directory.Documents,
         encoding: Encoding.UTF8
       });
 
