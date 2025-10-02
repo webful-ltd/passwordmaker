@@ -23,7 +23,7 @@ const config: CapacitorConfig = {
     CapacitorSQLite: {
       iosDatabaseLocation: 'Library/CapacitorDatabase',
       iosIsEncryption: true,
-      iosKeychainPrefix: 'angular-sqlite-app-starter',
+      iosKeychainPrefix: 'webful-passwordmaker',
       iosBiometric: {
         biometricAuth: false,
         biometricTitle : "Biometric login for capacitor sqlite"
