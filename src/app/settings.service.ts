@@ -342,6 +342,10 @@ export class SettingsService {
     });
   }
 
+  get storageDriver(): string {
+    return this.storage.driver;
+  }
+
   /**
    * Initialise entire dictionary with default settings
    */

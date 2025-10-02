@@ -31,7 +31,7 @@ export class SettingsPageComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   loadingController = inject(LoadingController);
   modalController = inject(ModalController);
-  private settingsService = inject(SettingsService);
+  protected settingsService = inject(SettingsService);
   toast = inject(ToastController);
 
   settingsForm: FormGroup;
