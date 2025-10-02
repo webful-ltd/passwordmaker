@@ -65,25 +65,108 @@ export class ImportService {
   ]);
 
   /**
+   * Read file content using modern File API with FileReader fallback
+   */
+  async readFileContent(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      console.log('Reading file:', {
+        name: file.name,
+        size: file.size,
+        type: file.type
+      });
+
+      if (file.size === 0) {
+        reject(new Error('File appears to be empty'));
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        reject(new Error('File too large (>5MB)'));
+        return;
+      }
+
+      // Try the newer File.text() API first if available
+      if ('text' in file && typeof file.text === 'function') {
+        console.log('Using modern File.text() API');
+        file.text()
+          .then(text => {
+            console.log('File.text() successful, length:', text.length);
+            resolve(text);
+          })
+          .catch(error => {
+            console.log('File.text() failed, falling back to FileReader:', error);
+            this.fallbackToFileReader(file, resolve, reject);
+          });
+      } else {
+        console.log('File.text() not available, using FileReader');
+        this.fallbackToFileReader(file, resolve, reject);
+      }
+    });
+  }
+
+  private fallbackToFileReader(file: File, resolve: (value: string) => void, reject: (reason?: any) => void): void {
+    const reader = new FileReader();
+    
+    // Set up a timeout
+    const timeout = setTimeout(() => {
+      console.error('FileReader timed out');
+      reject(new Error('File reading timed out after 15 seconds'));
+    }, 15000);
+
+    reader.onload = () => {
+      clearTimeout(timeout);
+      const result = reader.result as string;
+      console.log('FileReader successful, content length:', result.length);
+      resolve(result);
+    };
+
+    reader.onerror = () => {
+      clearTimeout(timeout);
+      console.error('FileReader failed:', reader.error);
+      reject(new Error(`Failed to read file: ${reader.error?.message || 'Unknown error'}`));
+    };
+
+    reader.onabort = () => {
+      clearTimeout(timeout);
+      reject(new Error('File reading was cancelled'));
+    };
+
+    // Try reading as text with UTF-8 encoding
+    try {
+      reader.readAsText(file, 'UTF-8');
+    } catch (error) {
+      clearTimeout(timeout);
+      console.error('Error starting FileReader:', error);
+      reject(new Error(`Failed to start reading file: ${error.message}`));
+    }
+  }
+
+  /**
    * Parse RDF/XML content and extract profiles and settings
    */
   parseRdfDocument(rdfContent: string): ImportResult {
+    console.log('ImportService: Starting parseRdfDocument');
     const profiles: ImportedProfile[] = [];
     let defaultProfile: ImportedProfile = {};
     let settings: any = {};
 
     try {
+      console.log('ImportService: Parsing XML...');
       const xmlDoc = new DOMParser().parseFromString(rdfContent, 'text/xml');
       
       // Check for parsing errors
       const parserError = xmlDoc.querySelector('parsererror');
       if (parserError) {
+        console.error('ImportService: XML parsing error:', parserError.textContent);
         throw new Error('Invalid XML format');
       }
 
+      console.log('ImportService: XML parsed successfully, finding RDF:Description elements...');
       const descriptions = Array.from(xmlDoc.getElementsByTagName('RDF:Description'));
+      console.log('ImportService: Found', descriptions.length, 'RDF:Description elements');
       
-      descriptions.forEach(item => {
+      descriptions.forEach((item, index) => {
+        console.log(`ImportService: Processing description ${index + 1}/${descriptions.length}`);
         const prof: ImportedProfile = {};
         
         // Parse attributes
@@ -109,19 +192,26 @@ export class ImportService {
         // Categorize the profile
         if (prof.rdf_about === 'http://passwordmaker.mozdev.org/globalSettings') {
           settings = prof;
+          console.log('ImportService: Found global settings');
         } else if (prof.selectedCharset) {
           if (prof.rdf_about === 'http://passwordmaker.mozdev.org/defaults') {
             defaultProfile = prof;
+            console.log('ImportService: Found default profile');
           } else {
             profiles.push(prof);
+            console.log('ImportService: Added profile:', prof.title || 'unnamed');
           }
         }
       });
+      console.log('ImportService: Finished processing all descriptions');
 
       // Handle Chrome vs Firefox export differences
+      console.log('ImportService: Checking if this is a Chrome export...');
       const fromChrome = !rdfContent.includes('http://passwordmaker.mozdev.org/remotes');
+      console.log('ImportService: Is Chrome export:', fromChrome);
       
       if (fromChrome) {
+        console.log('ImportService: Processing Chrome export format');
         profiles.unshift(defaultProfile);
         // Merge default profile attributes with each profile
         profiles.forEach((profile, i) => {
@@ -129,6 +219,7 @@ export class ImportService {
         });
       }
 
+      console.log('ImportService: Returning result with', profiles.length, 'profiles');
       return {
         settings,
         profiles
@@ -137,6 +228,42 @@ export class ImportService {
     } catch (error) {
       throw new Error(`Failed to parse RDF document: ${error.message}`);
     }
+  }
+
+  /**
+   * Merge imported profiles with existing profiles, handling duplicates by name
+   */
+  mergeProfiles(existingProfiles: Profile[], importedProfiles: ImportedProfile[]): { profiles: Profile[], addedCount: number, updatedCount: number } {
+    const converted = importedProfiles.map(imported => this.convertToProfile(imported));
+    const result = [...existingProfiles];
+    let addedCount = 0;
+    let updatedCount = 0;
+
+    converted.forEach(newProfile => {
+      // Find existing profile with same name (case-insensitive)
+      // Skip empty or undefined names
+      const existingIndex = newProfile.name && newProfile.name.trim() 
+        ? result.findIndex(existing => 
+          existing.name && existing.name.toLowerCase() === newProfile.name.toLowerCase()
+        )
+        : -1;
+
+      if (existingIndex >= 0) {
+        // Profile exists - update it but keep the same profile_id
+        const existingId = result[existingIndex].profile_id;
+        newProfile.profile_id = existingId;
+        result[existingIndex] = newProfile;
+        updatedCount++;
+        console.log(`Updated existing profile: "${newProfile.name}"`);
+      } else {
+        // New profile - add it with a new ID (will be set by caller)
+        result.push(newProfile);
+        addedCount++;
+        console.log(`Added new profile: "${newProfile.name}"`);
+      }
+    });
+
+    return { profiles: result, addedCount, updatedCount };
   }
 
   /**
