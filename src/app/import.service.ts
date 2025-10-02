@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Platform } from '@ionic/angular/standalone';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Profile } from '../models/Profile';
 
 export interface ImportedProfile {
@@ -33,6 +35,8 @@ export interface ImportResult {
   providedIn: 'root'
 })
 export class ImportService {
+
+  constructor(private platform: Platform) { }
   
   private readonly hashAlgorithmMap = new Map([
     ['hmac-sha256-fixed', 'hmac-sha256_fix'],
@@ -60,8 +64,6 @@ export class ImportService {
     ['domainCB', { name: 'url_domain', convert: this.strToBool }],
     ['pathCB', { name: 'url_path', convert: this.strToBool }]
   ]);
-
-  constructor() { }
 
   /**
    * Parse RDF/XML content and extract profiles and settings
@@ -159,6 +161,57 @@ export class ImportService {
     profile.domain_only = !importedProfile.url_path && !importedProfile.url_subdomain && !!importedProfile.url_domain;
     
     return profile;
+  }
+
+  /**
+   * Export profiles to file using appropriate method based on platform
+   */
+  async exportProfilesToFile(profiles: Profile[]): Promise<void> {
+    const rdfContent = this.generateRdfExport(profiles);
+    const fileName = `passwordmaker-profiles-${new Date().toISOString().split('T')[0]}.xml`;
+
+    if (this.platform.is('capacitor')) {
+      // Use Capacitor Filesystem for mobile platforms
+      await this.saveFileWithFilesystem(rdfContent, fileName);
+    } else {
+      // Use browser download for web platform
+      this.downloadFileInBrowser(rdfContent, fileName);
+    }
+  }
+
+  /**
+   * Save file using Capacitor Filesystem (mobile platforms)
+   */
+  private async saveFileWithFilesystem(content: string, fileName: string): Promise<void> {
+    try {
+      const result = await Filesystem.writeFile({
+        path: fileName,
+        data: content,
+        directory: Directory.Documents,
+        encoding: Encoding.UTF8
+      });
+
+      // On some platforms, we can get the actual file URI
+      console.log('File saved to:', result.uri);
+    } catch (error) {
+      console.error('Error saving file with Filesystem:', error);
+      throw new Error(`Failed to save file: ${error.message || error}`);
+    }
+  }
+
+  /**
+   * Download file using browser (web platform)
+   */
+  private downloadFileInBrowser(content: string, fileName: string): void {
+    const blob = new Blob([content], { type: 'application/xml' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   }
 
   /**

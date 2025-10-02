@@ -312,19 +312,8 @@ export class SettingsPageComponent implements OnInit {
         return;
       }
 
-      // For now, use the browser download approach
-      // TODO: Implement Capacitor Filesystem for better mobile support
-      const rdfContent = this.importService.generateRdfExport((currentSettings as SettingsAdvanced).profiles);
-      
-      const blob = new Blob([rdfContent], { type: 'application/xml' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `passwordmaker-profiles-${new Date().toISOString().split('T')[0]}.xml`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // Use platform-aware export method
+      await this.importService.exportProfilesToFile((currentSettings as SettingsAdvanced).profiles);
 
       this.toast.create({
         message: 'Settings exported successfully',
