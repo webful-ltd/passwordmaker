@@ -8,8 +8,10 @@ import {
   checkmarkCircleOutline,
   close,
   cog,
+  downloadOutline,
   help,
   informationCircleOutline,
+  shareOutline,
   warning,
 } from 'ionicons/icons';
 
@@ -19,6 +21,7 @@ import { Settings } from '../../models/Settings';
 import { SettingsAdvanced } from '../../models/SettingsAdvanced';
 import { SettingsService } from '../settings.service';
 import { SettingsSimple } from '../../models/SettingsSimple';
+import { ImportService } from '../import.service';
 
 @Component({
   selector: 'app-settings',
@@ -32,6 +35,7 @@ export class SettingsPageComponent implements OnInit {
   loadingController = inject(LoadingController);
   modalController = inject(ModalController);
   protected settingsService = inject(SettingsService);
+  private importService = inject(ImportService);
   toast = inject(ToastController);
 
   settingsForm: FormGroup;
@@ -78,7 +82,9 @@ export class SettingsPageComponent implements OnInit {
       addCircleOutline,
       checkmarkCircleOutline,
       cog,
+      downloadOutline,
       informationCircleOutline,
+      shareOutline,
       warning,
     });
   }
@@ -204,6 +210,149 @@ export class SettingsPageComponent implements OnInit {
   openAdvancedInfo() {
     Browser.open({ url: 'https://passwordmaker.webful.uk/#advanced' });
   }
+
+  importSettings(event: any) {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // File is already selected, just log it for now
+      console.log('Import settings file selected:', files[0]);
+    }
+  }
+
+  async confirmImport(file: File) {
+    if (!file) {
+      this.toast.create({
+        message: 'Please select a file to import',
+        position: 'middle',
+        cssClass: 'error',
+        buttons: [{ text: 'OK', role: 'cancel' }],
+      }).then(errorToast => errorToast.present());
+      return;
+    }
+
+    const loading = await this.loadingController.create({
+      message: 'Importing settings...'
+    });
+    await loading.present();
+
+    try {
+      // Read the file content
+      const fileContent = await this.readFileAsText(file);
+      
+      // Parse the RDF using our import service
+      const importResult = this.importService.parseRdfDocument(fileContent);
+      
+      if (!importResult.profiles || importResult.profiles.length === 0) {
+        throw new Error('No profiles found in the import file');
+      }
+
+      // Convert the imported profiles to our Profile format
+      const importedProfiles = importResult.profiles.map(importedProfile => {
+        const newProfile = this.importService.convertToProfile(importedProfile);
+        return newProfile;
+      });
+
+      // Get current settings to determine if we're in advanced mode
+      const currentSettings = await this.settingsService.getCurrentSettings();
+      
+      if (currentSettings instanceof SettingsSimple) {
+        // Upgrade to advanced mode first
+        const advancedSettings = new SettingsAdvanced(currentSettings);
+        // Add imported profiles
+        importedProfiles.forEach((profile, index) => {
+          profile.profile_id = advancedSettings.profiles.length + index + 1;
+          advancedSettings.profiles.push(profile);
+        });
+        await this.settingsService.save(advancedSettings);
+      } else if (currentSettings instanceof SettingsAdvanced) {
+        // Add to existing advanced settings
+        const nextId = await this.settingsService.getNextProfileId();
+        importedProfiles.forEach((profile, index) => {
+          profile.profile_id = nextId + index;
+          currentSettings.profiles.push(profile);
+        });
+        await this.settingsService.save(currentSettings);
+      }
+
+      await loading.dismiss();
+      
+      this.toast.create({
+        message: `Successfully imported ${importedProfiles.length} profile(s)`,
+        duration: 3000,
+        position: 'middle',
+        buttons: [{ text: 'OK', role: 'cancel' }],
+      }).then(successToast => successToast.present());
+
+      // Refresh the settings display
+      this.update();
+      
+    } catch (error) {
+      await loading.dismiss();
+      
+      this.toast.create({
+        message: `Import failed: ${error.message}`,
+        position: 'middle',
+        cssClass: 'error',
+        buttons: [{ text: 'OK', role: 'cancel' }],
+      }).then(errorToast => errorToast.present());
+    }
+  }
+
+  async exportSettings() {
+    try {
+      const currentSettings = await this.settingsService.getCurrentSettings();
+      
+      if (currentSettings instanceof SettingsSimple) {
+        this.toast.create({
+          message: 'Please upgrade to Advanced mode to export settings',
+          position: 'middle',
+          cssClass: 'error',
+          buttons: [{ text: 'OK', role: 'cancel' }],
+        }).then(errorToast => errorToast.present());
+        return;
+      }
+
+      // For now, use the browser download approach
+      // TODO: Implement Capacitor Filesystem for better mobile support
+      const rdfContent = this.importService.generateRdfExport((currentSettings as SettingsAdvanced).profiles);
+      
+      const blob = new Blob([rdfContent], { type: 'application/xml' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `passwordmaker-profiles-${new Date().toISOString().split('T')[0]}.xml`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      this.toast.create({
+        message: 'Settings exported successfully',
+        duration: 2000,
+        position: 'middle',
+        buttons: [{ text: 'OK', role: 'cancel' }],
+      }).then(successToast => successToast.present());
+      
+    } catch (error) {
+      this.toast.create({
+        message: `Export failed: ${error.message}`,
+        position: 'middle',
+        cssClass: 'error',
+        buttons: [{ text: 'OK', role: 'cancel' }],
+      }).then(errorToast => errorToast.present());
+    }
+  }
+
+  private readFileAsText(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsText(file);
+    });
+  }
+
+
 
   private async update() {
     let settings: Settings;
