@@ -35,6 +35,7 @@ export class ProfilePageComponent implements OnInit {
   profile: FormGroup;
 
   private profileId: number;
+  private lastCharacterSetPreset?: string;
 
   constructor() {
     this.profile = this.formBuilder.group({
@@ -59,7 +60,13 @@ export class ProfilePageComponent implements OnInit {
 
     // We need to ensure that setting the character set away from Custom clears any
     // validation error on the custom characters field.
-    this.profile.get('output_character_set_preset').valueChanges.subscribe(() => {
+    this.profile.get('output_character_set_preset').valueChanges.subscribe((changeEvent) => {
+      if (changeEvent === 'none') {
+        this.profile.get('output_character_set_custom').setValue(this.lastCharacterSetPreset);
+      } else {
+        this.lastCharacterSetPreset = changeEvent;
+      }
+
       this.profile.get('output_character_set_custom').updateValueAndValidity();
     });
     addIcons({ close, key, informationCircleOutline, warning, checkmarkCircleOutline, trashOutline });
@@ -74,6 +81,7 @@ export class ProfilePageComponent implements OnInit {
     this.profileId = formValues.profile_id;
 
     this.profile.patchValue(formValues);
+    this.lastCharacterSetPreset = this.profileModel.output_character_set_preset;
   }
 
   save({ value, valid }: { value: Profile, valid: boolean }) {

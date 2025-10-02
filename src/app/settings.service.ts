@@ -48,7 +48,7 @@ export class SettingsService {
       console.log('Storage created (web)');
     }
 
-    // Log and temporarily toast-alert which driver is in use
+    // Log which driver is in use
     console.log('Using storage driver ' + this.storage.driver);
 
     // Attempt migration from legacy storage (if present). Block init until migration
