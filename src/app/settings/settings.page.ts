@@ -214,8 +214,7 @@ export class SettingsPageComponent implements OnInit {
   importSettings(event: any) {
     const files = event.target.files;
     if (files && files.length > 0) {
-      // File is already selected, just log it for now
-      console.log('Import settings file selected:', files[0]);
+      // File is already selected - confirmImport will handle the import
     }
   }
 
@@ -236,30 +235,20 @@ export class SettingsPageComponent implements OnInit {
     await loading.present();
 
     try {
-      console.log('Starting import process for file:', file.name, 'Size:', file.size);
-      
       // Read the file content using import service
       const fileContent = await this.importService.readFileContent(file);
       
-      console.log('File content read, length:', fileContent.length);
-      console.log('First 200 chars:', fileContent.substring(0, 200));
-      
       // Parse the RDF using our import service
-      console.log('About to parse RDF document...');
       const importResult = this.importService.parseRdfDocument(fileContent);
-      console.log('RDF parsing complete, found profiles:', importResult.profiles.length);
       
       if (!importResult.profiles || importResult.profiles.length === 0) {
         throw new Error('No profiles found in the import file');
       }
 
       // Get current settings to determine if we're in advanced mode
-      console.log('Getting current settings...');
       const currentSettings = await this.settingsService.getCurrentSettings();
-      console.log('Current settings type:', currentSettings.constructor.name);
       
       if (currentSettings instanceof SettingsSimple) {
-        console.log('Upgrading to advanced mode and merging profiles...');
         // Upgrade to advanced mode first
         const advancedSettings = new SettingsAdvanced(currentSettings);
         
@@ -275,9 +264,7 @@ export class SettingsPageComponent implements OnInit {
         });
         
         advancedSettings.profiles = mergeResult.profiles;
-        console.log(`Saving advanced settings with ${mergeResult.addedCount} new and ${mergeResult.updatedCount} updated profiles...`);
         await this.settingsService.save(advancedSettings);
-        console.log('Advanced settings saved successfully');
         
         await loading.dismiss();
         this.toast.create({
@@ -288,7 +275,6 @@ export class SettingsPageComponent implements OnInit {
         }).then(successToast => successToast.present());
         
       } else if (currentSettings instanceof SettingsAdvanced) {
-        console.log('Merging profiles with existing advanced settings...');
         
         // Merge imported profiles with existing profiles
         const mergeResult = this.importService.mergeProfiles(currentSettings.profiles, importResult.profiles);
@@ -303,9 +289,7 @@ export class SettingsPageComponent implements OnInit {
         });
         
         currentSettings.profiles = mergeResult.profiles;
-        console.log(`Saving updated settings with ${mergeResult.addedCount} new and ${mergeResult.updatedCount} updated profiles...`);
         await this.settingsService.save(currentSettings);
-        console.log('Updated settings saved successfully');
         
         await loading.dismiss();
         this.toast.create({
@@ -317,9 +301,7 @@ export class SettingsPageComponent implements OnInit {
       }
 
       // Refresh the settings display
-      console.log('Calling update to refresh settings display...');
       this.update();
-      console.log('Import fully completed!');
       
     } catch (error) {
       console.error('Import failed at step:', error);
