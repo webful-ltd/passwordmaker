@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Platform } from '@ionic/angular/standalone';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Profile } from '../models/Profile';
@@ -35,9 +35,8 @@ export interface ImportResult {
   providedIn: 'root'
 })
 export class ImportService {
+  private platform = inject(Platform);
 
-  constructor(private platform: Platform) { }
-  
   private readonly hashAlgorithmMap = new Map([
     ['hmac-sha256-fixed', 'hmac-sha256_fix'],
     ['md5-v0.6', 'md5_v6'],
@@ -224,7 +223,7 @@ export class ImportService {
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">`;
 
     profiles.forEach((profile, index) => {
-      const about = index === 0 ? "http://passwordmaker.mozdev.org/defaults" : `rdf:#$CHROME${index}`;
+      const about = index === 0 ? 'http://passwordmaker.mozdev.org/defaults' : `rdf:#$CHROME${index}`;
       
       rdf += `
 <RDF:Description RDF:about="${this.escapeXml(about)}"
@@ -247,7 +246,7 @@ export class ImportService {
 <RDF:Seq RDF:about="http://passwordmaker.mozdev.org/accounts">`;
     
     profiles.forEach((_, index) => {
-      const about = index === 0 ? "http://passwordmaker.mozdev.org/defaults" : `rdf:#$CHROME${index}`;
+      const about = index === 0 ? 'http://passwordmaker.mozdev.org/defaults' : `rdf:#$CHROME${index}`;
       rdf += `
 <RDF:li RDF:resource="${this.escapeXml(about)}"/>`;
     });
@@ -271,15 +270,15 @@ export class ImportService {
       if (match) {
         const index = parseInt(match[2]);
         switch (match[1]) {
-          case '':
-            patterns[index] = attr.value;
-            break;
-          case 'type':
-            patternTypes[index] = attr.value;
-            break;
-          case 'enabled':
-            patternEnabled[index] = attr.value;
-            break;
+        case '':
+          patterns[index] = attr.value;
+          break;
+        case 'type':
+          patternTypes[index] = attr.value;
+          break;
+        case 'enabled':
+          patternEnabled[index] = attr.value;
+          break;
         }
       }
     });
@@ -343,10 +342,10 @@ export class ImportService {
   private escapeXml(str: string): string {
     if (!str) return '';
     return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 }
