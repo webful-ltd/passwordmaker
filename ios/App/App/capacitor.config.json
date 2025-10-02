@@ -54,6 +54,7 @@
 		"AppPlugin",
 		"CAPBrowserPlugin",
 		"ClipboardPlugin",
+		"FilesystemPlugin",
 		"HapticsPlugin",
 		"KeyboardPlugin",
 		"StatusBarPlugin",
