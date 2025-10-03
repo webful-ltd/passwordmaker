@@ -32,3 +32,13 @@ a {
   font-size: 80%;
   text-align: right;
 }
+
+.import-export-section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ion-color-light-shade);
+
+  ion-button {
+    margin-bottom: 0.5rem;
+  }
+}

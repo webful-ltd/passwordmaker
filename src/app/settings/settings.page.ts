@@ -8,8 +8,10 @@ import {
   checkmarkCircleOutline,
   close,
   cog,
+  downloadOutline,
   help,
   informationCircleOutline,
+  shareOutline,
   warning,
 } from 'ionicons/icons';
 
@@ -19,6 +21,7 @@ import { Settings } from '../../models/Settings';
 import { SettingsAdvanced } from '../../models/SettingsAdvanced';
 import { SettingsService } from '../settings.service';
 import { SettingsSimple } from '../../models/SettingsSimple';
+import { ImportService } from '../import.service';
 
 @Component({
   selector: 'app-settings',
@@ -32,6 +35,7 @@ export class SettingsPageComponent implements OnInit {
   loadingController = inject(LoadingController);
   modalController = inject(ModalController);
   protected settingsService = inject(SettingsService);
+  private importService = inject(ImportService);
   toast = inject(ToastController);
 
   settingsForm: FormGroup;
@@ -78,7 +82,9 @@ export class SettingsPageComponent implements OnInit {
       addCircleOutline,
       checkmarkCircleOutline,
       cog,
+      downloadOutline,
       informationCircleOutline,
+      shareOutline,
       warning,
     });
   }
@@ -204,6 +210,150 @@ export class SettingsPageComponent implements OnInit {
   openAdvancedInfo() {
     Browser.open({ url: 'https://passwordmaker.webful.uk/#advanced' });
   }
+
+  importSettings(event: any) {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // File is already selected - confirmImport will handle the import
+    }
+  }
+
+  async confirmImport(file: File) {
+    if (!file) {
+      this.toast.create({
+        message: 'Please select a file to import',
+        position: 'middle',
+        cssClass: 'error',
+        buttons: [{ text: 'OK', role: 'cancel' }],
+      }).then(errorToast => errorToast.present());
+      return;
+    }
+
+    const loading = await this.loadingController.create({
+      message: 'Importing settings...'
+    });
+    await loading.present();
+
+    try {
+      // Read the file content using import service
+      const fileContent = await this.importService.readFileContent(file);
+      
+      // Parse the RDF using our import service
+      const importResult = this.importService.parseRdfDocument(fileContent);
+      
+      if (!importResult.profiles || importResult.profiles.length === 0) {
+        throw new Error('No profiles found in the import file');
+      }
+
+      // Get current settings to determine if we're in advanced mode
+      const currentSettings = await this.settingsService.getCurrentSettings();
+      
+      if (currentSettings instanceof SettingsSimple) {
+        // Upgrade to advanced mode first
+        const advancedSettings = new SettingsAdvanced(currentSettings);
+        
+        // Merge imported profiles with existing (default) profile
+        const mergeResult = this.importService.mergeProfiles(advancedSettings.profiles, importResult.profiles);
+        
+        // Assign profile IDs to new profiles
+        let nextId = 1;
+        mergeResult.profiles.forEach(profile => {
+          if (!profile.profile_id) {
+            profile.profile_id = nextId++;
+          }
+        });
+        
+        advancedSettings.profiles = mergeResult.profiles;
+        await this.settingsService.save(advancedSettings);
+        
+        await loading.dismiss();
+        this.toast.create({
+          message: `Imported: ${mergeResult.addedCount} new, ${mergeResult.updatedCount} updated profile(s)`,
+          duration: 3000,
+          position: 'middle',
+          buttons: [{ text: 'OK', role: 'cancel' }],
+        }).then(successToast => successToast.present());
+        
+      } else if (currentSettings instanceof SettingsAdvanced) {
+        
+        // Merge imported profiles with existing profiles
+        const mergeResult = this.importService.mergeProfiles(currentSettings.profiles, importResult.profiles);
+        
+        // Assign profile IDs to new profiles
+        const nextId = await this.settingsService.getNextProfileId();
+        let idCounter = nextId;
+        mergeResult.profiles.forEach(profile => {
+          if (!profile.profile_id) {
+            profile.profile_id = idCounter++;
+          }
+        });
+        
+        currentSettings.profiles = mergeResult.profiles;
+        await this.settingsService.save(currentSettings);
+        
+        await loading.dismiss();
+        this.toast.create({
+          message: `Imported: ${mergeResult.addedCount} new, ${mergeResult.updatedCount} updated profile(s)`,
+          duration: 3000,
+          position: 'middle',
+          buttons: [{ text: 'OK', role: 'cancel' }],
+        }).then(successToast => successToast.present());
+      }
+
+      // Refresh the settings display
+      this.update();
+      
+    } catch (error) {
+      console.error('Import failed at step:', error);
+      console.error('Full error details:', error.message, error.stack);
+      await loading.dismiss();
+      
+      this.toast.create({
+        message: `Import failed: ${error.message}`,
+        position: 'middle',
+        cssClass: 'error',
+        buttons: [{ text: 'OK', role: 'cancel' }],
+      }).then(errorToast => errorToast.present());
+    }
+  }
+
+  async exportSettings() {
+    try {
+      const currentSettings = await this.settingsService.getCurrentSettings();
+      
+      if (currentSettings instanceof SettingsSimple) {
+        this.toast.create({
+          message: 'Please upgrade to Advanced mode to export settings',
+          position: 'middle',
+          cssClass: 'error',
+          buttons: [{ text: 'OK', role: 'cancel' }],
+        }).then(errorToast => errorToast.present());
+        return;
+      }
+
+      // Use platform-aware export method
+      await this.importService.exportProfilesToFile((currentSettings as SettingsAdvanced).profiles);
+
+      this.toast.create({
+        message: 'Settings exported successfully',
+        duration: 2000,
+        position: 'middle',
+        buttons: [{ text: 'OK', role: 'cancel' }],
+      }).then(successToast => successToast.present());
+      
+    } catch (error) {
+      this.toast.create({
+        message: `Export failed: ${error.message}`,
+        position: 'middle',
+        cssClass: 'error',
+        buttons: [{ text: 'OK', role: 'cancel' }],
+      }).then(errorToast => errorToast.present());
+    }
+  }
+
+
+
+
 
   private async update() {
     let settings: Settings;

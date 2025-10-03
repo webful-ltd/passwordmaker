@@ -178,6 +178,46 @@
       }
     </form>
 
+    <div class="import-export-section">
+      <p class="help">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Import and export your PasswordMaker settings and profiles
+      </p>
+      
+      <input type="file" (change)="importSettings($event)" aria-label="Settings file for import" #fileInput accept=".xml,.rdf" style="display: none;" />
+      
+      <ion-button
+        (click)="fileInput.click()"
+        expand="block"
+        color="secondary"
+        fill="outline"
+      >
+        <ion-icon slot="start" name="share-outline"></ion-icon>
+        Select file to import
+      </ion-button>
+      
+      @if (fileInput.files && fileInput.files.length > 0) {
+        <ion-button
+          (click)="confirmImport(fileInput.files[0])"
+          expand="block"
+          color="primary"
+        >
+          <ion-icon slot="start" name="download-outline"></ion-icon>
+          Import {{ fileInput.files[0].name }}
+        </ion-button>
+      }
+
+      <ion-button
+        (click)="exportSettings()"
+        expand="block"
+        color="secondary"
+        fill="outline"
+      >
+        <ion-icon slot="start" name="share-outline"></ion-icon>
+        Export settings
+      </ion-button>
+    </div>
+
     <p class="minor">
       <ion-icon name="information-circle-outline"></ion-icon>
       Storage driver: {{ settingsService.storageDriver }}
