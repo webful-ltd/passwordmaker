@@ -37,6 +37,7 @@ export class HomePageComponent implements OnInit {
   private expire_password_on_context_change = false;
   private expiry_timer_id: number;
   private loading: HTMLIonLoadingElement;
+  protected master_password_hash?: string;
 
   constructor() {
     addIcons({ informationCircleOutline, warning, copy });
@@ -99,6 +100,12 @@ export class HomePageComponent implements OnInit {
     }
 
     this.non_domain_warning = (this.input.host.indexOf('.') === -1);
+
+    if (settings.master_password_hash) {
+      this.master_password_hash = this.passwordsService.hashMasterPassword(this.input.master_password);
+    } else {
+      this.master_password_hash = null;
+    }
 
     if (this.input.master_password.length > 0) {
       this.updateExpiryTimer();

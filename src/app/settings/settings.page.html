@@ -107,6 +107,8 @@
           </ion-item>
         </div>
       }
+
+      <!-- Common settings for both modes -->
       <ion-item>
         <ion-range
           name="remember_minutes"
@@ -123,6 +125,21 @@
         <ion-icon name="information-circle-outline"></ion-icon>
         How long to remember your master password, in minutes.
       </p>
+
+      <ion-item>
+        <ion-toggle
+            name="master_password_hash"
+            formControlName="master_password_hash"
+            [checked]="settingsForm.get('master_password_hash').value"
+            color="primary"
+            enable-on-off-labels="true"
+        >Show password hash?</ion-toggle>
+      </ion-item>
+      <p class="help input-help">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Whether to display a 3 character hash of your master password when you enter it, to help you confirm you've typed it correctly.
+      </p>
+
       @if (settingsForm.invalid) {
         <p class="warning">
           <ion-icon name="warning"></ion-icon>
@@ -183,9 +200,9 @@
         <ion-icon name="information-circle-outline"></ion-icon>
         Import and export your PasswordMaker settings and profiles
       </p>
-      
+
       <input type="file" (change)="importSettings($event)" aria-label="Settings file for import" #fileInput accept=".xml,.rdf" style="display: none;" />
-      
+
       <ion-button
         (click)="fileInput.click()"
         expand="block"
@@ -195,7 +212,7 @@
         <ion-icon slot="start" name="share-outline"></ion-icon>
         Select file to import
       </ion-button>
-      
+
       @if (fileInput.files && fileInput.files.length > 0) {
         <ion-button
           (click)="confirmImport(fileInput.files[0])"
