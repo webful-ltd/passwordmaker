@@ -19,16 +19,6 @@ several other plugins and apps which have followed the same conventions over the
 See [the hype page](https://passwordmaker.webful.uk) for more about
 what the app does, why you might want it and how to pick your [settings](https://passwordmaker.webful.uk/#settings).
 
-## Thanks & licences
-
-Many thanks to other PasswordMaker projects which have provided inspiration and code
-for this one. Notably:
-* An old library `emersion/node-passwordmarker` underpins the [forked library](https://github.com/webful-ltd/passwordmaker-lib)
-doing a lot of the work (which has it own MIT licence in that repo).
-* [`chrome-passwordmaker`](https://github.com/passwordmaker/chrome-passwordmaker/tree/master) formed much of
-  the basis for the import/export code, which [is LGPL-3.0 licensed](./licenses/LGPL-3.0.md) in line with that extension.
-* All other codes in this repo [is GPL-3.0 licenseed](./LICENSE).
-
 ## Get the app
 
 ### Stable releases
@@ -44,6 +34,19 @@ this codebase a few days after they are deemed complete, [opt in via the Beta li
 
 If you'd like to help test changes earlier in the development cycle, please use this
 repository and [Ionic CLI](https://github.com/ionic-team/ionic-cli) to run the app locally.
+
+## Thanks & licences
+
+Many thanks to other PasswordMaker projects which have provided inspiration and code
+for this one. Notably:
+* An old library `emersion/node-passwordmarker` underpins the [forked library](https://github.com/webful-ltd/passwordmaker-lib)
+doing a lot of the work (which has it own MIT licence in that repo).
+* [`chrome-passwordmaker`](https://github.com/passwordmaker/chrome-passwordmaker/tree/master) formed much of
+  the basis for the import/export code, which [is LGPL-3.0 licensed](./licenses/LGPL-3.0.md) in line with that extension.
+
+Thank you also to generous [sponsors of Webful](https://github.com/sponsors/webful-ltd)!
+
+All other code in this repo [is GPL-3.0 licenseed](./LICENSE).
 
 ## Dev info
 
