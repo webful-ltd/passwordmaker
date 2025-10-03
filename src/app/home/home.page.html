@@ -93,5 +93,14 @@
     @if (!output_password) {
       <p>Fill out the above fields to generate a unique, secure password for each service you register with online.</p>
     }
+
+    @if (master_password_hash) {
+      <div>
+        <ion-item class="output_password_outer">
+          <ion-label position="stacked">Hash of password</ion-label>
+          <div>{{ master_password_hash }}</div>
+        </ion-item>
+      </div>
+    }
   </form>
 </ion-content>

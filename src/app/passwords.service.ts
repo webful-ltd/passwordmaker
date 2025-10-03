@@ -30,6 +30,16 @@ export class PasswordsService {
     return `${password}${settings.getPostProcessingSuffix()}`;
   }
 
+  public hashMasterPassword(masterPassword: string): string {
+    // Defaults include blank data & no l33t, prefix, suffix or modifier.
+    return makePassword({
+      charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+      hashAlgorithm: 'sha256',
+      length: 3,
+      masterPassword: masterPassword,
+    });
+  }
+
   private extractCoreData(content: string, settings: Settings): string {
     if (!settings.isDomainOnly()) {
       return content; // Use URL or other input unmodified when `domain_only` is off.

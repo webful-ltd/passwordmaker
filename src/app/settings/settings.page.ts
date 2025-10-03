@@ -67,6 +67,7 @@ export class SettingsPageComponent implements OnInit {
     this.settingsForm = this.formBuilder.group({
       algorithm: ['hmac-sha256', Validators.required],
       domain_only: [true],
+      master_password_hash: [false],
       output_character_set: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
       output_length: [15, [
         Validators.required,
@@ -178,7 +179,11 @@ export class SettingsPageComponent implements OnInit {
     let saveReadyValue = value;
     if (this.advanced_mode) {
       saveReadyValue = await this.settingsService.getCurrentSettings();
-      saveReadyValue.remember_minutes = value.remember_minutes;
+
+      // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
+      for (const key of saveReadyValue.getCommonSettingsProperties()) {
+        (saveReadyValue as any)[key] = (value as any)[key];
+      }
     }
 
     this.settingsService.save(saveReadyValue)
@@ -237,24 +242,24 @@ export class SettingsPageComponent implements OnInit {
     try {
       // Read the file content using import service
       const fileContent = await this.importService.readFileContent(file);
-      
+
       // Parse the RDF using our import service
       const importResult = this.importService.parseRdfDocument(fileContent);
-      
+
       if (!importResult.profiles || importResult.profiles.length === 0) {
         throw new Error('No profiles found in the import file');
       }
 
       // Get current settings to determine if we're in advanced mode
       const currentSettings = await this.settingsService.getCurrentSettings();
-      
+
       if (currentSettings instanceof SettingsSimple) {
         // Upgrade to advanced mode first
         const advancedSettings = new SettingsAdvanced(currentSettings);
-        
+
         // Merge imported profiles with existing (default) profile
         const mergeResult = this.importService.mergeProfiles(advancedSettings.profiles, importResult.profiles);
-        
+
         // Assign profile IDs to new profiles
         let nextId = 1;
         mergeResult.profiles.forEach(profile => {
@@ -262,10 +267,10 @@ export class SettingsPageComponent implements OnInit {
             profile.profile_id = nextId++;
           }
         });
-        
+
         advancedSettings.profiles = mergeResult.profiles;
         await this.settingsService.save(advancedSettings);
-        
+
         await loading.dismiss();
         this.toast.create({
           message: `Imported: ${mergeResult.addedCount} new, ${mergeResult.updatedCount} updated profile(s)`,
@@ -273,12 +278,12 @@ export class SettingsPageComponent implements OnInit {
           position: 'middle',
           buttons: [{ text: 'OK', role: 'cancel' }],
         }).then(successToast => successToast.present());
-        
+
       } else if (currentSettings instanceof SettingsAdvanced) {
-        
+
         // Merge imported profiles with existing profiles
         const mergeResult = this.importService.mergeProfiles(currentSettings.profiles, importResult.profiles);
-        
+
         // Assign profile IDs to new profiles
         const nextId = await this.settingsService.getNextProfileId();
         let idCounter = nextId;
@@ -287,10 +292,10 @@ export class SettingsPageComponent implements OnInit {
             profile.profile_id = idCounter++;
           }
         });
-        
+
         currentSettings.profiles = mergeResult.profiles;
         await this.settingsService.save(currentSettings);
-        
+
         await loading.dismiss();
         this.toast.create({
           message: `Imported: ${mergeResult.addedCount} new, ${mergeResult.updatedCount} updated profile(s)`,
@@ -302,12 +307,12 @@ export class SettingsPageComponent implements OnInit {
 
       // Refresh the settings display
       this.update();
-      
+
     } catch (error) {
       console.error('Import failed at step:', error);
       console.error('Full error details:', error.message, error.stack);
       await loading.dismiss();
-      
+
       this.toast.create({
         message: `Import failed: ${error.message}`,
         position: 'middle',
@@ -320,7 +325,7 @@ export class SettingsPageComponent implements OnInit {
   async exportSettings() {
     try {
       const currentSettings = await this.settingsService.getCurrentSettings();
-      
+
       if (currentSettings instanceof SettingsSimple) {
         this.toast.create({
           message: 'Please upgrade to Advanced mode to export settings',
@@ -340,7 +345,7 @@ export class SettingsPageComponent implements OnInit {
         position: 'middle',
         buttons: [{ text: 'OK', role: 'cancel' }],
       }).then(successToast => successToast.present());
-      
+
     } catch (error) {
       this.toast.create({
         message: `Export failed: ${error.message}`,
@@ -373,14 +378,12 @@ export class SettingsPageComponent implements OnInit {
 
     this.advanced_mode = (settings instanceof SettingsAdvanced);
 
-    // If we have more than one setting become common between the top level of the two
-    // Settings types, we may want to DRY up the logic between initialisation here
-    // and the preparation for calling SettingsService.save(). Doesn't seem too crucial for now.
-    // TODO probably improve when doing https://github.com/webful-ltd/passwordmaker/issues/92
-    // console.log('class check', settings.hasOwnProperty('output_character_set'));
-    const formValues: any = {
-      remember_minutes: settings.remember_minutes,
-    };
+    // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
+    // e.g. `master_password_hash` and `remember_minutes`.
+    let formValues: any = {};
+    for (const key of settings.getCommonSettingsProperties()) {
+      formValues[key] = (settings as any)[key];
+    }
 
     if (settings instanceof SettingsSimple) {
       formValues.added_number_on = settings.added_number_on;

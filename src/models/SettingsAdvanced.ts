@@ -12,7 +12,9 @@ export class SettingsAdvanced extends Settings {
 
     this.class = this.constructor.name;
 
-    this.remember_minutes = settingsSimple.remember_minutes;
+    for (const key of settingsSimple.getCommonSettingsProperties()) {
+      this[key] = settingsSimple[key];
+    }
 
     const firstProfile = new Profile();
     firstProfile.profile_id = 1;
