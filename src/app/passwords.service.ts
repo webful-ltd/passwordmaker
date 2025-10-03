@@ -31,15 +31,6 @@ export class PasswordsService {
   }
 
   public hashMasterPassword(masterPassword: string): string {
-    /*
-    Hash Algorithm: SHA256
-    Key: password
-    Data: "" (empty)
-    No l33t
-    Length: 3
-    Charset: Alphanumeric
-    No prefix or suffix
-*/
     // Defaults include blank data & no l33t, prefix, suffix or modifier.
     return makePassword({
       charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
