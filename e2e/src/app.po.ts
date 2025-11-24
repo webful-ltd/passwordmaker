@@ -50,31 +50,18 @@ export class AppPage {
       await ionicSelect.click();
       await ionicSelect.waitForStable();
 
-      await browser.pause(500); // CI needs a bit of time for inner elements to be ready.
-
-      const possibleRadios = await $$('>>>.alert-radio-group > button');
-      const possibleOkButtons = await $$('>>>.alert-button-group > button');
-
+      // Should be only the activated select's "radio"s on screen.
+      const possibleRadios = await $$('>>> ion-radio');
       possibleRadios.map(possibleRadio => {
         possibleRadio.getText().then(async possibleRadioText => {
           if (possibleRadioText === valueLabel) {
             possibleRadio.click();
-          }
-        }).catch(error => {
-          // If we already found the desired radio button in another elements from the `map` and
-          // clicked OK, this one won't have an element to `getText()` from any more. This is fine
-          // and we just need to catch the WebDriver error so the test can proceed.
-        });
-      });
-
-      await ionicSelect.waitForStable();
-
-      possibleOkButtons.map(possibleOkButton => {
-        possibleOkButton.getText().then(async possibleOkButtonText => {
-          if (possibleOkButtonText === 'OK') {
-            possibleOkButton.click();
             resolve(true);
           }
+        }).catch(error => {
+          // If we already found the desired item in another element from the `map` and
+          // pressed it, this one won't have an element to `getText()` from any more. This is fine
+          // and we just need to catch the WebDriver error so the test can proceed.
         });
       });
     });
