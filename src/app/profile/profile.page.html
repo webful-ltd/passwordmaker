@@ -41,6 +41,7 @@
         </ion-item>
         <ion-item>
           <ion-select
+            interface="popover"
             label="Possible characters"
             labelPlacement="stacked"
             name="output_character_set_preset"
@@ -72,6 +73,7 @@
         }
         <ion-item>
           <ion-select
+            interface="popover"
             label="Hash algorithm"
             labelPlacement="stacked"
             name="algorithm"
@@ -89,15 +91,16 @@
         </ion-item>
         <ion-item>
           <ion-select
+            interface="popover"
             label="Use l33t?"
             labelPlacement="stacked"
             name="leet_location"
             formControlName="leet_location"
-            >
+          >
             <ion-select-option value="none">No</ion-select-option>
-            <ion-select-option value="before-hashing">Before generating password</ion-select-option>
-            <ion-select-option value="after-hashing">After generating password</ion-select-option>
-            <ion-select-option value="both">Before and after generating password</ion-select-option>
+            <ion-select-option value="before-hashing">Before making password</ion-select-option>
+            <ion-select-option value="after-hashing">After making password</ion-select-option>
+            <ion-select-option value="both">Before and after</ion-select-option>
           </ion-select>
         </ion-item>
         @if (profile.get('leet_location').value !== 'none') {
