@@ -49,6 +49,7 @@ export class AppPage {
       const ionicSelect = await $(`ion-select[name="${elementName}"]`);
       await ionicSelect.click();
       await ionicSelect.waitForStable();
+      await browser.pause(500); // CI needs a bit of extra time for options to be ready.
 
       // Should be only the activated select's "radio"s on screen.
       const possibleRadios = await $$('>>> ion-radio');
