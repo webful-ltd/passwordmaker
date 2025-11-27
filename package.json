@@ -18,7 +18,7 @@
   "private": false,
   "dependencies": {
     "@angular/cli": "^20.0.3",
-    "@angular/common": "^20.3.13",
+    "@angular/common": "^20.3.14",
     "@angular/core": "^20.3.13",
     "@angular/forms": "^20.3.13",
     "@angular/platform-browser": "^20.3.13",
