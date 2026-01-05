@@ -56,58 +56,52 @@ describe('SettingsPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set up auto-save subscription after settings are loaded', fakeAsync(() => {
+  it('should set up auto-save subscription after settings are loaded', fakeAsync(async () => {
     // Mock getCurrentSettings to return a SettingsSimple instance
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(new SettingsSimple()));
     
-    component.ngOnInit();
-    tick(); // Process the ngOnInit promise
-    flush(); // Process all pending promises and microtasks
+    await component.ngOnInit();
+    tick(); // Process any remaining async operations
     
     expect(component['formChangesSubscription']).toBeDefined();
   }));
 
-  it('should auto-save settings when form changes and is valid', fakeAsync(() => {
+  it('should auto-save settings when form changes and is valid', fakeAsync(async () => {
     const mockSettings = new SettingsSimple();
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(mockSettings));
     spyOn(settingsService, 'save').and.returnValue(Promise.resolve());
     
-    component.ngOnInit();
-    tick(); // Process the ngOnInit promise
-    flush(); // Process all pending promises and microtasks
+    await component.ngOnInit();
+    tick(); // Process any remaining async operations
     
     // Simulate form change
     component.settingsForm.patchValue({ remember_minutes: 7 });
     tick(1000); // Wait for debounce
-    flush(); // Process the auto-save promise
     
     expect(settingsService.save).toHaveBeenCalled();
   }));
 
-  it('should not auto-save when form is invalid', fakeAsync(() => {
+  it('should not auto-save when form is invalid', fakeAsync(async () => {
     const mockSettings = new SettingsSimple();
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(mockSettings));
     spyOn(settingsService, 'save').and.returnValue(Promise.resolve());
     
-    component.ngOnInit();
-    tick(); // Process the ngOnInit promise
-    flush(); // Process all pending promises and microtasks
+    await component.ngOnInit();
+    tick(); // Process any remaining async operations
     
     // Make form invalid by setting output_length to an invalid value
     component.settingsForm.patchValue({ output_length: 5 }); // Below minimum of 8
     tick(1000); // Wait for debounce
-    flush(); // Process any pending promises
     
     expect(settingsService.save).not.toHaveBeenCalled();
   }));
 
-  it('should clean up subscription on destroy', fakeAsync(() => {
+  it('should clean up subscription on destroy', fakeAsync(async () => {
     const mockSettings = new SettingsSimple();
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(mockSettings));
     
-    component.ngOnInit();
-    tick(); // Process the ngOnInit promise
-    flush(); // Process all pending promises and microtasks
+    await component.ngOnInit();
+    tick(); // Process any remaining async operations
     
     const subscription = component['formChangesSubscription'];
     expect(subscription).toBeDefined();
