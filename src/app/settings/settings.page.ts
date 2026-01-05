@@ -341,7 +341,7 @@ export class SettingsPageComponent implements OnInit {
       await this.importService.exportProfilesToFile((currentSettings as SettingsAdvanced).profiles);
 
       // On Android the folder has to be 'Documents' so we should tell the user that as it's not always simple to spot.
-      const message = 'Settings exported successfully.' + (this.platform.is('android') ? ' See the "Documents" folder' : '');
+      const message = 'Settings exported successfully.' + (this.platform.is('android') ? ' See the "Documents" folder.' : '');
       this.toast.create({
         message,
         duration: 2000,
