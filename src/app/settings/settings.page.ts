@@ -469,4 +469,5 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     if (this.formChangesSubscription) {
       this.formChangesSubscription.unsubscribe();
     }
+  }
 }
