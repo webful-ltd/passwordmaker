@@ -96,7 +96,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.loading = await this.loadingController.create();
     await this.loading.present();
-    this.update();
+    await this.update();
   }
 
   /**

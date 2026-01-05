@@ -61,6 +61,7 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(new SettingsSimple()));
     
     component.ngOnInit();
+    tick(); // Process the ngOnInit promise
     flush(); // Process all pending promises and microtasks
     
     expect(component['formChangesSubscription']).toBeDefined();
@@ -72,11 +73,13 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'save').and.returnValue(Promise.resolve());
     
     component.ngOnInit();
+    tick(); // Process the ngOnInit promise
     flush(); // Process all pending promises and microtasks
     
     // Simulate form change
     component.settingsForm.patchValue({ remember_minutes: 7 });
     tick(1000); // Wait for debounce
+    flush(); // Process the auto-save promise
     
     expect(settingsService.save).toHaveBeenCalled();
   }));
@@ -87,11 +90,13 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'save').and.returnValue(Promise.resolve());
     
     component.ngOnInit();
+    tick(); // Process the ngOnInit promise
     flush(); // Process all pending promises and microtasks
     
     // Make form invalid by setting output_length to an invalid value
     component.settingsForm.patchValue({ output_length: 5 }); // Below minimum of 8
     tick(1000); // Wait for debounce
+    flush(); // Process any pending promises
     
     expect(settingsService.save).not.toHaveBeenCalled();
   }));
@@ -101,6 +106,7 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(mockSettings));
     
     component.ngOnInit();
+    tick(); // Process the ngOnInit promise
     flush(); // Process all pending promises and microtasks
     
     const subscription = component['formChangesSubscription'];
