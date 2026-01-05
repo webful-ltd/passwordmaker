@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Browser } from '@capacitor/browser';
-import { LoadingController, ModalController, ToastController } from '@ionic/angular/standalone';
+import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   addCircleOutline,
@@ -34,6 +34,7 @@ export class SettingsPageComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   loadingController = inject(LoadingController);
   modalController = inject(ModalController);
+  private platform = inject(Platform);
   protected settingsService = inject(SettingsService);
   private importService = inject(ImportService);
   toast = inject(ToastController);
@@ -339,8 +340,10 @@ export class SettingsPageComponent implements OnInit {
       // Use platform-aware export method
       await this.importService.exportProfilesToFile((currentSettings as SettingsAdvanced).profiles);
 
+      // On Android the folder has to be 'Documents' so we should tell the user that as it's not always simple to spot.
+      const message = 'Settings exported successfully.' + (this.platform.is('android') ? ' See the "Documents" folder' : '');
       this.toast.create({
-        message: 'Settings exported successfully',
+        message,
         duration: 2000,
         position: 'middle',
         buttons: [{ text: 'OK', role: 'cancel' }],
