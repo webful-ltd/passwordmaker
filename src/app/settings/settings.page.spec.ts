@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, flush, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
-import { IonInput, IonSelect, IonToggle, IonRange, provideIonicAngular } from '@ionic/angular/standalone';
+import { IonInput, IonSelect, IonToggle, IonRange, provideIonicAngular, LoadingController } from '@ionic/angular/standalone';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
@@ -14,8 +14,16 @@ describe('SettingsPageComponent', () => {
   let component: SettingsPageComponent;
   let fixture: ComponentFixture<SettingsPageComponent>;
   let settingsService: SettingsService;
+  let loadingController: LoadingController;
+  let mockLoading: any;
 
   beforeEach(waitForAsync(() => {
+    // Create a mock loading element
+    mockLoading = {
+      present: jasmine.createSpy('present').and.returnValue(Promise.resolve()),
+      dismiss: jasmine.createSpy('dismiss').and.returnValue(Promise.resolve())
+    };
+
     TestBed.configureTestingModule({
       declarations: [SettingsPageComponent],
       imports: [
@@ -38,6 +46,10 @@ describe('SettingsPageComponent', () => {
     fixture = TestBed.createComponent(SettingsPageComponent);
     component = fixture.componentInstance;
     settingsService = TestBed.inject(SettingsService);
+    loadingController = TestBed.inject(LoadingController);
+    
+    // Mock the LoadingController's create method
+    spyOn(loadingController, 'create').and.returnValue(Promise.resolve(mockLoading));
   }));
 
   it('should create', () => {
@@ -49,7 +61,7 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(new SettingsSimple()));
     
     component.ngOnInit();
-    tick();
+    flush(); // Process all pending promises and microtasks
     
     expect(component['formChangesSubscription']).toBeDefined();
   }));
@@ -60,7 +72,7 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'save').and.returnValue(Promise.resolve());
     
     component.ngOnInit();
-    tick();
+    flush(); // Process all pending promises and microtasks
     
     // Simulate form change
     component.settingsForm.patchValue({ remember_minutes: 7 });
@@ -75,7 +87,7 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'save').and.returnValue(Promise.resolve());
     
     component.ngOnInit();
-    tick();
+    flush(); // Process all pending promises and microtasks
     
     // Make form invalid by setting output_length to an invalid value
     component.settingsForm.patchValue({ output_length: 5 }); // Below minimum of 8
@@ -89,9 +101,10 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(mockSettings));
     
     component.ngOnInit();
-    tick();
+    flush(); // Process all pending promises and microtasks
     
     const subscription = component['formChangesSubscription'];
+    expect(subscription).toBeDefined();
     spyOn(subscription!, 'unsubscribe');
     
     component.ngOnDestroy();
