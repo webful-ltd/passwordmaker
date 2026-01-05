@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Browser } from '@capacitor/browser';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular/standalone';
@@ -14,6 +14,8 @@ import {
   shareOutline,
   warning,
 } from 'ionicons/icons';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import { Profile } from '../../models/Profile';
 import { ProfilePageComponent } from '../profile/profile.page';
@@ -30,7 +32,7 @@ import { ImportService } from '../import.service';
   standalone: false
 })
 
-export class SettingsPageComponent implements OnInit {
+export class SettingsPageComponent implements OnInit, OnDestroy {
   private formBuilder = inject(FormBuilder);
   loadingController = inject(LoadingController);
   modalController = inject(ModalController);
@@ -42,6 +44,7 @@ export class SettingsPageComponent implements OnInit {
   advanced_mode = false;
   profiles: Profile[] = [];
   settingsLoaded = false;
+  private formChangesSubscription?: Subscription;
 
   advancedConfirmationButtons = [
     {
@@ -406,5 +409,64 @@ export class SettingsPageComponent implements OnInit {
     if (this.loading) {
       this.loading.dismiss();
     }
+
+    // Set up auto-save subscription after initial load
+    this.setupAutoSave();
   }
+
+  private setupAutoSave() {
+    // Unsubscribe from previous subscription if it exists
+    if (this.formChangesSubscription) {
+      this.formChangesSubscription.unsubscribe();
+    }
+
+    // Subscribe to form changes with debounce to auto-save
+    this.formChangesSubscription = this.settingsForm.valueChanges
+      .pipe(
+        debounceTime(1000), // Wait 1 second after user stops typing
+        distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
+      )
+      .subscribe(() => {
+        // Only auto-save if the form is valid
+        if (this.settingsForm.valid) {
+          this.autoSave();
+        }
+      });
+  }
+
+  private async autoSave() {
+    const value = this.settingsForm.value;
+
+    let saveReadyValue = value;
+    if (this.advanced_mode) {
+      saveReadyValue = await this.settingsService.getCurrentSettings();
+
+      // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
+      for (const key of saveReadyValue.getCommonSettingsProperties()) {
+        (saveReadyValue as any)[key] = (value as any)[key];
+      }
+    }
+
+    this.settingsService.save(saveReadyValue)
+      .then(
+        () => {
+          // Silent save - no toast notification for auto-save
+          console.log('Settings auto-saved');
+        },
+        (reason) => {
+          this.toast.create({
+            message: (`Auto-save error: ${reason}`),
+            duration: 6000,
+            position: 'middle',
+            cssClass: 'error',
+            buttons: [{ text: 'OK', role: 'cancel' }],
+          }).then(errorToast => errorToast.present());
+        }
+      );
+  }
+
+  ngOnDestroy() {
+    if (this.formChangesSubscription) {
+      this.formChangesSubscription.unsubscribe();
+    }
 }

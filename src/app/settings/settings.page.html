@@ -27,7 +27,7 @@
   }
 
   @if (settingsLoaded) {
-    <form [formGroup]="settingsForm" (ngSubmit)="save(settingsForm)" novalidate>
+    <form [formGroup]="settingsForm" novalidate>
       @if (!advanced_mode) {
         <div>
           <ion-item>
@@ -148,16 +148,10 @@
           Settings not valid. Please check fields are complete and that your chosen Length is between 8 and 200 characters.
         </p>
       }
-      <ion-button
-        name="save"
-        type="submit"
-        color="primary"
-        expand="block"
-        [disabled]="settingsForm.invalid"
-        >
-        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-        Save
-      </ion-button>
+      <p class="help">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Settings are saved automatically as you make changes.
+      </p>
       @if (advanced_mode) {
         <ion-button
           (click)="editNewProfile()"
@@ -170,7 +164,6 @@
       }
       @if (!advanced_mode) {
         <div>
-          <p class="button-divider">&mdash; OR &mdash;</p>
           <ion-button
             (click)="confirmEnableAdvanced()"
             name="advanced"
