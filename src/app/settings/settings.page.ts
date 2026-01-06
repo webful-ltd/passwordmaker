@@ -14,7 +14,7 @@ import {
   shareOutline,
   warning,
 } from 'ionicons/icons';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 import { Profile } from '../../models/Profile';
@@ -416,10 +416,10 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       this.formChangesSubscription.unsubscribe();
     }
 
-    // Subscribe to form changes with debounce to auto-save
+    // Subscribe to form changes to auto-save
+    // No debounce needed since inputs are mostly select/toggle with minimal typing
     this.formChangesSubscription = this.settingsForm.valueChanges
       .pipe(
-        debounceTime(1000), // Wait 1 second after user stops typing
         distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
       )
       .subscribe(() => {

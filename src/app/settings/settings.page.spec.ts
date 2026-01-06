@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, flush, flushMicrotasks, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flushMicrotasks, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import { IonInput, IonSelect, IonToggle, IonRange, provideIonicAngular, LoadingController } from '@ionic/angular/standalone';
@@ -76,7 +76,6 @@ describe('SettingsPageComponent', () => {
     
     // Simulate form change
     component.settingsForm.patchValue({ remember_minutes: 7 });
-    tick(1000); // Wait for debounce
     flushMicrotasks(); // Resolve save promise
     
     expect(settingsService.save).toHaveBeenCalled();
@@ -92,7 +91,7 @@ describe('SettingsPageComponent', () => {
     
     // Make form invalid by setting output_length to an invalid value
     component.settingsForm.patchValue({ output_length: 5 }); // Below minimum of 8
-    tick(1000); // Wait for debounce
+    flushMicrotasks(); // Process any pending operations
     
     expect(settingsService.save).not.toHaveBeenCalled();
   }));
