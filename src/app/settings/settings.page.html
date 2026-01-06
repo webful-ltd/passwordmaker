@@ -8,7 +8,7 @@
   <p class="help">
     <ion-icon name="information-circle-outline"></ion-icon>
     What's all this, then?
-    <a (click)="openHelp()" target="_system">Learn about Settings here</a>
+    <a (click)="openHelp()" target="_system">Learn about Settings here</a>. Settings on this page auto-save as you change them.
   </p>
 
   @if (advanced_mode) {
@@ -148,10 +148,6 @@
           Settings not valid. Please check fields are complete and that your chosen Length is between 8 and 200 characters.
         </p>
       }
-      <p class="help">
-        <ion-icon name="information-circle-outline"></ion-icon>
-        Settings are saved automatically as you make changes.
-      </p>
       @if (advanced_mode) {
         <ion-button
           (click)="editNewProfile()"

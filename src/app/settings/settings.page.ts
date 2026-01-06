@@ -359,10 +359,6 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-
-
   private async update() {
     let settings: Settings;
     try {
