@@ -31,6 +31,27 @@ export class SettingsService {
   private currentSettings: Settings;
   private currentPromise?: Promise<any>;
 
+  private hydrateSettings(settings: any): Settings {
+    let loadedSettings: Settings;
+
+    if (settings && settings.class === SettingsAdvanced.name) {
+      loadedSettings = new SettingsAdvanced(new SettingsSimple());
+    } else {
+      loadedSettings = new SettingsSimple();
+    }
+
+    if (settings) {
+      for (const key in loadedSettings) {
+        if (settings[key] !== undefined) {
+          loadedSettings[key] = settings[key];
+        }
+      }
+      loadedSettings.class = settings.class;
+    }
+
+    return loadedSettings;
+  }
+
   async init() {
     // On Capacitor wait for platform/plugin readiness before attempting to
     // register the SQLite driver. On web, create immediately and fall back to
@@ -271,7 +292,7 @@ export class SettingsService {
           this.cloudSettings.exists().then(exists => {
             if (exists) {
               this.cloudSettings.load()
-                .then(loadedFromCloud => { // Success: load past settings
+                .then(async loadedFromCloud => { // Success: load past settings
                   this.toast.create({
                     message: ('Previous settings loaded from backup'),
                     duration: 3000,
@@ -279,7 +300,16 @@ export class SettingsService {
                     buttons: [{ text: 'OK', role: 'cancel' }],
                   }).then(successToast => successToast.present());
 
-                  resolve(loadedFromCloud);
+                  // Persist the raw settings object for subsequent app launches.
+                  // (Avoid cloning: that has historically caused issues with storage/cloud plugins.)
+                  delete (loadedFromCloud as any)?.constructor;
+                  await this.storage.set(SettingsService.storageKey, loadedFromCloud);
+
+                  // Return a hydrated Settings instance so callers can safely use methods like
+                  // `getCommonSettingsProperties()`.
+                  const hydrated = this.hydrateSettings(loadedFromCloud);
+                  settingsService.currentSettings = hydrated;
+                  resolve(hydrated);
                 })
                 .catch(error => { // Load error
                   this.toast.create({
@@ -303,25 +333,8 @@ export class SettingsService {
 
       // Set up the correct class, and 'upgrade' settings data to add defaults for any
       // newly-supported keys since the last save
-      let loadedSettings: Settings;
-
-      if (settings && settings.class === SettingsAdvanced.name) {
-        loadedSettings = new SettingsAdvanced(new SettingsSimple());
-      } else {
-        loadedSettings = new SettingsSimple();
-      }
-
-      if (settings) {
-        for (const key in loadedSettings) {
-          if (settings[key] !== undefined) {
-            loadedSettings[key] = settings[key];
-          }
-        }
-        loadedSettings.class = settings.class;
-      }
-
+      const loadedSettings = this.hydrateSettings(settings);
       settingsService.currentSettings = loadedSettings;
-
       return settingsService.currentSettings;
     });
 

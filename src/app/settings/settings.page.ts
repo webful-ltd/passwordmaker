@@ -94,7 +94,7 @@ export class SettingsPageComponent implements OnInit {
   async ngOnInit() {
     this.loading = await this.loadingController.create();
     await this.loading.present();
-    this.update();
+    await this.update();
   }
 
   /**
@@ -364,50 +364,47 @@ export class SettingsPageComponent implements OnInit {
 
 
   private async update() {
-    let settings: Settings;
     try {
-      settings = await this.settingsService.getCurrentSettings();
+      const settings = await this.settingsService.getCurrentSettings();
+
+      this.advanced_mode = (settings instanceof SettingsAdvanced);
+
+      // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
+      // e.g. `master_password_hash` and `remember_minutes`.
+      const formValues: any = {};
+      for (const key of settings.getCommonSettingsProperties()) {
+        formValues[key] = (settings as any)[key];
+      }
+
+      if (settings instanceof SettingsSimple) {
+        formValues.added_number_on = settings.added_number_on;
+        if (settings.added_number_on) {
+          formValues.added_number = settings.added_number;
+        } else {
+          formValues.added_number = undefined;
+        }
+        formValues.algorithm = settings.getAlgorithm();
+        formValues.domain_only = settings.isDomainOnly();
+        formValues.output_character_set = settings.getOutputCharacterSet();
+        formValues.output_length = settings.getOutputLength();
+      } else if (settings instanceof SettingsAdvanced) {
+        this.profiles = settings.profiles;
+      }
+
+      this.settingsForm.patchValue(formValues);
+      this.settingsLoaded = true;
     } catch (err) {
+      const message = (err && (err as any).message) ? (err as any).message : String(err);
       this.toast.create({
-        message: (`Could not load settings for update: ${err.message}`),
+        message: (`Could not load settings for update: ${message}`),
         position: 'middle',
         cssClass: 'error',
         buttons: [{ text: 'OK', role: 'cancel' }],
       }).then(errorToast => errorToast.present());
-      this.loading.dismiss();
-
-      return;
-    }
-
-    this.advanced_mode = (settings instanceof SettingsAdvanced);
-
-    // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
-    // e.g. `master_password_hash` and `remember_minutes`.
-    let formValues: any = {};
-    for (const key of settings.getCommonSettingsProperties()) {
-      formValues[key] = (settings as any)[key];
-    }
-
-    if (settings instanceof SettingsSimple) {
-      formValues.added_number_on = settings.added_number_on;
-      if (settings.added_number_on) {
-        formValues.added_number = settings.added_number;
-      } else {
-        formValues.added_number = undefined;
+    } finally {
+      if (this.loading) {
+        await this.loading.dismiss().catch(() => {});
       }
-      formValues.algorithm = settings.getAlgorithm();
-      formValues.domain_only = settings.isDomainOnly();
-      formValues.output_character_set = settings.getOutputCharacterSet();
-      formValues.output_length = settings.getOutputLength();
-    } else if (settings instanceof SettingsAdvanced) {
-      this.profiles = settings.profiles;
-    }
-
-    this.settingsForm.patchValue(formValues);
-
-    this.settingsLoaded = true;
-    if (this.loading) {
-      this.loading.dismiss();
     }
   }
 }
