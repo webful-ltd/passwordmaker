@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { inject, NgModule, provideAppInitializer } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular, IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
@@ -11,11 +11,6 @@ import { AppComponent } from './app.component';
 import { CapacitorSqliteDriverService } from './capacitor-sqlite-driver.service';
 import { LegacyStorageModule } from './legacy-storage.module';
 import { SettingsService } from './settings.service';
-
-// Factory function to initialize settings service before the app fully starts
-export function initializeSettingsFactory(settingsService: SettingsService) {
-  return () => settingsService.init();
-}
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,12 +31,7 @@ export function initializeSettingsFactory(settingsService: SettingsService) {
   providers: [
     CloudSettings,
     SettingsService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeSettingsFactory,
-      deps: [SettingsService],
-      multi: true
-    },
+    provideAppInitializer(() => inject(SettingsService).init()),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular()
   ],

@@ -16,7 +16,7 @@ export class AppComponent {
 
   async initializeApp() {
     await this.platform.ready();
-    // SettingsService.init() is handled by APP_INITIALIZER in app.module.ts
+    // SettingsService.init() is handled by provideAppInitializer in app.module.ts
     // to ensure settings are ready before the app bootstraps
 
     if (this.platform.is('capacitor')) { // Don't crash on web platform.
