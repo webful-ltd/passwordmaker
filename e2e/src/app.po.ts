@@ -16,6 +16,46 @@ export class AppPage {
 
   async startOnHomePath() {
     await browser.url('/');
+    // Give the app time to initialize before any interactions
+    await browser.pause(3000);
+    // Wait for the home page host input to exist
+    await browser.waitUntil(
+      async () => {
+        const hostInput = await $('ion-input[name="host"]');
+        return await hostInput.isExisting();
+      },
+      {
+        timeout: 30000,
+        timeoutMsg: 'Home page host input did not exist within 30 seconds'
+      }
+    );
+    // Also wait for any loading spinner to disappear
+    await this.waitForLoadingToDisappear();
+  };
+
+  /**
+   * Wait for any ion-loading element to disappear from the page.
+   */
+  async waitForLoadingToDisappear() {
+    await browser.waitUntil(
+      async () => {
+        const loadings = await $$('ion-loading');
+        if (loadings.length === 0) {
+          return true;
+        }
+        // Check if any loading element is still displayed
+        for (const loading of loadings) {
+          if (await loading.isDisplayed()) {
+            return false;
+          }
+        }
+        return true;
+      },
+      {
+        timeout: 30000,
+        timeoutMsg: 'Loading spinner did not disappear within 30 seconds'
+      }
+    );
   };
 
   /**
@@ -27,6 +67,25 @@ export class AppPage {
     const tab = await $(`ion-tab-button[tab="${tabName}"]`);
     await tab.click();
     await browser.pause(500); // Ensure elements all ready on the new page before proceeding.
+    
+    // Wait for any loading spinner to disappear
+    await this.waitForLoadingToDisappear();
+    
+    // Additional wait for settings page form to be ready
+    if (tabName === 'settings') {
+      await browser.waitUntil(
+        async () => {
+          // The form content only renders when settingsLoaded is true
+          const outputLengthInput = await $('ion-input[name="output_length"]');
+          const domainOnlyToggle = await $('ion-toggle[name="domain_only"]');
+          return (await outputLengthInput.isExisting()) || (await domainOnlyToggle.isExisting());
+        },
+        {
+          timeout: 30000,
+          timeoutMsg: 'Settings page form content did not load within 30 seconds'
+        }
+      );
+    }
   };
 
   async getHomeText() {
@@ -69,27 +128,19 @@ export class AppPage {
   };
 
   async setIonicToggle(elementName: string, shouldBeChecked: boolean): Promise<boolean> {
-    const ionicInput = await $(`ion-toggle[name="${elementName}"]`);
+    const ionicToggle = await $(`ion-toggle[name="${elementName}"]`);
+    await ionicToggle.waitForExist({ timeout: 5000 });
+    await ionicToggle.waitForDisplayed({ timeout: 5000 });
 
-    return new Promise<boolean>(async resolve => {
-      const currentValue = await $(ionicInput).$('input[type="checkbox"]').getAttribute('aria-checked');
+    const checkbox = await ionicToggle.$('input[type="checkbox"]');
+    const currentValue = await checkbox.getAttribute('aria-checked');
 
-      if (currentValue === shouldBeChecked.toString()) {
-        resolve(true);
-        return;
-      }
+    if (currentValue === shouldBeChecked.toString()) {
+      return true;
+    }
 
-      await ionicInput.click();
-      resolve(true);
-    });
-  };
-
-  async save(): Promise<boolean> {
-    const ionicSaveButton = await $(`ion-button[name="save"]`);
-
-    return new Promise<boolean>(async resolve => {
-      await ionicSaveButton.click().then(() => resolve(true));
-    });
+    await ionicToggle.click();
+    return true;
   };
 
   async getSaveButtonDisabledStatus(): Promise<boolean> {

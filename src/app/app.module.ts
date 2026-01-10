@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule, provideAppInitializer } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular, IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
@@ -31,6 +31,7 @@ import { SettingsService } from './settings.service';
   providers: [
     CloudSettings,
     SettingsService,
+    provideAppInitializer(() => inject(SettingsService).init()),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular()
   ],

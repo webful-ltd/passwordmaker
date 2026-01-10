@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { Platform } from '@ionic/angular/standalone';
-
-import { SettingsService } from './settings.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +9,6 @@ import { SettingsService } from './settings.service';
 })
 export class AppComponent {
   private platform = inject(Platform);
-  private settings = inject(SettingsService);
 
   constructor() {
     this.initializeApp();
@@ -19,10 +16,13 @@ export class AppComponent {
 
   async initializeApp() {
     await this.platform.ready();
-    await this.settings.init();
+    // SettingsService.init() is handled by provideAppInitializer in app.module.ts
+    // to ensure settings are ready before the app bootstraps
 
     if (this.platform.is('capacitor')) { // Don't crash on web platform.
       StatusBar.setBackgroundColor({ color: '#a11692' });
+      StatusBar.setOverlaysWebView({ overlay: false });
+      StatusBar.setStyle({ style: Style.Dark }); // "Light text for dark backgrounds."
     }
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');

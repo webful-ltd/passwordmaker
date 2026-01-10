@@ -18,7 +18,7 @@
         <p>Once you have more than one Profile you can quickly switch between them on the <strong><ion-icon name="key"></ion-icon> Make a Password</strong> tab.</p>
       </ion-card-content>
     </ion-card>
-    <form [formGroup]="profile" (ngSubmit)="save(profile)" novalidate>
+    <form id="profile-form" [formGroup]="profile" (ngSubmit)="save(profile)" novalidate>
       <ion-list>
         <ion-item>
           <ion-input
@@ -163,6 +163,16 @@
           >Use just domain name?</ion-toggle>
         </ion-item>
       </ion-list>
+      <ion-action-sheet
+        [isOpen]="isDeleteConfirmationOpen"
+        header="Are you sure you want to delete this profile?"
+        [buttons]="deleteConfirmationButtons"
+        (didDismiss)="dismissDelete()"
+      ></ion-action-sheet>
+    </form>
+  </ion-content>
+  <ion-footer class="profile-footer">
+    <ion-toolbar>
       @if (profile.invalid) {
         <p class="warning">
           <ion-icon name="warning"></ion-icon>
@@ -172,6 +182,7 @@
       <ion-button
         name="save"
         type="submit"
+        form="profile-form"
         color="primary"
         expand="block"
         [disabled]="profile.invalid"
@@ -190,12 +201,6 @@
           Delete
         </ion-button>
       }
-      <ion-action-sheet
-        [isOpen]="isDeleteConfirmationOpen"
-        header="Are you sure you want to delete this profile?"
-        [buttons]="deleteConfirmationButtons"
-        (didDismiss)="dismissDelete()"
-      ></ion-action-sheet>
-    </form>
-  </ion-content>
+    </ion-toolbar>
+  </ion-footer>
 }

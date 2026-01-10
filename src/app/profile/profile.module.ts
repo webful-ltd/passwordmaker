@@ -2,7 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, IonCard, IonCardContent, IonList, IonItem, IonInput, IonSelect, IonSelectOption, IonRange, IonToggle, IonActionSheet } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, IonCard, IonCardContent, IonList, IonItem, IonInput, IonSelect, IonSelectOption, IonRange, IonToggle, IonActionSheet, IonFooter } from '@ionic/angular/standalone';
 
 import { ProfilePageComponent } from './profile.page';
 
@@ -27,7 +27,8 @@ import { ProfilePageComponent } from './profile.page';
     IonSelectOption,
     IonRange,
     IonToggle,
-    IonActionSheet
+    IonActionSheet,
+    IonFooter
   ],
   declarations: [ProfilePageComponent]
 })
