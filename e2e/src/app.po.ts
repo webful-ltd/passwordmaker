@@ -84,14 +84,6 @@ export class AppPage {
     });
   };
 
-  async save(): Promise<boolean> {
-    const ionicSaveButton = await $(`ion-button[name="save"]`);
-
-    return new Promise<boolean>(async resolve => {
-      await ionicSaveButton.click().then(() => resolve(true));
-    });
-  };
-
   async getSaveButtonDisabledStatus(): Promise<boolean> {
     const ionicSaveButton = await $(`ion-button[name="save"]`);
 

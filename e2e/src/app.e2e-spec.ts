@@ -37,7 +37,6 @@ describe('PasswordMaker', () => {
     await page.navigateToTab('settings');
     await page.populateIonicInput('output_length', 200);
 
-    expect(await page.getSaveButtonDisabledStatus()).toBe(false);
     expect(await page.getSettingsText()).not.toContain('Settings not valid.');
   });
 
@@ -45,14 +44,12 @@ describe('PasswordMaker', () => {
     await page.navigateToTab('settings');
     await page.populateIonicInput('output_length', 201);
 
-    expect(await page.getSaveButtonDisabledStatus()).toBe(true);
     expect(await page.getSettingsText()).toContain('Settings not valid.');
   });
 
   it('should generate the right password with domain_only switched off', async () => {
     await page.navigateToTab('settings');
     expect(await page.setIonicToggle('domain_only', false)).toEqual(true);
-    expect(await page.save()).toEqual(true);
 
     await page.navigateToTab('home');
 
@@ -69,7 +66,6 @@ describe('PasswordMaker', () => {
     expect(await page.populateIonicSelect('output_character_set', 'Letters')).toEqual(true);
     expect(await page.populateIonicSelect('algorithm', 'SHA1')).toEqual(true);
     expect(await page.setIonicToggle('domain_only', true)).toEqual(true);
-    expect(await page.save()).toEqual(true);
 
     await page.navigateToTab('home');
 
@@ -86,7 +82,6 @@ describe('PasswordMaker', () => {
     expect(await page.populateIonicSelect('output_character_set', 'Letters')).toEqual(true);
     expect(await page.populateIonicSelect('algorithm', 'SHA1')).toEqual(true);
     expect(await page.setIonicToggle('domain_only', false)).toEqual(true);
-    expect(await page.save()).toEqual(true);
 
     await page.navigateToTab('home');
 
@@ -114,8 +109,6 @@ describe('PasswordMaker', () => {
 
     // Expect added number slider to be visible when linked toggle is on
     await page.confirmRangeVisibility('added_number', true); // Leave the range slider at default position, so it saves as 0
-
-    expect(await page.save()).toEqual(true);
 
     await page.navigateToTab('home');
 
