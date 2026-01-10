@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, flushMicrotasks, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
 import { IonInput, IonSelect, IonToggle, IonRange, provideIonicAngular, LoadingController } from '@ionic/angular/standalone';
@@ -17,7 +17,7 @@ describe('SettingsPageComponent', () => {
   let loadingController: LoadingController;
   let mockLoading: any;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     // Create a mock loading element
     mockLoading = {
       present: jasmine.createSpy('present').and.returnValue(Promise.resolve()),
@@ -50,7 +50,7 @@ describe('SettingsPageComponent', () => {
     
     // Mock the LoadingController's create method
     spyOn(loadingController, 'create').and.returnValue(Promise.resolve(mockLoading));
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -61,7 +61,7 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(new SettingsSimple()));
     
     component.ngOnInit();
-    flushMicrotasks(); // Resolve all pending promises
+    tick(); // Resolve all pending promises
     
     expect(component['formChangesSubscription']).toBeDefined();
   }));
@@ -72,11 +72,11 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'save').and.returnValue(Promise.resolve());
     
     component.ngOnInit();
-    flushMicrotasks(); // Resolve all pending promises from ngOnInit
+    tick(); // Resolve all pending promises from ngOnInit
     
     // Simulate form change
     component.settingsForm.patchValue({ remember_minutes: 7 });
-    flushMicrotasks(); // Resolve save promise
+    tick(); // Resolve save promise
     
     expect(settingsService.save).toHaveBeenCalled();
   }));
@@ -87,11 +87,11 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'save').and.returnValue(Promise.resolve());
     
     component.ngOnInit();
-    flushMicrotasks(); // Resolve all pending promises from ngOnInit
+    tick(); // Resolve all pending promises from ngOnInit
     
     // Make form invalid by setting output_length to an invalid value
     component.settingsForm.patchValue({ output_length: 5 }); // Below minimum of 8
-    flushMicrotasks(); // Process any pending operations
+    tick(); // Process any pending operations
     
     expect(settingsService.save).not.toHaveBeenCalled();
   }));
@@ -101,7 +101,7 @@ describe('SettingsPageComponent', () => {
     spyOn(settingsService, 'getCurrentSettings').and.returnValue(Promise.resolve(mockSettings));
     
     component.ngOnInit();
-    flushMicrotasks(); // Resolve all pending promises from ngOnInit
+    tick(); // Resolve all pending promises from ngOnInit
     
     const subscription = component['formChangesSubscription'];
     expect(subscription).toBeDefined();
