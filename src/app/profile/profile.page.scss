@@ -2,3 +2,24 @@ p.help {
   border-radius: 0 0 4px 4px;
   border-top: solid 2px var(--ion-color-secondary);
 }
+
+.profile-footer {
+  ion-toolbar {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+  }
+
+  p.warning {
+    margin: 0 0 8px 0;
+  }
+
+  ion-button {
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
