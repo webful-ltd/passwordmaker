@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { Platform } from '@ionic/angular/standalone';
 
 import { SettingsService } from './settings.service';
@@ -23,6 +23,8 @@ export class AppComponent {
 
     if (this.platform.is('capacitor')) { // Don't crash on web platform.
       StatusBar.setBackgroundColor({ color: '#a11692' });
+      StatusBar.setOverlaysWebView({ overlay: false });
+      StatusBar.setStyle({ style: Style.Dark }); // "Light text for dark backgrounds."
     }
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
