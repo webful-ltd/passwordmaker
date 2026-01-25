@@ -42,16 +42,21 @@ const config: CapacitorConfig = {
       imageName: 'Splashscreen',
     },
     StatusBar: {
-      // Work around title position issues with Android API 35 for now.
-      // See https://github.com/ionic-team/ionic-framework/issues/30090#issuecomment-2708500924
-      // See also discussion & alternatives at https://github.com/ionic-team/capacitor/issues/7804 and
-      // https://github.com/ionic-team/ionic-framework/issues/30090
-      // Possibly consider @capawesome/capacitor-android-edge-to-edge-support if we find issues
-      // beyond the statusbar.
-      // See also `android/app/src/main/res/values/styles.xml` temporary workarounds to allow nice statusbars
-      // on Android 15 and 16 for now.
+      // I've not yet found an Android 13 config that works with the modern plugins
+      // and also keeps the statusbar purple to emulate edge-to-edge; this seems to
+      // be the least bad option for now to at least keep it in a default system
+      // style and legible.
+      style: 'LIGHT',
       overlaysWebView: false,
-    }
+    },
+    SystemBars: {
+      // This is automatically handled well on modern Android but I couldn't get
+      // the legacy Android CSS from https://capacitorjs.com/docs/apis/system-bars#android-note
+      // to do anything useful that didn't break any platforms.
+      insetsHandling: 'css',
+      hidden: false,
+      animation: 'NONE'
+    },
   },
   server: {
     androidScheme: 'http', // https://capacitorjs.com/docs/updating/5-0#update-androidscheme

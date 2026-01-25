@@ -9,7 +9,7 @@ PODS:
     - Capacitor
   - CapacitorCommunityPrivacyScreen (6.0.0):
     - Capacitor
-  - CapacitorCommunitySqlite (7.0.3):
+  - CapacitorCommunitySqlite (8.0.0):
     - Capacitor
     - SQLCipher
     - ZIPFoundation
@@ -89,7 +89,7 @@ SPEC CHECKSUMS:
   CapacitorBrowser: b7d7f05f840fe042e46f6528bb8db853e3058fb2
   CapacitorClipboard: 61832a3722adc61afed6e0191c8a0e11ba11674d
   CapacitorCommunityPrivacyScreen: 682470c41cce325d7a85b95907887919d4694066
-  CapacitorCommunitySqlite: 4813d82ad33001e612a39d313cb5d28066cbafda
+  CapacitorCommunitySqlite: 8a61c1d599927d4321c13b28f132de8ca94b6d95
   CapacitorCordova: 0d65b9bb74e995dcecb9463f34f1af2aba6f955c
   CapacitorFilesystem: a957d4a4b6860844c4eba5bf441607a5166f92a7
   CapacitorHaptics: 2079d9fa04c5a71e18663b4722323c304c58245c

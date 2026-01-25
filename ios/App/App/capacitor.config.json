@@ -39,7 +39,13 @@
 			"imageName": "Splashscreen"
 		},
 		"StatusBar": {
+			"style": "LIGHT",
 			"overlaysWebView": false
+		},
+		"SystemBars": {
+			"insetsHandling": "css",
+			"hidden": false,
+			"animation": "NONE"
 		}
 	},
 	"server": {
