@@ -13,8 +13,6 @@ const config: CapacitorConfig = {
     }
   },
   android: {
-    // See StatusBar notes below.
-    adjustMarginsForEdgeToEdge: 'force',
   },
   ios: {
     scheme: 'Webful PasswordMaker',

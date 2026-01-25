@@ -10,9 +10,7 @@
 			"MixedContentMode": "1"
 		}
 	},
-	"android": {
-		"adjustMarginsForEdgeToEdge": "force"
-	},
+	"android": {},
 	"ios": {
 		"scheme": "Webful PasswordMaker"
 	},
