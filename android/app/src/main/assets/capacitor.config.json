@@ -10,9 +10,7 @@
 			"MixedContentMode": "1"
 		}
 	},
-	"android": {
-		"adjustMarginsForEdgeToEdge": "force"
-	},
+	"android": {},
 	"ios": {
 		"scheme": "Webful PasswordMaker"
 	},
@@ -41,7 +39,13 @@
 			"imageName": "Splashscreen"
 		},
 		"StatusBar": {
+			"style": "LIGHT",
 			"overlaysWebView": false
+		},
+		"SystemBars": {
+			"insetsHandling": "css",
+			"hidden": false,
+			"animation": "NONE"
 		}
 	},
 	"server": {
