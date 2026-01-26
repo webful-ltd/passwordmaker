@@ -162,6 +162,22 @@
             enable-on-off-labels="true"
           >Use just domain name?</ion-toggle>
         </ion-item>
+        <ion-item>
+          <ion-textarea
+            label="Use With Sites"
+            labelPlacement="stacked"
+            name="patterns"
+            [(ngModel)]="patternsText"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="example.com&#10;/https?://.*\.example\.com/.*/&#10;*.google.com"
+            rows="5"
+            autoGrow="true"
+          ></ion-textarea>
+        </ion-item>
+        <p class="help">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          URLs should be separated by spaces or line breaks. Use wildcards (e.g., *.example.com) or RegEx (e.g., /https?://my\.example\.com\/.*/) to match multiple sites.
+        </p>
       </ion-list>
       <ion-action-sheet
         [isOpen]="isDeleteConfirmationOpen"

@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Platform } from '@ionic/angular/standalone';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Profile } from '../models/Profile';
+import { Pattern } from '../models/Pattern';
 
 export interface ImportedProfile {
   title?: string;
@@ -18,6 +19,7 @@ export interface ImportedProfile {
   url_domain?: boolean;
   url_path?: boolean;
   siteList?: string;
+  patterns?: Pattern[];
   rdf_about?: string;
   description?: string;
 }
@@ -166,7 +168,7 @@ export class ImportService {
         }
 
         // Parse site patterns
-        prof.siteList = this.parseSitePatterns(item);
+        prof.patterns = this.parseSitePatterns(item);
 
         // Categorize the profile
         if (prof.rdf_about === 'http://passwordmaker.mozdev.org/globalSettings') {
@@ -254,6 +256,11 @@ export class ImportService {
     // Handle domain_only mapping from URL components
     profile.domain_only = !importedProfile.url_path && !importedProfile.url_subdomain && !!importedProfile.url_domain;
     
+    // Map patterns
+    if (importedProfile.patterns && importedProfile.patterns.length > 0) {
+      profile.patterns = importedProfile.patterns;
+    }
+    
     return profile;
   }
 
@@ -324,6 +331,19 @@ export class ImportService {
     profiles.forEach((profile, index) => {
       const about = index === 0 ? 'http://passwordmaker.mozdev.org/defaults' : `rdf:#$CHROME${index}`;
       
+      // Build pattern attributes
+      let patternAttrs = '';
+      if (profile.patterns && profile.patterns.length > 0) {
+        profile.patterns.forEach((pattern, patternIndex) => {
+          if (pattern.enabled) {
+            patternAttrs += `\n NS1:pattern${patternIndex}="${this.escapeXml(pattern.pattern)}"`;
+            patternAttrs += `\n NS1:patternenabled${patternIndex}="true"`;
+            patternAttrs += `\n NS1:patterndesc${patternIndex}="${this.escapeXml(pattern.description || '')}"`;
+            patternAttrs += `\n NS1:patterntype${patternIndex}="${pattern.type}"`;
+          }
+        });
+      }
+      
       rdf += `
 <RDF:Description RDF:about="${this.escapeXml(about)}"
  NS1:name="${this.escapeXml(profile.name)}"
@@ -338,7 +358,7 @@ export class ImportService {
  NS1:protocolCB="true"
  NS1:subdomainCB="${!profile.domain_only}"
  NS1:domainCB="true"
- NS1:pathCB="${!profile.domain_only}" />`;
+ NS1:pathCB="${!profile.domain_only}"${patternAttrs} />`;
     });
 
     rdf += `
@@ -357,14 +377,15 @@ export class ImportService {
     return rdf;
   }
 
-  private parseSitePatterns(item: Element): string {
+  private parseSitePatterns(item: Element): Pattern[] {
     const patterns: string[] = [];
     const patternTypes: string[] = [];
     const patternEnabled: string[] = [];
+    const patternDesc: string[] = [];
     
     Array.from(item.attributes).forEach(attr => {
       const attrName = attr.localName;
-      const match = attrName.match(/pattern(|type|enabled)(\d+)/);
+      const match = attrName.match(/pattern(|type|enabled|desc)(\d+)/);
       
       if (match) {
         const index = parseInt(match[2]);
@@ -378,22 +399,27 @@ export class ImportService {
         case 'enabled':
           patternEnabled[index] = attr.value;
           break;
+        case 'desc':
+          patternDesc[index] = attr.value;
+          break;
         }
       }
     });
 
-    const siteList: string[] = [];
+    const result: Pattern[] = [];
     patterns.forEach((pattern, index) => {
+      // Only import enabled patterns per Chrome PasswordMaker Pro RDF specification
       if (patternEnabled[index] === 'true' && pattern) {
-        if (patternTypes[index] === 'regex') {
-          siteList.push(`/${pattern}/`);
-        } else {
-          siteList.push(pattern);
-        }
+        result.push({
+          pattern,
+          enabled: true,
+          type: patternTypes[index] === 'regex' ? 'regex' : 'wildcard',
+          description: patternDesc[index] || ''
+        });
       }
     });
 
-    return siteList.join(' ');
+    return result;
   }
 
   private strToBool(value: string): boolean {

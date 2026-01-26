@@ -14,7 +14,7 @@
 @import "@ionic/angular/css/palettes/dark.system.css";
 
 :root {
-  ion-input, ion-select {
+  ion-input, ion-select, ion-textarea {
     --highlight-color-valid: var(--ion-color-primary);
   }
 

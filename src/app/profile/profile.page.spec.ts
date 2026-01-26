@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
-import { IonInput, IonSelect, IonToggle, provideIonicAngular } from '@ionic/angular/standalone';
+import { IonInput, IonSelect, IonToggle, IonTextarea, provideIonicAngular } from '@ionic/angular/standalone';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
@@ -17,9 +17,11 @@ describe('ProfilePageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ProfilePageComponent],
       imports: [
+        FormsModule,
         IonInput,
         IonSelect,
         IonToggle,
+        IonTextarea,
         IonicStorageModule.forRoot({
           driverOrder: [CapacitorSqliteDriverService._driver, Drivers.IndexedDB],
         }),
