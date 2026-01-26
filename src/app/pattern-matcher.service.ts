@@ -64,13 +64,13 @@ export class PatternMatcherService {
         const regex = new RegExp(pattern.pattern);
         return regex.test(host);
       } else {
-        // For wildcard patterns, convert to regex
-        // Escape special regex characters except *
-        const regexPattern = pattern.pattern
+        // For wildcard patterns, convert to regex by escaping special regex chars
+        // except asterisk (*) which we convert to .* for wildcard matching
+        const escapedPattern = pattern.pattern
           .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
           .replace(/\*/g, '.*');
         
-        const regex = new RegExp(`^${regexPattern}$`, 'i'); // Case-insensitive
+        const regex = new RegExp(`^${escapedPattern}$`, 'i'); // Case-insensitive
         return regex.test(host);
       }
     } catch (error) {

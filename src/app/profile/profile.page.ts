@@ -204,8 +204,8 @@ export class ProfilePageComponent implements OnInit {
       return [];
     }
 
-    // Split by whitespace or line breaks
-    const lines = text.split(/[\s\n]+/).filter(line => line.trim() !== '');
+    // Split by whitespace (includes spaces, tabs, newlines)
+    const lines = text.split(/\s+/).filter(line => line.trim() !== '');
     
     return lines.map(line => {
       const trimmed = line.trim();

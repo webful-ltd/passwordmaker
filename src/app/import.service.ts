@@ -408,7 +408,7 @@ export class ImportService {
 
     const result: Pattern[] = [];
     patterns.forEach((pattern, index) => {
-      // Only import enabled patterns as per requirements
+      // Only import enabled patterns per Chrome PasswordMaker Pro RDF specification
       if (patternEnabled[index] === 'true' && pattern) {
         result.push({
           pattern,

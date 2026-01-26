@@ -148,6 +148,8 @@ export class HomePageComponent implements OnInit {
 
   /**
    * Auto-select a profile based on URL pattern matching
+   * Note: Auto-selected profile is temporary and won't persist to storage
+   * unless the user manually selects it or generates a password with it
    */
   private autoSelectProfileForHost(settings: SettingsAdvanced) {
     const matchingProfile = this.patternMatcher.findMatchingProfile(this.input.host, settings.profiles);
@@ -155,8 +157,8 @@ export class HomePageComponent implements OnInit {
     if (matchingProfile && matchingProfile.profile_id !== this.input.active_profile_id) {
       this.input.active_profile_id = matchingProfile.profile_id;
       settings.setActiveProfile(matchingProfile.profile_id);
-      // Note: We don't save settings here to avoid constant writes as user types
-      // The profile will be used for this session but won't persist unless user manually selects it
+      // Note: We don't save settings here to avoid constant writes as user types.
+      // The profile selection is temporary for this session.
     }
   }
   
