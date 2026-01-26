@@ -5,6 +5,7 @@ import { addIcons } from 'ionicons';
 import { close, key, informationCircleOutline, warning, checkmarkCircleOutline, trashOutline } from 'ionicons/icons';
 
 import { Profile } from '../../models/Profile';
+import { Pattern } from '../../models/Pattern';
 import { SettingsService } from '../settings.service';
 
 @Component({
@@ -36,6 +37,7 @@ export class ProfilePageComponent implements OnInit {
 
   private profileId: number;
   private lastCharacterSetPreset?: string;
+  patternsText = ''; // Text representation of patterns for UI
 
   constructor() {
     this.profile = this.formBuilder.group({
@@ -80,6 +82,11 @@ export class ProfilePageComponent implements OnInit {
 
     this.profileId = formValues.profile_id;
 
+    // Convert patterns array to text for UI
+    if (this.profileModel.patterns && this.profileModel.patterns.length > 0) {
+      this.patternsText = this.patternsToText(this.profileModel.patterns);
+    }
+
     this.profile.patchValue(formValues);
     this.lastCharacterSetPreset = this.profileModel.output_character_set_preset;
   }
@@ -110,6 +117,10 @@ export class ProfilePageComponent implements OnInit {
     }
 
     value.profile_id = this.profileId;
+    
+    // Convert patterns text to array before saving
+    value.patterns = this.textToPatterns(this.patternsText);
+    
     this.settingsService.saveProfile(value)
       .then(
         () => {
@@ -167,6 +178,57 @@ export class ProfilePageComponent implements OnInit {
 
   close() {
     this.modalController.dismiss();
+  }
+
+  /**
+   * Convert patterns array to text for editing in textarea
+   */
+  private patternsToText(patterns: Pattern[]): string {
+    return patterns
+      .filter(p => p.enabled)
+      .map(p => {
+        // Wrap regex patterns in slashes
+        if (p.type === 'regex') {
+          return `/${p.pattern}/`;
+        }
+        return p.pattern;
+      })
+      .join('\n');
+  }
+
+  /**
+   * Convert text from textarea to patterns array
+   */
+  private textToPatterns(text: string): Pattern[] {
+    if (!text || text.trim() === '') {
+      return [];
+    }
+
+    // Split by whitespace or line breaks
+    const lines = text.split(/[\s\n]+/).filter(line => line.trim() !== '');
+    
+    return lines.map(line => {
+      const trimmed = line.trim();
+      
+      // Check if it's a regex pattern (wrapped in slashes)
+      const regexMatch = trimmed.match(/^\/(.+)\/$/);
+      if (regexMatch) {
+        return {
+          pattern: regexMatch[1],
+          enabled: true,
+          type: 'regex' as const,
+          description: ''
+        };
+      }
+      
+      // Otherwise it's a wildcard pattern
+      return {
+        pattern: trimmed,
+        enabled: true,
+        type: 'wildcard' as const,
+        description: ''
+      };
+    });
   }
 
   private requireIfNoPresetValidator(outputCharacterSetCustomControl: AbstractControl) {

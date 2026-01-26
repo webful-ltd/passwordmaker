@@ -1,3 +1,5 @@
+import { Pattern } from './Pattern';
+
 export class Profile {
   public profile_id: number;
   public algorithm: 'hmac-sha256' | 'sha256' | 'hmac-sha1' | 'sha1' | 'hmac-md5' | 'md5' | 'hmac-ripemd160' | 'ripemd160' = 'hmac-sha256';
@@ -12,4 +14,5 @@ export class Profile {
   public post_processing_suffix = '';
   public prefix = '';
   public suffix = '';
+  public patterns: Pattern[] = [];
 }
