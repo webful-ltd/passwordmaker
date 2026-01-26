@@ -51,6 +51,12 @@ We currently run:
 * _Product > Archive_
 * _Distribute App_ from the Organizer dialogue.
 
+## iOS provisioning profiles
+
+It's necessary to use manual ones on the individual team with no real iPhones.
+These are git-ignored and a distinct one is needed for the main app and for the
+`ShareExtension`. Both require the App Groups capability.
+
 ## Plugins
 
 In addition to the Ionic-standard Capacitor plugins and Clipboard (for copying passwords),

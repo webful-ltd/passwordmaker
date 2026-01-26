@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, effect, inject } from '@angular/core';
 import { IonTabs, Platform } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { key, settings } from 'ionicons/icons';
+import { ShareService } from '../share.service';
 
 @Component({
   selector: 'app-tabs',
@@ -10,11 +11,20 @@ import { key, settings } from 'ionicons/icons';
 })
 export class TabsPageComponent implements OnInit {
   private platform = inject(Platform);
+  private shareService = inject(ShareService);
 
   @ViewChild('tabs') tab: IonTabs;
 
   constructor() {
     addIcons({ key, settings });
+
+    // Switch to home tab when a share is received
+    effect(() => {
+      const sharedHost = this.shareService.sharedHost();
+      if (sharedHost) {
+        this.tab?.select('home');
+      }
+    });
   }
 
   ngOnInit() {
