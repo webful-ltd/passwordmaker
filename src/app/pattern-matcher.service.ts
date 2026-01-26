@@ -42,8 +42,11 @@ export class PatternMatcherService {
       return false;
     }
 
+    // If domain_only is checked, extract domain from host before matching
+    const hostToMatch = profile.domain_only ? this.extractDomain(host) : host;
+
     return profile.patterns.some(pattern => 
-      pattern.enabled && this.patternMatches(pattern, host)
+      pattern.enabled && this.patternMatches(pattern, hostToMatch)
     );
   }
 

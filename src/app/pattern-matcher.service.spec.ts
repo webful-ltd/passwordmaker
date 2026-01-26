@@ -123,6 +123,35 @@ describe('PatternMatcherService', () => {
       ];
       expect(service.profileMatchesHost(profile, 'example.com')).toBe(false);
     });
+
+    it('should extract domain when domain_only is true', () => {
+      const profile = new Profile();
+      profile.domain_only = true;
+      profile.patterns = [
+        { pattern: '*.example.org', enabled: true, type: 'wildcard' }
+      ];
+      
+      // Should match when input is a full URL
+      expect(service.profileMatchesHost(profile, 'https://test.example.org/asdf')).toBe(true);
+      expect(service.profileMatchesHost(profile, 'http://api.example.org/path')).toBe(true);
+      
+      // Should also match when input is just a domain
+      expect(service.profileMatchesHost(profile, 'test.example.org')).toBe(true);
+    });
+
+    it('should not extract domain when domain_only is false', () => {
+      const profile = new Profile();
+      profile.domain_only = false;
+      profile.patterns = [
+        { pattern: 'https://test.example.org/asdf', enabled: true, type: 'wildcard' }
+      ];
+      
+      // Should match the full URL
+      expect(service.profileMatchesHost(profile, 'https://test.example.org/asdf')).toBe(true);
+      
+      // Should not match just the domain
+      expect(service.profileMatchesHost(profile, 'test.example.org')).toBe(false);
+    });
   });
 
   describe('findMatchingProfile', () => {
