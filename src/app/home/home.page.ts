@@ -7,6 +7,7 @@ import { informationCircleOutline, warning, copy } from 'ionicons/icons';
 
 import { Input } from '../../models/Input';
 import { PasswordsService } from '../passwords.service';
+import { PatternMatcherService } from '../pattern-matcher.service';
 import { Settings } from '../../models/Settings';
 import { SettingsAdvanced } from '../../models/SettingsAdvanced';
 import { SettingsService } from '../settings.service';
@@ -21,6 +22,7 @@ export class HomePageComponent implements OnInit {
   private changeDetector = inject(ChangeDetectorRef);
   loadingController = inject(LoadingController);
   private passwordsService = inject(PasswordsService);
+  private patternMatcher = inject(PatternMatcherService);
   private platform = inject(Platform);
   private settingsService = inject(SettingsService);
   toast = inject(ToastController);
@@ -38,6 +40,7 @@ export class HomePageComponent implements OnInit {
   private expiry_timer_id: number;
   private loading: HTMLIonLoadingElement;
   protected master_password_hash?: string;
+  private userChangedProfile = false; // Track if user manually changed profile
 
   constructor() {
     addIcons({ informationCircleOutline, warning, copy });
@@ -87,6 +90,11 @@ export class HomePageComponent implements OnInit {
     if (settings instanceof SettingsAdvanced) {
       this.advanced_mode = true;
       this.input.active_profile_id = settings.active_profile_id;
+      
+      // Auto-select profile based on patterns if user hasn't manually changed it
+      if (!this.userChangedProfile && this.input.host.length > 0) {
+        this.autoSelectProfileForHost(settings);
+      }
     }
 
     if (this.input.master_password.length === 0 || this.input.host.length === 0) {
@@ -132,9 +140,32 @@ export class HomePageComponent implements OnInit {
 
   switchProfile(event: any) {
     if (this.settings instanceof SettingsAdvanced) {
+      this.userChangedProfile = true; // Mark that user manually changed profile
       this.settings.setActiveProfile(event.detail.value);
       this.settingsService.save(this.settings);
     }
+  }
+
+  /**
+   * Auto-select a profile based on URL pattern matching
+   */
+  private autoSelectProfileForHost(settings: SettingsAdvanced) {
+    const matchingProfile = this.patternMatcher.findMatchingProfile(this.input.host, settings.profiles);
+    
+    if (matchingProfile && matchingProfile.profile_id !== this.input.active_profile_id) {
+      this.input.active_profile_id = matchingProfile.profile_id;
+      settings.setActiveProfile(matchingProfile.profile_id);
+      // Note: We don't save settings here to avoid constant writes as user types
+      // The profile will be used for this session but won't persist unless user manually selects it
+    }
+  }
+  
+  /**
+   * Reset the userChangedProfile flag when host changes
+   */
+  onHostChange() {
+    this.userChangedProfile = false;
+    this.update();
   }
 
   copy() {
