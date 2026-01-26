@@ -1,5 +1,8 @@
 import { Component, inject } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
+import { CapacitorShareTarget, ShareReceivedEvent } from '@capgo/capacitor-share-target';
 import { Platform } from '@ionic/angular/standalone';
+import { ShareService } from './share.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +11,7 @@ import { Platform } from '@ionic/angular/standalone';
 })
 export class AppComponent {
   private platform = inject(Platform);
+  private shareService = inject(ShareService);
 
   constructor() {
     this.initializeApp();
@@ -20,6 +24,19 @@ export class AppComponent {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     this.toggleDarkTheme(prefersDark.matches);
     prefersDark.addEventListener('change', event => this.toggleDarkTheme(event.matches));
+
+    if (Capacitor.isNativePlatform()) {
+      CapacitorShareTarget.addListener('shareReceived', event => this.receiveShareEvent(event));
+    }
+  }
+
+  receiveShareEvent(event: ShareReceivedEvent) {
+    if (!event.texts || event.texts.length === 0) {
+      return;
+    }
+
+    console.log('Received shared text: ', event.texts[0]);
+    this.shareService.setSharedHost(event.texts[0]);
   }
 
   /**

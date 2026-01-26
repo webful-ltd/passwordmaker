@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, effect, inject } from '@angular/core';
 import { Clipboard } from '@capacitor/clipboard';
 import { Keyboard } from '@capacitor/keyboard';
 import { LoadingController, Platform, ToastController } from '@ionic/angular/standalone';
@@ -10,6 +10,7 @@ import { PasswordsService } from '../passwords.service';
 import { Settings } from '../../models/Settings';
 import { SettingsAdvanced } from '../../models/SettingsAdvanced';
 import { SettingsService } from '../settings.service';
+import { ShareService } from '../share.service';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,7 @@ export class HomePageComponent implements OnInit {
   private passwordsService = inject(PasswordsService);
   private platform = inject(Platform);
   private settingsService = inject(SettingsService);
+  private shareService = inject(ShareService);
   toast = inject(ToastController);
   private zone = inject(NgZone);
 
@@ -41,6 +43,16 @@ export class HomePageComponent implements OnInit {
 
   constructor() {
     addIcons({ informationCircleOutline, warning, copy });
+
+    // React to shared text by populating the host field
+    effect(() => {
+      const sharedHost = this.shareService.sharedHost();
+      if (sharedHost) {
+        this.input.host = sharedHost;
+        this.shareService.clearSharedHost();
+        this.update();
+      }
+    });
   }
 
   async ngOnInit() {

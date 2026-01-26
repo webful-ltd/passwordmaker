@@ -23,6 +23,8 @@ PODS:
     - Capacitor
   - CapacitorStatusBar (8.0.0):
     - Capacitor
+  - CapgoCapacitorShareTarget (8.0.8):
+    - Capacitor
   - CordovaPlugins (8.0.1):
     - CapacitorCordova
   - CordovaPluginsResources (0.0.105)
@@ -46,6 +48,7 @@ DEPENDENCIES:
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - "CapgoCapacitorShareTarget (from `../../node_modules/@capgo/capacitor-share-target`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - CordovaPluginsResources (from `../capacitor-cordova-ios-plugins`)
 
@@ -78,6 +81,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/keyboard"
   CapacitorStatusBar:
     :path: "../../node_modules/@capacitor/status-bar"
+  CapgoCapacitorShareTarget:
+    :path: "../../node_modules/@capgo/capacitor-share-target"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
   CordovaPluginsResources:
@@ -95,12 +100,13 @@ SPEC CHECKSUMS:
   CapacitorHaptics: 2079d9fa04c5a71e18663b4722323c304c58245c
   CapacitorKeyboard: d7868c079a4d5277a3deca27a10a488fcbbb8b69
   CapacitorStatusBar: 312e2e67928dfe9514c4a8916a1fd610552f5f35
+  CapgoCapacitorShareTarget: 2b8423bc42b17ecff91ff3e3bc04e4b0d77e521e
   CordovaPlugins: 27ecf72bbe2be80302bac68e70decdd8d3db5b20
   CordovaPluginsResources: da93847212bf7b16ba770e4d6c3e7dba820174c7
   IONFilesystemLib: 50b9a0f3052a9b40b9bedb43f328a8fe222f9f87
   SQLCipher: 712e8416685e8e575b9b0706ffee71678b2fdcf8
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 49adf4142110c9574528d44f3bfa138a3650a80c
+PODFILE CHECKSUM: 548203aa45bb7ef9ecc5adfb3db8b006d9766271
 
 COCOAPODS: 1.16.2

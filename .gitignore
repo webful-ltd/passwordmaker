@@ -12,6 +12,7 @@ PasswordMaker.apk
 
 # Or iOS profile
 PasswordMaker_App_Store_provisioning.mobileprovision
+PasswordMaker_ShareExtension_store_provisioning.mobileprovision
 
 *~
 *.sw[mnpcod]

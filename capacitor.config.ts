@@ -18,6 +18,9 @@ const config: CapacitorConfig = {
     scheme: 'Webful PasswordMaker',
   },
   plugins: {
+    CapacitorShareTarget: {
+      appGroupId: "group.urlshare.uk.webful.passwordmaker",
+    },
     CapacitorSQLite: {
       iosDatabaseLocation: 'Library/CapacitorDatabase',
       iosIsEncryption: true,
@@ -46,6 +49,7 @@ const config: CapacitorConfig = {
       // and also keeps the statusbar purple to emulate edge-to-edge; this seems to
       // be the least bad option for now to at least keep it in a default system
       // style and legible.
+      backgroundColor: '#a11692', // Seems useful on modern iOS still
       style: 'LIGHT',
       overlaysWebView: false,
     },
