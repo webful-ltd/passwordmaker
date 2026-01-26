@@ -91,7 +91,12 @@ describe('PatternMatcherService', () => {
         enabled: true,
         type: 'regex'
       };
+      
+      // Suppress console.error for this test
+      const consoleErrorSpy = spyOn(console, 'error');
+      
       expect(service['patternMatches'](pattern, 'example.com')).toBe(false);
+      expect(consoleErrorSpy).toHaveBeenCalled();
     });
   });
 

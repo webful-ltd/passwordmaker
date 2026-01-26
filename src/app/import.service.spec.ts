@@ -18,17 +18,20 @@ describe('ImportService', () => {
 
   describe('parseSitePatterns', () => {
     it('should parse wildcard patterns from RDF', () => {
-      const xmlString = `
-        <RDF:Description
-          NS1:pattern0="domain1.com"
-          NS1:patternenabled0="true"
-          NS1:patterndesc0=""
-          NS1:patterntype0="wildcard"
-          NS1:pattern1="domain2.uk"
-          NS1:patternenabled1="true"
-          NS1:patterndesc1=""
-          NS1:patterntype1="wildcard"
-        />
+      const xmlString = `<?xml version="1.0"?>
+        <RDF:RDF xmlns:NS1="http://passwordmaker.mozdev.org/rdf#"
+                 xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+          <RDF:Description
+            NS1:pattern0="domain1.com"
+            NS1:patternenabled0="true"
+            NS1:patterndesc0=""
+            NS1:patterntype0="wildcard"
+            NS1:pattern1="domain2.uk"
+            NS1:patternenabled1="true"
+            NS1:patterndesc1=""
+            NS1:patterntype1="wildcard"
+          />
+        </RDF:RDF>
       `;
       
       const parser = new DOMParser();
@@ -53,13 +56,16 @@ describe('ImportService', () => {
     });
 
     it('should parse regex patterns from RDF', () => {
-      const xmlString = `
-        <RDF:Description
-          NS1:pattern0="https?://my\\.example\\.com/.*"
-          NS1:patternenabled0="true"
-          NS1:patterndesc0=""
-          NS1:patterntype0="regex"
-        />
+      const xmlString = `<?xml version="1.0"?>
+        <RDF:RDF xmlns:NS1="http://passwordmaker.mozdev.org/rdf#"
+                 xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+          <RDF:Description
+            NS1:pattern0="https?://my\\.example\\.com/.*"
+            NS1:patternenabled0="true"
+            NS1:patterndesc0=""
+            NS1:patterntype0="regex"
+          />
+        </RDF:RDF>
       `;
       
       const parser = new DOMParser();
@@ -74,15 +80,18 @@ describe('ImportService', () => {
     });
 
     it('should skip disabled patterns', () => {
-      const xmlString = `
-        <RDF:Description
-          NS1:pattern0="enabled.com"
-          NS1:patternenabled0="true"
-          NS1:patterntype0="wildcard"
-          NS1:pattern1="disabled.com"
-          NS1:patternenabled1="false"
-          NS1:patterntype1="wildcard"
-        />
+      const xmlString = `<?xml version="1.0"?>
+        <RDF:RDF xmlns:NS1="http://passwordmaker.mozdev.org/rdf#"
+                 xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+          <RDF:Description
+            NS1:pattern0="enabled.com"
+            NS1:patternenabled0="true"
+            NS1:patterntype0="wildcard"
+            NS1:pattern1="disabled.com"
+            NS1:patternenabled1="false"
+            NS1:patterntype1="wildcard"
+          />
+        </RDF:RDF>
       `;
       
       const parser = new DOMParser();
