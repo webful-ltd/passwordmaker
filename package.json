@@ -89,7 +89,7 @@
     "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
-    "puppeteer": "24.37.5",
+    "puppeteer": "24.37.3",
     "typescript": "5.9.3",
     "zone.js": "~0.15.0"
   },
