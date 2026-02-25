@@ -14,7 +14,11 @@ describe('PasswordMaker', () => {
   });
 
   it('should display the master password field label', async () => {
-    expect(await page.getHomeText()).toContain('Master password');
+    const input = await $('ion-input[name="master_password"]');
+    // Underlying input uses proper ARIA associations but we know that if Ionic has put
+    // it in the `label` attribute then that's all handled for us.
+    const label = await input.getAttribute('label');
+    expect(label).toBe('Master password');
   });
 
   it('should generate the right password for the default settings', async () => {
