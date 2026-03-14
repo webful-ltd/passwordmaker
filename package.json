@@ -19,7 +19,7 @@
   "dependencies": {
     "@angular/cli": "^21.0.4",
     "@angular/common": "^21.0.6",
-    "@angular/core": "^21.0.6",
+    "@angular/core": "^21.2.4",
     "@angular/forms": "^21.0.6",
     "@angular/platform-browser": "^21.0.6",
     "@angular/platform-browser-dynamic": "^21.0.6",
@@ -63,7 +63,7 @@
     "@angular-eslint/schematics": "^20.0.0",
     "@angular-eslint/template-parser": "^20.0.0",
     "@angular/build": "^21.0.4",
-    "@angular/compiler": "^21.0.6",
+    "@angular/compiler": "^21.2.4",
     "@angular/compiler-cli": "^21.0.6",
     "@angular/language-service": "^21.0.6",
     "@capacitor/assets": "^3.0.1",
