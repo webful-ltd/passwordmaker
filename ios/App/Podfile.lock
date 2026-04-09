@@ -1,40 +1,40 @@
 PODS:
-  - Capacitor (8.0.1):
+  - Capacitor (8.3.0):
     - CapacitorCordova
-  - CapacitorApp (8.0.0):
+  - CapacitorApp (8.1.0):
     - Capacitor
-  - CapacitorBrowser (8.0.0):
+  - CapacitorBrowser (8.0.3):
     - Capacitor
-  - CapacitorClipboard (8.0.0):
+  - CapacitorClipboard (8.0.1):
     - Capacitor
-  - CapacitorCommunityPrivacyScreen (6.0.0):
+  - CapacitorCommunityPrivacyScreen (6.1.0):
     - Capacitor
-  - CapacitorCommunitySqlite (8.0.0):
+  - CapacitorCommunitySqlite (8.1.0):
     - Capacitor
     - SQLCipher
     - ZIPFoundation
-  - CapacitorCordova (8.0.1)
-  - CapacitorFilesystem (8.1.0):
+  - CapacitorCordova (8.3.0)
+  - CapacitorFilesystem (8.1.2):
     - Capacitor
-    - IONFilesystemLib (~> 1.1.0)
-  - CapacitorHaptics (8.0.0):
+    - IONFilesystemLib (~> 1.1.1)
+  - CapacitorHaptics (8.0.2):
     - Capacitor
-  - CapacitorKeyboard (8.0.0):
+  - CapacitorKeyboard (8.0.2):
     - Capacitor
-  - CapacitorStatusBar (8.0.0):
+  - CapacitorStatusBar (8.0.2):
     - Capacitor
-  - CapgoCapacitorShareTarget (8.0.8):
+  - CapgoCapacitorShareTarget (8.0.25):
     - Capacitor
-  - CordovaPlugins (8.0.1):
+  - CordovaPlugins (8.3.0):
     - CapacitorCordova
   - CordovaPluginsResources (0.0.105)
-  - IONFilesystemLib (1.1.0)
-  - SQLCipher (4.5.1):
-    - SQLCipher/standard (= 4.5.1)
-  - SQLCipher/common (4.5.1)
-  - SQLCipher/standard (4.5.1):
+  - IONFilesystemLib (1.1.2)
+  - SQLCipher (4.10.0):
+    - SQLCipher/standard (= 4.10.0)
+  - SQLCipher/common (4.10.0)
+  - SQLCipher/standard (4.10.0):
     - SQLCipher/common
-  - ZIPFoundation (0.9.13)
+  - ZIPFoundation (0.9.20)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -89,23 +89,23 @@ EXTERNAL SOURCES:
     :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
-  Capacitor: ff35b0f66370b84aa238251b35b91886a3207c16
-  CapacitorApp: 3963a84197280757b84f126afd1520a85ae3b092
-  CapacitorBrowser: b7d7f05f840fe042e46f6528bb8db853e3058fb2
-  CapacitorClipboard: 61832a3722adc61afed6e0191c8a0e11ba11674d
-  CapacitorCommunityPrivacyScreen: 682470c41cce325d7a85b95907887919d4694066
-  CapacitorCommunitySqlite: 8a61c1d599927d4321c13b28f132de8ca94b6d95
-  CapacitorCordova: 0d65b9bb74e995dcecb9463f34f1af2aba6f955c
-  CapacitorFilesystem: a957d4a4b6860844c4eba5bf441607a5166f92a7
-  CapacitorHaptics: 2079d9fa04c5a71e18663b4722323c304c58245c
-  CapacitorKeyboard: d7868c079a4d5277a3deca27a10a488fcbbb8b69
-  CapacitorStatusBar: 312e2e67928dfe9514c4a8916a1fd610552f5f35
-  CapgoCapacitorShareTarget: 2b8423bc42b17ecff91ff3e3bc04e4b0d77e521e
-  CordovaPlugins: 27ecf72bbe2be80302bac68e70decdd8d3db5b20
+  Capacitor: 22e541237135648c9aa736232bb4d2eec35fddcb
+  CapacitorApp: 449ffe26375e96f8aaaee625ac6e01e5c57c8650
+  CapacitorBrowser: c987c73d09d8bd3b5ec13f06338b1e14d5d2be69
+  CapacitorClipboard: c75fdaa6e622111119f35e7914ecfc67b05efecb
+  CapacitorCommunityPrivacyScreen: cb86c2e384d6dcbad8482814c3538b87fb55cc9b
+  CapacitorCommunitySqlite: eac6acfb852f46e7988fc59604d7f900498d354e
+  CapacitorCordova: 2e1e2bb93b2f365309dc4ff18b72b9a69a7814a9
+  CapacitorFilesystem: 2db285a1ac6e475cc27cae2e1bea999000f9e2be
+  CapacitorHaptics: 296f771ecd89c7a1bd92a7b6826a7d268e2e70f5
+  CapacitorKeyboard: 8aa4f4ae80b2c92f92c07bf0181c464c2e7f5ff0
+  CapacitorStatusBar: 01d5763b4ed720de5ce2edbc938de6a98f4c8f32
+  CapgoCapacitorShareTarget: 0a3ffc0d86e4d62f7724ca48baaa904ae65c7e13
+  CordovaPlugins: d18a0fc0269140e27c1158f7451f757927ae368c
   CordovaPluginsResources: da93847212bf7b16ba770e4d6c3e7dba820174c7
-  IONFilesystemLib: 50b9a0f3052a9b40b9bedb43f328a8fe222f9f87
-  SQLCipher: 712e8416685e8e575b9b0706ffee71678b2fdcf8
-  ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
+  IONFilesystemLib: 21a63377696b2d8fab5632ecfb7d2ac67bddb68a
+  SQLCipher: eb79c64049cb002b4e9fcb30edb7979bf4706dfc
+  ZIPFoundation: dfd3d681c4053ff7e2f7350bc4e53b5dba3f5351
 
 PODFILE CHECKSUM: 548203aa45bb7ef9ecc5adfb3db8b006d9766271
 
