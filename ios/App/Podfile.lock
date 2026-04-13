@@ -23,7 +23,7 @@ PODS:
     - Capacitor
   - CapacitorStatusBar (8.0.2):
     - Capacitor
-  - CapgoCapacitorShareTarget (8.0.25):
+  - CapgoCapacitorShareTarget (8.0.27):
     - Capacitor
   - CordovaPlugins (8.3.0):
     - CapacitorCordova
@@ -100,7 +100,7 @@ SPEC CHECKSUMS:
   CapacitorHaptics: 296f771ecd89c7a1bd92a7b6826a7d268e2e70f5
   CapacitorKeyboard: 8aa4f4ae80b2c92f92c07bf0181c464c2e7f5ff0
   CapacitorStatusBar: 01d5763b4ed720de5ce2edbc938de6a98f4c8f32
-  CapgoCapacitorShareTarget: 0a3ffc0d86e4d62f7724ca48baaa904ae65c7e13
+  CapgoCapacitorShareTarget: 1993cb6b9037d2941e5a8591e82f9b61f0591737
   CordovaPlugins: d18a0fc0269140e27c1158f7451f757927ae368c
   CordovaPluginsResources: da93847212bf7b16ba770e4d6c3e7dba820174c7
   IONFilesystemLib: 21a63377696b2d8fab5632ecfb7d2ac67bddb68a
