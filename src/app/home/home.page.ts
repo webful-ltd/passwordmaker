@@ -39,7 +39,7 @@ export class HomePageComponent implements OnInit {
   settings: Settings;
 
   private expire_password_on_context_change = false;
-  private expiry_timer_id: number;
+  private expiry_timer_id?: number;
   private loading: HTMLIonLoadingElement;
   protected master_password_hash?: string;
   private userChangedProfile = false; // Track if user manually changed profile
@@ -110,7 +110,7 @@ export class HomePageComponent implements OnInit {
     }
 
     if (this.input.master_password.length === 0 || this.input.host.length === 0) {
-      this.output_password = null;
+      this.output_password = undefined;
       this.non_domain_warning = false;
       if (this.loading) {
         this.loading.dismiss();
@@ -124,7 +124,7 @@ export class HomePageComponent implements OnInit {
     if (settings.master_password_hash) {
       this.master_password_hash = this.passwordsService.hashMasterPassword(this.input.master_password);
     } else {
-      this.master_password_hash = null;
+      this.master_password_hash = undefined;
     }
 
     if (this.input.master_password.length > 0) {
@@ -212,7 +212,7 @@ export class HomePageComponent implements OnInit {
 
     if (this.expiry_timer_id) {
       window.clearTimeout(this.expiry_timer_id);
-      this.expiry_timer_id = null;
+      this.expiry_timer_id = undefined;
     }
 
     this.settingsService.getCurrentSettings().then(settings => {
@@ -236,7 +236,8 @@ export class HomePageComponent implements OnInit {
     if (this.expire_password_on_context_change) {
       this.input.master_password = '';
       this.expire_password_on_context_change = false;
-      this.output_password = null;
+      this.output_password = undefined;
+      this.master_password_hash = undefined;
     }
   }
 
