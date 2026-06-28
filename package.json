@@ -115,7 +115,7 @@
     "ChromeAndroid >=89",
     "Firefox >=75",
     "Edge >=89",
-    "Safari >=14",
-    "iOS >=14"
+    "Safari >=15",
+    "iOS >=15"
   ]
 }
