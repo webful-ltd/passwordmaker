@@ -1,23 +1,36 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, effect, inject } from '@angular/core';
-import { Clipboard } from '@capacitor/clipboard';
-import { Keyboard } from '@capacitor/keyboard';
-import { LoadingController, Platform, ToastController } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { informationCircleOutline, warning, copy } from 'ionicons/icons';
+import {
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnInit,
+  effect,
+  inject,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import { Clipboard } from "@capacitor/clipboard";
+import { Keyboard } from "@capacitor/keyboard";
+import {
+  LoadingController,
+  Platform,
+  ToastController,
+} from "@ionic/angular/standalone";
+import { addIcons } from "ionicons";
+import { informationCircleOutline, warning, copy } from "ionicons/icons";
 
-import { Input } from '../../models/Input';
-import { PasswordsService } from '../passwords.service';
-import { PatternMatcherService } from '../pattern-matcher.service';
-import { Settings } from '../../models/Settings';
-import { SettingsAdvanced } from '../../models/SettingsAdvanced';
-import { SettingsService } from '../settings.service';
-import { ShareService } from '../share.service';
+import { Input } from "../../models/Input";
+import { PasswordsService } from "../passwords.service";
+import { PatternMatcherService } from "../pattern-matcher.service";
+import { Settings } from "../../models/Settings";
+import { SettingsAdvanced } from "../../models/SettingsAdvanced";
+import { SettingsService } from "../settings.service";
+import { ShareService } from "../share.service";
 
 @Component({
-  selector: 'app-home',
-  styleUrls: ['./home.page.scss'],
-  templateUrl: 'home.page.html',
-  standalone: false
+  selector: "app-home",
+  styleUrls: ["./home.page.scss"],
+  templateUrl: "home.page.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class HomePageComponent implements OnInit {
   private changeDetector = inject(ChangeDetectorRef);
@@ -62,7 +75,7 @@ export class HomePageComponent implements OnInit {
     this.loading = await this.loadingController.create();
     await this.loading.present();
 
-    if (this.platform.is('capacitor')) {
+    if (this.platform.is("capacitor")) {
       // @capacitor/clipboard "is not implemented on web Wrapper" for now.
       this.clipboard_available = true;
 
@@ -79,7 +92,9 @@ export class HomePageComponent implements OnInit {
 
     this.update();
 
-    this.settingsService.saveSubject.subscribe(() => { this.update(); });
+    this.settingsService.saveSubject.subscribe(() => {
+      this.update();
+    });
   }
 
   async update() {
@@ -87,12 +102,14 @@ export class HomePageComponent implements OnInit {
     try {
       settings = await this.settingsService.getCurrentSettings();
     } catch (err) {
-      this.toast.create({
-        message: (`Could not load settings: ${err.message}`),
-        position: 'middle',
-        cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel' }],
-      }).then(errorToast => errorToast.present());
+      this.toast
+        .create({
+          message: `Could not load settings: ${err.message}`,
+          position: "middle",
+          cssClass: "error",
+          buttons: [{ text: "OK", role: "cancel" }],
+        })
+        .then((errorToast) => errorToast.present());
       this.loading.dismiss();
 
       return;
@@ -102,14 +119,17 @@ export class HomePageComponent implements OnInit {
     if (settings instanceof SettingsAdvanced) {
       this.advanced_mode = true;
       this.input.active_profile_id = settings.active_profile_id;
-      
+
       // Auto-select profile based on patterns if user hasn't manually changed it
       if (!this.userChangedProfile && this.input.host.length > 0) {
         this.autoSelectProfileForHost(settings);
       }
     }
 
-    if (this.input.master_password.length === 0 || this.input.host.length === 0) {
+    if (
+      this.input.master_password.length === 0 ||
+      this.input.host.length === 0
+    ) {
       this.output_password = undefined;
       this.non_domain_warning = false;
       if (this.loading) {
@@ -119,10 +139,12 @@ export class HomePageComponent implements OnInit {
       return;
     }
 
-    this.non_domain_warning = (this.input.host.indexOf('.') === -1);
+    this.non_domain_warning = this.input.host.indexOf(".") === -1;
 
     if (settings.master_password_hash) {
-      this.master_password_hash = this.passwordsService.hashMasterPassword(this.input.master_password);
+      this.master_password_hash = this.passwordsService.hashMasterPassword(
+        this.input.master_password
+      );
     } else {
       this.master_password_hash = undefined;
     }
@@ -142,7 +164,7 @@ export class HomePageComponent implements OnInit {
     this.output_password = this.passwordsService.getPassword(
       this.input.master_password,
       this.input.host,
-      settings,
+      settings
     );
 
     if (this.loading) {
@@ -164,16 +186,22 @@ export class HomePageComponent implements OnInit {
    * unless the user manually selects it or generates a password with it
    */
   private autoSelectProfileForHost(settings: SettingsAdvanced) {
-    const matchingProfile = this.patternMatcher.findMatchingProfile(this.input.host, settings.profiles);
-    
-    if (matchingProfile && matchingProfile.profile_id !== this.input.active_profile_id) {
+    const matchingProfile = this.patternMatcher.findMatchingProfile(
+      this.input.host,
+      settings.profiles
+    );
+
+    if (
+      matchingProfile &&
+      matchingProfile.profile_id !== this.input.active_profile_id
+    ) {
       this.input.active_profile_id = matchingProfile.profile_id;
       settings.setActiveProfile(matchingProfile.profile_id);
       // Note: We don't save settings here to avoid constant writes as user types.
       // The profile selection is temporary for this session.
     }
   }
-  
+
   /**
    * Reset the userChangedProfile flag when host changes
    */
@@ -184,12 +212,14 @@ export class HomePageComponent implements OnInit {
 
   copy() {
     Clipboard.write({ string: this.output_password }).then(() => {
-      this.toast.create({
-        message: ('Copied to clipboard!'),
-        duration: 2000,
-        position: 'middle',
-        buttons: [{ text: 'OK', role: 'cancel' }],
-      }).then(successToast => successToast.present());
+      this.toast
+        .create({
+          message: "Copied to clipboard!",
+          duration: 2000,
+          position: "middle",
+          buttons: [{ text: "OK", role: "cancel" }],
+        })
+        .then((successToast) => successToast.present());
     });
   }
 
@@ -198,7 +228,7 @@ export class HomePageComponent implements OnInit {
    * the keyboard to see the password and Copy button.
    */
   hideKeyboard() {
-    if (this.platform.is('capacitor')) {
+    if (this.platform.is("capacitor")) {
       Keyboard.hide();
     }
   }
@@ -215,7 +245,7 @@ export class HomePageComponent implements OnInit {
       this.expiry_timer_id = undefined;
     }
 
-    this.settingsService.getCurrentSettings().then(settings => {
+    this.settingsService.getCurrentSettings().then((settings) => {
       if (settings.remember_minutes > 0) {
         // "Don't let me into my zone": Because the expire flag is always used in conjunction with
         // other UI events, we don't need Angular to be tracking for this timeout. And if we allow
@@ -234,7 +264,7 @@ export class HomePageComponent implements OnInit {
 
   private contextChange() {
     if (this.expire_password_on_context_change) {
-      this.input.master_password = '';
+      this.input.master_password = "";
       this.expire_password_on_context_change = false;
       this.output_password = undefined;
       this.master_password_hash = undefined;
