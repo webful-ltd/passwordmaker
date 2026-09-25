@@ -41,7 +41,7 @@
     "@capgo/capacitor-share-target": "^8.0.27",
     "@ionic/angular": "^8.2.5",
     "@ionic/storage-angular": "^4.0.0",
-    "@webful/passwordmaker-lib": "~0.1.9",
+    "@webful/passwordmaker-lib": "~0.1.13",
     "2ldcheck": "~0.0.6",
     "cordova-android": "^13.0.0",
     "cordova-ios": "^7.1.0",
