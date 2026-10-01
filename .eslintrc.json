@@ -23,8 +23,7 @@
         "indent": [
           "error",
           2
-        ],
-        "quotes": [2, "single", { "allowTemplateLiterals": true, "avoidEscape": true }]
+        ]
       }
     },
     {
