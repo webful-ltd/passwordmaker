@@ -69,7 +69,7 @@
     "@capacitor/assets": "^3.0.1",
     "@capacitor/cli": "^8.0.0",
     "@ionic/angular-toolkit": "^12.0.0",
-    "@ionic/cordova-builders": "^12.2.0",
+    "@ionic/cordova-builders": "^13.0.0",
     "@types/jasmine": "^5.1.4",
     "@types/node": "^22.13",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
