@@ -8,7 +8,8 @@ import { AppComponent } from './app.component';
 import { SettingsSimple } from '../models/SettingsSimple';
 
 describe('AppComponent', () => {
-  let platformIsSpy, platformReadySpy, platformSpy, storageSpy;
+  let platformIsSpy, platformReadySpy, storageSpy;
+  let platformSpy: jasmine.SpyObj<Platform>;
   const mockSettings = new SettingsSimple();
 
   beforeEach(waitForAsync(() => {

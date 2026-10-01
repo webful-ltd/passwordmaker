@@ -5,7 +5,7 @@ import { SettingsSimple } from './SettingsSimple';
 export class SettingsAdvanced extends Settings {
   profiles: Profile[] = [];
 
-  active_profile_id: number;
+  active_profile_id = 0;
 
   constructor (settingsSimple: SettingsSimple) {
     super();
@@ -13,7 +13,7 @@ export class SettingsAdvanced extends Settings {
     this.class = this.constructor.name;
 
     for (const key of settingsSimple.getCommonSettingsProperties()) {
-      this[key] = settingsSimple[key];
+      Object.assign(this, { [key]: settingsSimple[key] });
     }
 
     const firstProfile = new Profile();
@@ -81,6 +81,11 @@ export class SettingsAdvanced extends Settings {
   }
 
   private getProfile(): Profile {
-    return this.profiles.find(thisProfile => thisProfile.profile_id === this.active_profile_id);
+    const profile = this.profiles.find(thisProfile => thisProfile.profile_id === this.active_profile_id);
+    if (!profile) {
+      throw new Error(`Active profile ${this.active_profile_id} was not found`);
+    }
+
+    return profile;
   }
 }

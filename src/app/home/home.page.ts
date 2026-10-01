@@ -104,7 +104,7 @@ export class HomePageComponent implements OnInit {
     } catch (err) {
       this.toast
         .create({
-          message: `Could not load settings: ${err.message}`,
+          message: `Could not load settings: ${err instanceof Error ? err.message : String(err)}`,
           position: "middle",
           cssClass: "error",
           buttons: [{ text: "OK", role: "cancel" }],

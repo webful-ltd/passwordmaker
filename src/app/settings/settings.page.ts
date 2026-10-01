@@ -128,7 +128,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     } catch (err) {
       this.toast
         .create({
-          message: `Could not load settings for profile creation: ${err.message}`,
+          message: `Could not load settings for profile creation: ${err instanceof Error ? err.message : String(err)}`,
           position: "middle",
           cssClass: "error",
           buttons: [{ text: "OK", role: "cancel" }],

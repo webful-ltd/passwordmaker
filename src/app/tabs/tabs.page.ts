@@ -6,6 +6,7 @@ import {
   inject,
   ChangeDetectionStrategy,
 } from "@angular/core";
+import { App } from "@capacitor/app";
 import { IonTabs, Platform } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { key, settings } from "ionicons/icons";
@@ -21,7 +22,7 @@ export class TabsPageComponent implements OnInit {
   private platform = inject(Platform);
   private shareService = inject(ShareService);
 
-  @ViewChild("tabs") tab: IonTabs;
+  @ViewChild("tabs") tab!: IonTabs;
 
   constructor() {
     addIcons({ key, settings });
@@ -44,7 +45,7 @@ export class TabsPageComponent implements OnInit {
      */
     this.platform.backButton.subscribe(async () => {
       if (this.tab.getSelected() === "home") {
-        navigator["app"].exitApp();
+        await App.exitApp();
         return;
       }
 

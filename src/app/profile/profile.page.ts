@@ -119,7 +119,12 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    const formValues: any = this.profileModel;
+    const profileModel = this.profileModel;
+    if (!profileModel) {
+      return;
+    }
+
+    const formValues: any = profileModel;
     if (formValues.output_character_set_preset === "none") {
       formValues.output_character_set_custom =
         formValues.output_character_set_custom;
@@ -128,12 +133,12 @@ export class ProfilePageComponent implements OnInit {
     this.profileId = formValues.profile_id;
 
     // Convert patterns array to text for UI
-    if (this.profileModel.patterns && this.profileModel.patterns.length > 0) {
-      this.patternsText = this.patternsToText(this.profileModel.patterns);
+    if (profileModel.patterns.length > 0) {
+      this.patternsText = this.patternsToText(profileModel.patterns);
     }
 
     this.profile.patchValue(formValues);
-    this.lastCharacterSetPreset = this.profileModel.output_character_set_preset;
+    this.lastCharacterSetPreset = profileModel.output_character_set_preset;
   }
 
   save({ value, valid }: { value: Profile; valid: boolean }) {
