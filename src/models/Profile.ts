@@ -1,7 +1,7 @@
 import { Pattern } from './Pattern';
 
 export class Profile {
-  public profile_id: number;
+  public profile_id = 0;
   public algorithm: 'hmac-sha256' | 'sha256' | 'hmac-sha1' | 'sha1' | 'hmac-md5' | 'md5' | 'hmac-ripemd160' | 'ripemd160' = 'hmac-sha256';
   public domain_only = true;
   public leet_level = 0; // 1 through 9 when in use

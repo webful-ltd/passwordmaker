@@ -124,7 +124,7 @@ export class ImportService {
       reader.readAsText(file, 'UTF-8');
     } catch (error) {
       clearTimeout(timeout);
-      reject(new Error(`Failed to start reading file: ${error.message}`));
+      reject(new Error(`Failed to start reading file: ${error instanceof Error ? error.message : String(error)}`));
     }
   }
 
@@ -198,7 +198,7 @@ export class ImportService {
       };
 
     } catch (error) {
-      throw new Error(`Failed to parse RDF document: ${error.message}`);
+      throw new Error(`Failed to parse RDF document: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -300,7 +300,7 @@ export class ImportService {
       console.log('File saved to:', result.uri);
     } catch (error) {
       console.error('Error saving file with Filesystem:', error);
-      throw new Error(`Failed to save file: ${error.message || error}`);
+      throw new Error(`Failed to save file: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 

@@ -1,8 +1,19 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Browser } from '@capacitor/browser';
-import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Browser } from "@capacitor/browser";
+import {
+  LoadingController,
+  ModalController,
+  Platform,
+  ToastController,
+} from "@ionic/angular/standalone";
+import { addIcons } from "ionicons";
 import {
   addCircleOutline,
   checkmarkCircleOutline,
@@ -13,25 +24,25 @@ import {
   informationCircleOutline,
   shareOutline,
   warning,
-} from 'ionicons/icons';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+} from "ionicons/icons";
+import { distinctUntilChanged } from "rxjs/operators";
+import { Subscription } from "rxjs";
 
-import { Profile } from '../../models/Profile';
-import { ProfilePageComponent } from '../profile/profile.page';
-import { Settings } from '../../models/Settings';
-import { SettingsAdvanced } from '../../models/SettingsAdvanced';
-import { SettingsService } from '../settings.service';
-import { SettingsSimple } from '../../models/SettingsSimple';
-import { ImportService } from '../import.service';
+import { Profile } from "../../models/Profile";
+import { ProfilePageComponent } from "../profile/profile.page";
+import { Settings } from "../../models/Settings";
+import { SettingsAdvanced } from "../../models/SettingsAdvanced";
+import { SettingsService } from "../settings.service";
+import { SettingsSimple } from "../../models/SettingsSimple";
+import { ImportService } from "../import.service";
 
 @Component({
-  selector: 'app-settings',
-  styleUrls: ['./settings.page.scss'],
-  templateUrl: 'settings.page.html',
-  standalone: false
+  selector: "app-settings",
+  styleUrls: ["./settings.page.scss"],
+  templateUrl: "settings.page.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
-
 export class SettingsPageComponent implements OnInit, OnDestroy {
   private formBuilder = inject(FormBuilder);
   loadingController = inject(LoadingController);
@@ -49,36 +60,42 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
 
   advancedConfirmationButtons = [
     {
-      text: 'Use Advanced mode permanently',
+      text: "Use Advanced mode permanently",
       icon: cog.toString(),
       handler: () => this.addFirstProfile(),
-    }, {
-      text: 'Learn more first',
+    },
+    {
+      text: "Learn more first",
       icon: help.toString(),
       handler: () => this.openAdvancedInfo(),
-    }
-    , {
-      text: 'Cancel',
+    },
+    {
+      text: "Cancel",
       icon: close.toString(),
-      role: 'cancel',
+      role: "cancel",
     },
   ];
   isAdvancedConfirmationOpen = false;
 
-  private loading: HTMLIonLoadingElement;
+  private loading: HTMLIonLoadingElement | undefined;
 
   constructor() {
     this.settingsForm = this.formBuilder.group({
-      algorithm: ['hmac-sha256', Validators.required],
+      algorithm: ["hmac-sha256", Validators.required],
       domain_only: [true],
       master_password_hash: [false],
-      output_character_set: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
-      output_length: [15, [
-        Validators.required,
-        Validators.pattern('[0-9]+'),
-        Validators.min(8),
-        Validators.max(200),
-      ]],
+      output_character_set: [
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      ],
+      output_length: [
+        15,
+        [
+          Validators.required,
+          Validators.pattern("[0-9]+"),
+          Validators.min(8),
+          Validators.max(200),
+        ],
+      ],
       remember_minutes: [5, Validators.required],
       added_number_on: [false],
       added_number: [0],
@@ -109,13 +126,15 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     try {
       settings = await this.settingsService.getCurrentSettings();
     } catch (err) {
-      this.toast.create({
-        message: (`Could not load settings for profile creation: ${err.message}`),
-        position: 'middle',
-        cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel' }],
-      }).then(errorToast => errorToast.present());
-      this.loading.dismiss();
+      this.toast
+        .create({
+          message: `Could not load settings for profile creation: ${err instanceof Error ? err.message : String(err)}`,
+          position: "middle",
+          cssClass: "error",
+          buttons: [{ text: "OK", role: "cancel" }],
+        })
+        .then((errorToast) => errorToast.present());
+      this.loading?.dismiss();
 
       return;
     }
@@ -129,19 +148,22 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     if (settings instanceof SettingsSimple) {
       const advancedSettings = new SettingsAdvanced(settings);
       this.settingsService.save(advancedSettings).then(() => {
-        this.editProfile(advancedSettings.profiles[0], advancedSettings.profiles.length);
+        this.editProfile(
+          advancedSettings.profiles[0],
+          advancedSettings.profiles.length
+        );
       });
     }
   }
 
   async editNewProfile() {
-    this.settingsService.getNextProfileId().then(async nextProfileId => {
+    this.settingsService.getNextProfileId().then(async (nextProfileId) => {
       const newProfile = new Profile();
       newProfile.profile_id = nextProfileId;
 
       const modal = await this.modalController.create({
         component: ProfilePageComponent,
-        componentProps: { profileModel: newProfile }
+        componentProps: { profileModel: newProfile, profileCount: 1 },
       });
       modal.onWillDismiss().then(() => this.update());
 
@@ -167,15 +189,18 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     this.isAdvancedConfirmationOpen = false;
   }
 
-  async save({ value, valid }: { value: Settings, valid: boolean }) {
+  async save({ value, valid }: { value: Settings; valid: boolean }) {
     if (!valid) {
-      this.toast.create({
-        message: ('Settings not valid. Please check fields are complete and that your chosen Length is between 8 and 200 characters.'),
-        duration: 8000,
-        position: 'middle',
-        cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel' }],
-      }).then(errorToast => errorToast.present());
+      this.toast
+        .create({
+          message:
+            "Settings not valid. Please check fields are complete and that your chosen Length is between 8 and 200 characters.",
+          duration: 8000,
+          position: "middle",
+          cssClass: "error",
+          buttons: [{ text: "OK", role: "cancel" }],
+        })
+        .then((errorToast) => errorToast.present());
 
       return;
     }
@@ -190,34 +215,37 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.settingsService.save(saveReadyValue)
-      .then(
-        () => {
-          this.toast.create({
-            message: ('Settings saved!'),
+    this.settingsService.save(saveReadyValue).then(
+      () => {
+        this.toast
+          .create({
+            message: "Settings saved!",
             duration: 2000,
-            position: 'middle',
-            buttons: [{ text: 'OK', role: 'cancel' }],
-          }).then(successToast => successToast.present());
-        },
-        (reason) => {
-          this.toast.create({
-            message: (`Error: ${reason}`),
+            position: "middle",
+            buttons: [{ text: "OK", role: "cancel" }],
+          })
+          .then((successToast) => successToast.present());
+      },
+      (reason) => {
+        this.toast
+          .create({
+            message: `Error: ${reason}`,
             duration: 6000,
-            position: 'middle',
-            cssClass: 'error',
-            buttons: [{ text: 'OK', role: 'cancel' }],
-          }).then(errorToast => errorToast.present());
-        }
-      );
+            position: "middle",
+            cssClass: "error",
+            buttons: [{ text: "OK", role: "cancel" }],
+          })
+          .then((errorToast) => errorToast.present());
+      }
+    );
   }
 
   openHelp() {
-    Browser.open({ url: 'https://passwordmaker.webful.uk/#settings' });
+    Browser.open({ url: "https://passwordmaker.webful.uk/#settings" });
   }
 
   openAdvancedInfo() {
-    Browser.open({ url: 'https://passwordmaker.webful.uk/#advanced' });
+    Browser.open({ url: "https://passwordmaker.webful.uk/#advanced" });
   }
 
   importSettings(event: any) {
@@ -229,17 +257,19 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
 
   async confirmImport(file: File) {
     if (!file) {
-      this.toast.create({
-        message: 'Please select a file to import',
-        position: 'middle',
-        cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel' }],
-      }).then(errorToast => errorToast.present());
+      this.toast
+        .create({
+          message: "Please select a file to import",
+          position: "middle",
+          cssClass: "error",
+          buttons: [{ text: "OK", role: "cancel" }],
+        })
+        .then((errorToast) => errorToast.present());
       return;
     }
 
     const loading = await this.loadingController.create({
-      message: 'Importing settings...'
+      message: "Importing settings...",
     });
     await loading.present();
 
@@ -251,7 +281,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       const importResult = this.importService.parseRdfDocument(fileContent);
 
       if (!importResult.profiles || importResult.profiles.length === 0) {
-        throw new Error('No profiles found in the import file');
+        throw new Error("No profiles found in the import file");
       }
 
       // Get current settings to determine if we're in advanced mode
@@ -262,11 +292,14 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
         const advancedSettings = new SettingsAdvanced(currentSettings);
 
         // Merge imported profiles with existing (default) profile
-        const mergeResult = this.importService.mergeProfiles(advancedSettings.profiles, importResult.profiles);
+        const mergeResult = this.importService.mergeProfiles(
+          advancedSettings.profiles,
+          importResult.profiles
+        );
 
         // Assign profile IDs to new profiles
         let nextId = 1;
-        mergeResult.profiles.forEach(profile => {
+        mergeResult.profiles.forEach((profile) => {
           if (!profile.profile_id) {
             profile.profile_id = nextId++;
           }
@@ -276,22 +309,25 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
         await this.settingsService.save(advancedSettings);
 
         await loading.dismiss();
-        this.toast.create({
-          message: `Imported: ${mergeResult.addedCount} new, ${mergeResult.updatedCount} updated profile(s)`,
-          duration: 3000,
-          position: 'middle',
-          buttons: [{ text: 'OK', role: 'cancel' }],
-        }).then(successToast => successToast.present());
-
+        this.toast
+          .create({
+            message: `Imported: ${mergeResult.addedCount} new, ${mergeResult.updatedCount} updated profile(s)`,
+            duration: 3000,
+            position: "middle",
+            buttons: [{ text: "OK", role: "cancel" }],
+          })
+          .then((successToast) => successToast.present());
       } else if (currentSettings instanceof SettingsAdvanced) {
-
         // Merge imported profiles with existing profiles
-        const mergeResult = this.importService.mergeProfiles(currentSettings.profiles, importResult.profiles);
+        const mergeResult = this.importService.mergeProfiles(
+          currentSettings.profiles,
+          importResult.profiles
+        );
 
         // Assign profile IDs to new profiles
         const nextId = await this.settingsService.getNextProfileId();
         let idCounter = nextId;
-        mergeResult.profiles.forEach(profile => {
+        mergeResult.profiles.forEach((profile) => {
           if (!profile.profile_id) {
             profile.profile_id = idCounter++;
           }
@@ -301,28 +337,31 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
         await this.settingsService.save(currentSettings);
 
         await loading.dismiss();
-        this.toast.create({
-          message: `Imported: ${mergeResult.addedCount} new, ${mergeResult.updatedCount} updated profile(s)`,
-          duration: 3000,
-          position: 'middle',
-          buttons: [{ text: 'OK', role: 'cancel' }],
-        }).then(successToast => successToast.present());
+        this.toast
+          .create({
+            message: `Imported: ${mergeResult.addedCount} new, ${mergeResult.updatedCount} updated profile(s)`,
+            duration: 3000,
+            position: "middle",
+            buttons: [{ text: "OK", role: "cancel" }],
+          })
+          .then((successToast) => successToast.present());
       }
 
       // Refresh the settings display
       this.update();
-
-    } catch (error) {
-      console.error('Import failed at step:', error);
-      console.error('Full error details:', error.message, error.stack);
+    } catch (error: any) {
+      console.error("Import failed at step:", error);
+      console.error("Full error details:", error?.message, error?.stack);
       await loading.dismiss();
 
-      this.toast.create({
-        message: `Import failed: ${error.message}`,
-        position: 'middle',
-        cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel' }],
-      }).then(errorToast => errorToast.present());
+      this.toast
+        .create({
+          message: `Import failed: ${error?.message}`,
+          position: "middle",
+          cssClass: "error",
+          buttons: [{ text: "OK", role: "cancel" }],
+        })
+        .then((errorToast) => errorToast.present());
     }
   }
 
@@ -331,34 +370,43 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       const currentSettings = await this.settingsService.getCurrentSettings();
 
       if (currentSettings instanceof SettingsSimple) {
-        this.toast.create({
-          message: 'Please upgrade to Advanced mode to export settings',
-          position: 'middle',
-          cssClass: 'error',
-          buttons: [{ text: 'OK', role: 'cancel' }],
-        }).then(errorToast => errorToast.present());
+        this.toast
+          .create({
+            message: "Please upgrade to Advanced mode to export settings",
+            position: "middle",
+            cssClass: "error",
+            buttons: [{ text: "OK", role: "cancel" }],
+          })
+          .then((errorToast) => errorToast.present());
         return;
       }
 
       // Use platform-aware export method
-      await this.importService.exportProfilesToFile((currentSettings as SettingsAdvanced).profiles);
+      await this.importService.exportProfilesToFile(
+        (currentSettings as SettingsAdvanced).profiles
+      );
 
       // On Android the folder has to be 'Documents' so we should tell the user that as it's not always simple to spot.
-      const message = 'Settings exported successfully.' + (this.platform.is('android') ? ' See the "Documents" folder.' : '');
-      this.toast.create({
-        message,
-        duration: 2000,
-        position: 'middle',
-        buttons: [{ text: 'OK', role: 'cancel' }],
-      }).then(successToast => successToast.present());
-
-    } catch (error) {
-      this.toast.create({
-        message: `Export failed: ${error.message}`,
-        position: 'middle',
-        cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel' }],
-      }).then(errorToast => errorToast.present());
+      const message =
+        "Settings exported successfully." +
+        (this.platform.is("android") ? ' See the "Documents" folder.' : "");
+      this.toast
+        .create({
+          message,
+          duration: 2000,
+          position: "middle",
+          buttons: [{ text: "OK", role: "cancel" }],
+        })
+        .then((successToast) => successToast.present());
+    } catch (error: any) {
+      this.toast
+        .create({
+          message: `Export failed: ${error?.message}`,
+          position: "middle",
+          cssClass: "error",
+          buttons: [{ text: "OK", role: "cancel" }],
+        })
+        .then((errorToast) => errorToast.present());
     }
   }
 
@@ -366,7 +414,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     try {
       const settings = await this.settingsService.getCurrentSettings();
 
-      this.advanced_mode = (settings instanceof SettingsAdvanced);
+      this.advanced_mode = settings instanceof SettingsAdvanced;
 
       // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
       // e.g. `master_password_hash` and `remember_minutes`.
@@ -393,13 +441,16 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       this.settingsForm.patchValue(formValues);
       this.settingsLoaded = true;
     } catch (err) {
-      const message = (err && (err as any).message) ? (err as any).message : String(err);
-      this.toast.create({
-        message: (`Could not load settings for update: ${message}`),
-        position: 'middle',
-        cssClass: 'error',
-        buttons: [{ text: 'OK', role: 'cancel' }],
-      }).then(errorToast => errorToast.present());
+      const message =
+        err && (err as any).message ? (err as any).message : String(err);
+      this.toast
+        .create({
+          message: `Could not load settings for update: ${message}`,
+          position: "middle",
+          cssClass: "error",
+          buttons: [{ text: "OK", role: "cancel" }],
+        })
+        .then((errorToast) => errorToast.present());
     } finally {
       if (this.loading) {
         await this.loading.dismiss().catch(() => {});
@@ -420,7 +471,9 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     // No debounce needed since inputs are mostly select/toggle with minimal typing
     this.formChangesSubscription = this.settingsForm.valueChanges
       .pipe(
-        distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
+        distinctUntilChanged(
+          (prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)
+        )
       )
       .subscribe(() => {
         // Only auto-save if the form is valid
@@ -443,22 +496,23 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.settingsService.save(saveReadyValue)
-      .then(
-        () => {
-          // Silent save - no toast notification for auto-save
-          console.log('Settings auto-saved');
-        },
-        (reason) => {
-          this.toast.create({
-            message: (`Auto-save error: ${reason}`),
+    this.settingsService.save(saveReadyValue).then(
+      () => {
+        // Silent save - no toast notification for auto-save
+        console.log("Settings auto-saved");
+      },
+      (reason) => {
+        this.toast
+          .create({
+            message: `Auto-save error: ${reason}`,
             duration: 6000,
-            position: 'middle',
-            cssClass: 'error',
-            buttons: [{ text: 'OK', role: 'cancel' }],
-          }).then(errorToast => errorToast.present());
-        }
-      );
+            position: "middle",
+            cssClass: "error",
+            buttons: [{ text: "OK", role: "cancel" }],
+          })
+          .then((errorToast) => errorToast.present());
+      }
+    );
   }
 
   ngOnDestroy() {

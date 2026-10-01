@@ -28,8 +28,8 @@ export class SettingsService {
 
   ready = false;
   saveSubject: Subject<void> = new Subject<void>();
-  private currentSettings: Settings;
-  private currentPromise?: Promise<any>;
+  private currentSettings?: Settings;
+  private currentPromise?: Promise<Settings>;
 
   private hydrateSettings(settings: any): Settings {
     let loadedSettings: Settings;
@@ -41,9 +41,10 @@ export class SettingsService {
     }
 
     if (settings) {
-      for (const key in loadedSettings) {
+      const loadedSettingsRecord = loadedSettings as unknown as Record<string, unknown>;
+      for (const key of Object.keys(loadedSettingsRecord)) {
         if (settings[key] !== undefined) {
-          loadedSettings[key] = settings[key];
+          loadedSettingsRecord[key] = settings[key];
         }
       }
       loadedSettings.class = settings.class;
@@ -167,10 +168,11 @@ export class SettingsService {
       return Promise.reject('No settings data');
     }
 
-    this.currentPromise = this.currentSettings = null; // Ensure future `getCurrentSettings()` don't get old values
+    this.currentPromise = undefined;
+    this.currentSettings = undefined; // Ensure future `getCurrentSettings()` don't get old values
 
     // Trying to clone this breaks the storage `set()` and almost certainly Cloud Settings `save()`.
-    delete settings.constructor;
+    Reflect.deleteProperty(settings, 'constructor');
 
     console.log('save is about to use', settings);
     const savePromise = this.storage.set(SettingsService.storageKey, settings);
@@ -355,7 +357,7 @@ export class SettingsService {
     });
   }
 
-  get storageDriver(): string {
+  get storageDriver(): string | null {
     return this.storage.driver;
   }
 

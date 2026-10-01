@@ -3,7 +3,7 @@ export abstract class Settings {
    * Set for storage serialisation, as Ionic Storage doesn't know which TypeScript class we're saving.
    * {@link https://github.com/ionic-team/ionic-storage/issues/60}
    */
-  class: string;
+  class!: string;
 
   master_password_hash = false;
   remember_minutes = 5;
@@ -25,7 +25,7 @@ export abstract class Settings {
   abstract getSuffix(): string;
   abstract isDomainOnly(): boolean;
 
-  getCommonSettingsProperties(): readonly string[] {
+  getCommonSettingsProperties(): readonly ('master_password_hash' | 'remember_minutes')[] {
     return Settings.COMMON_SETTINGS_PROPERTIES;
   }
 }

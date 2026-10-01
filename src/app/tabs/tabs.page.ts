@@ -1,19 +1,28 @@
-import { Component, OnInit, ViewChild, effect, inject } from '@angular/core';
-import { IonTabs, Platform } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { key, settings } from 'ionicons/icons';
-import { ShareService } from '../share.service';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  effect,
+  inject,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import { App } from "@capacitor/app";
+import { IonTabs, Platform } from "@ionic/angular/standalone";
+import { addIcons } from "ionicons";
+import { key, settings } from "ionicons/icons";
+import { ShareService } from "../share.service";
 
 @Component({
-  selector: 'app-tabs',
-  templateUrl: 'tabs.page.html',
-  standalone: false
+  selector: "app-tabs",
+  templateUrl: "tabs.page.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class TabsPageComponent implements OnInit {
   private platform = inject(Platform);
   private shareService = inject(ShareService);
 
-  @ViewChild('tabs') tab: IonTabs;
+  @ViewChild("tabs") tab!: IonTabs;
 
   constructor() {
     addIcons({ key, settings });
@@ -22,7 +31,7 @@ export class TabsPageComponent implements OnInit {
     effect(() => {
       const sharedHost = this.shareService.sharedHost();
       if (sharedHost) {
-        this.tab?.select('home');
+        this.tab?.select("home");
       }
     });
   }
@@ -35,12 +44,12 @@ export class TabsPageComponent implements OnInit {
      * only be destroyed when the whole app exits.
      */
     this.platform.backButton.subscribe(async () => {
-      if (this.tab.getSelected() === 'home') {
-        navigator['app'].exitApp();
+      if (this.tab.getSelected() === "home") {
+        await App.exitApp();
         return;
       }
 
-      this.tab.select('home');
+      this.tab.select("home");
     });
   }
 }
