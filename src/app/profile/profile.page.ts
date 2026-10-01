@@ -39,8 +39,8 @@ export class ProfilePageComponent implements OnInit {
   private settingsService = inject(SettingsService);
   toast = inject(ToastController);
 
-  @Input() profileModel: Profile;
-  @Input() profileCount: number; // Total profiles so far
+  @Input() profileModel: Profile | undefined;
+  @Input({ required: true }) profileCount: number = 0; // Total profiles so far
 
   deleteConfirmationButtons = [
     {
@@ -57,7 +57,7 @@ export class ProfilePageComponent implements OnInit {
   isDeleteConfirmationOpen = false;
   profile: FormGroup;
 
-  private profileId: number;
+  private profileId?: number;
   private lastCharacterSetPreset?: string;
   patternsText = ""; // Text representation of patterns for UI
 
@@ -89,21 +89,25 @@ export class ProfilePageComponent implements OnInit {
 
     // We need to ensure that setting the character set away from Custom clears any
     // validation error on the custom characters field.
-    this.profile
-      .get("output_character_set_preset")
-      .valueChanges.subscribe((changeEvent) => {
+    const presetSetField = this.profile.get("output_character_set_preset");
+
+    if (presetSetField) {
+      presetSetField.valueChanges.subscribe((changeEvent) => {
+        const customSetField = this.profile.get("output_character_set_custom");
+        if (!customSetField) {
+          return;
+        }
+
         if (changeEvent === "none") {
-          this.profile
-            .get("output_character_set_custom")
-            .setValue(this.lastCharacterSetPreset);
+          customSetField.setValue(this.lastCharacterSetPreset);
         } else {
           this.lastCharacterSetPreset = changeEvent;
         }
 
-        this.profile
-          .get("output_character_set_custom")
-          .updateValueAndValidity();
+        customSetField.updateValueAndValidity();
       });
+    }
+
     addIcons({
       close,
       key,
@@ -202,6 +206,11 @@ export class ProfilePageComponent implements OnInit {
   }
 
   delete() {
+    if (!this.profileId) {
+      console.error('delete() missing profileId');
+      return;
+    }
+
     this.settingsService.deleteProfile(this.profileId).then(
       () => {
         this.toast
@@ -291,8 +300,7 @@ export class ProfilePageComponent implements OnInit {
     }
 
     if (
-      outputCharacterSetCustomControl.parent.get("output_character_set_preset")
-        .value === "none"
+      outputCharacterSetCustomControl.parent.get("output_character_set_preset")?.value === "none"
     ) {
       return Validators.required(outputCharacterSetCustomControl);
     }

@@ -49,11 +49,11 @@ export class HomePageComponent implements OnInit {
   literal_input_warning = false;
   non_domain_warning = false;
   output_password?: string;
-  settings: Settings;
+  settings: Settings | undefined;
 
   private expire_password_on_context_change = false;
   private expiry_timer_id?: number;
-  private loading: HTMLIonLoadingElement;
+  private loading: HTMLIonLoadingElement | undefined;
   protected master_password_hash?: string;
   private userChangedProfile = false; // Track if user manually changed profile
 
@@ -110,7 +110,7 @@ export class HomePageComponent implements OnInit {
           buttons: [{ text: "OK", role: "cancel" }],
         })
         .then((errorToast) => errorToast.present());
-      this.loading.dismiss();
+      this.loading?.dismiss();
 
       return;
     }

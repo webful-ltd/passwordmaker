@@ -77,7 +77,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
   ];
   isAdvancedConfirmationOpen = false;
 
-  private loading: HTMLIonLoadingElement;
+  private loading: HTMLIonLoadingElement | undefined;
 
   constructor() {
     this.settingsForm = this.formBuilder.group({
@@ -134,7 +134,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
           buttons: [{ text: "OK", role: "cancel" }],
         })
         .then((errorToast) => errorToast.present());
-      this.loading.dismiss();
+      this.loading?.dismiss();
 
       return;
     }
@@ -163,7 +163,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
 
       const modal = await this.modalController.create({
         component: ProfilePageComponent,
-        componentProps: { profileModel: newProfile },
+        componentProps: { profileModel: newProfile, profileCount: 1 },
       });
       modal.onWillDismiss().then(() => this.update());
 
@@ -349,14 +349,14 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
 
       // Refresh the settings display
       this.update();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Import failed at step:", error);
-      console.error("Full error details:", error.message, error.stack);
+      console.error("Full error details:", error?.message, error?.stack);
       await loading.dismiss();
 
       this.toast
         .create({
-          message: `Import failed: ${error.message}`,
+          message: `Import failed: ${error?.message}`,
           position: "middle",
           cssClass: "error",
           buttons: [{ text: "OK", role: "cancel" }],
@@ -398,10 +398,10 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
           buttons: [{ text: "OK", role: "cancel" }],
         })
         .then((successToast) => successToast.present());
-    } catch (error) {
+    } catch (error: any) {
       this.toast
         .create({
-          message: `Export failed: ${error.message}`,
+          message: `Export failed: ${error?.message}`,
           position: "middle",
           cssClass: "error",
           buttons: [{ text: "OK", role: "cancel" }],

@@ -61,7 +61,7 @@
           &nbsp;<em>Custom</em> lets you define exactly which letters and numbers can be in passwords, instead of
           using a preset group.
         </p>
-        @if (profile.get('output_character_set_preset').value === 'none') {
+        @if (profile.get('output_character_set_preset')?.value === 'none') {
           <ion-item>
             <ion-input
               label="Possible characters"
@@ -103,7 +103,7 @@
             <ion-select-option value="both">Before and after</ion-select-option>
           </ion-select>
         </ion-item>
-        @if (profile.get('leet_location').value !== 'none') {
+        @if (profile.get('leet_location')?.value !== 'none') {
           <ion-item>
             <ion-range
               name="leet_level"

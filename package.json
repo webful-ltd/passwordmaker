@@ -98,7 +98,7 @@
     "optionator": "0.9.3"
   },
   "engines": {
-    "node": ">=22.10",
+    "node": ">=24.15.0",
     "npm": ">=10"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",

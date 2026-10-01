@@ -79,12 +79,12 @@
             <ion-toggle
               name="added_number_on"
               formControlName="added_number_on"
-              [checked]="settingsForm.get('added_number_on').value"
+              [checked]="settingsForm.get('added_number_on')?.value ?? false"
               color="primary"
               enable-on-off-labels="true"
             >Add a fixed number?</ion-toggle>
           </ion-item>
-          @if (settingsForm.get('added_number_on').value) {
+          @if (settingsForm.get('added_number_on')?.value) {
             <ion-item>
               <ion-range
                 name="added_number"
@@ -102,7 +102,7 @@
             <ion-toggle
               name="domain_only"
               formControlName="domain_only"
-              [checked]="settingsForm.get('domain_only').value"
+              [checked]="settingsForm.get('domain_only')?.value ?? false"
               color="primary"
               enable-on-off-labels="true"
             >Use just domain name?</ion-toggle>
@@ -132,7 +132,7 @@
         <ion-toggle
             name="master_password_hash"
             formControlName="master_password_hash"
-            [checked]="settingsForm.get('master_password_hash').value"
+            [checked]="settingsForm.get('master_password_hash')?.value ?? false"
             color="primary"
             enable-on-off-labels="true"
         >Show password hash?</ion-toggle>
