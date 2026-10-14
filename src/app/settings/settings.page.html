@@ -11,7 +11,7 @@
     <a (click)="openHelp()" target="_system">Learn about Settings here</a>. Settings on this page auto-save as you change them.
   </p>
 
-  @if (advanced_mode) {
+  @if (advanced_mode()) {
     <div>
       @for (profile of profiles; track profile.profile_id) {
         <ion-button
@@ -26,9 +26,9 @@
     </div>
   }
 
-  @if (settingsLoaded) {
+  @if (settingsLoaded()) {
     <form [formGroup]="settingsForm" novalidate>
-      @if (!advanced_mode) {
+      @if (!advanced_mode()) {
         <div>
           <ion-item>
             <ion-input
@@ -148,7 +148,7 @@
           Settings not valid. Please check fields are complete and that your chosen Length is between 8 and 200 characters.
         </p>
       }
-      @if (advanced_mode) {
+      @if (advanced_mode()) {
         <ion-button
           (click)="editNewProfile()"
           expand="block"
@@ -158,7 +158,7 @@
           Add new profile
         </ion-button>
       }
-      @if (!advanced_mode) {
+      @if (!advanced_mode()) {
         <div>
           <ion-button
             (click)="confirmEnableAdvanced()"

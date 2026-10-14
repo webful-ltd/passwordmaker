@@ -3,8 +3,8 @@ import {
   OnInit,
   OnDestroy,
   inject,
-  ChangeDetectionStrategy,
-} from "@angular/core";
+  ChangeDetectionStrategy, signal,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Browser } from "@capacitor/browser";
 import {
@@ -53,9 +53,9 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
   toast = inject(ToastController);
 
   settingsForm: FormGroup;
-  advanced_mode = false;
+  advanced_mode = signal(false);
   profiles: Profile[] = [];
-  settingsLoaded = false;
+  settingsLoaded = signal(false);
   private formChangesSubscription?: Subscription;
 
   advancedConfirmationButtons = [
@@ -208,7 +208,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     }
 
     let saveReadyValue = value;
-    if (this.advanced_mode) {
+    if (this.advanced_mode()) {
       saveReadyValue = await this.settingsService.getCurrentSettings();
 
       // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
@@ -416,7 +416,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     try {
       const settings = await this.settingsService.getCurrentSettings();
 
-      this.advanced_mode = settings instanceof SettingsAdvanced;
+      this.advanced_mode.set(settings instanceof SettingsAdvanced);
 
       // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
       // e.g. `master_password_hash` and `remember_minutes`.
@@ -441,7 +441,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       }
 
       this.settingsForm.patchValue(formValues);
-      this.settingsLoaded = true;
+      this.settingsLoaded.set(true);
     } catch (err) {
       const message =
         err && (err as any).message ? (err as any).message : String(err);
@@ -489,7 +489,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     const value = this.settingsForm.value;
 
     let saveReadyValue = value;
-    if (this.advanced_mode) {
+    if (this.advanced_mode()) {
       saveReadyValue = await this.settingsService.getCurrentSettings();
 
       // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
