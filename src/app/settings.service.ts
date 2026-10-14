@@ -1,4 +1,4 @@
-import { Injectable, inject } from "@angular/core";
+import { Injectable, inject, signal, computed } from "@angular/core";
 import { Platform, ToastController } from "@ionic/angular";
 import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
 import { Storage } from "@ionic/storage-angular";
@@ -28,8 +28,16 @@ export class SettingsService {
 
   ready = false;
   saveSubject: Subject<void> = new Subject<void>();
-  private currentSettings?: Settings;
-  private currentPromise?: Promise<Settings>;
+
+  private readonly _settings = signal<Settings | null>(null);
+  readonly settings = this._settings.asReadonly();
+
+  // Computed helper for convenience across components
+  readonly isAdvancedMode = computed(
+    () => this._settings() instanceof SettingsAdvanced
+  );
+
+  private initPromise?: Promise<void>;
 
   private hydrateSettings(settings: any): Settings {
     let loadedSettings: Settings;
@@ -56,126 +64,128 @@ export class SettingsService {
     return loadedSettings;
   }
 
-  async init() {
-    // On Capacitor wait for platform/plugin readiness before attempting to
-    // register the SQLite driver. On web, create immediately and fall back to
-    // web drivers (IndexedDB/localStorage).
+  async init(): Promise<void> {
+    if (this.initPromise) {
+      return this.initPromise;
+    }
+
+    this.initPromise = (async () => {
+      // 1. Initialize storage drivers
+      if (this.platform.is("capacitor")) {
+        await this.storage.defineDriver(CapacitorSqliteDriverService);
+        await this.storage.create();
+        console.log("Storage created (capacitor)");
+      } else {
+        await this.storage.create();
+        console.log("Storage created (web)");
+      }
+
+      console.log("Using storage driver " + this.storage.driver);
+
+      // 2. Perform legacy migration if necessary
+      try {
+        await this.migrateLegacySettings();
+      } catch (err) {
+        console.error("Migration error", err);
+        await this.toast
+          .create({
+            message: "Settings migration failed (see console for details)",
+            duration: 6_000,
+            position: "middle",
+            cssClass: "error",
+          })
+          .then((t) => t.present());
+      }
+
+      // 3. Eagerly load and hydrate settings into the signal
+      const initialSettings = await this.loadInitialSettings();
+      this._settings.set(initialSettings);
+
+      this.ready = true;
+    })();
+
+    return this.initPromise;
+  }
+
+  private async loadInitialSettings(): Promise<Settings> {
+    const rawSettings = await this.storage.get(SettingsService.storageKey);
+
+    if (rawSettings !== null && rawSettings !== undefined) {
+      return this.hydrateSettings(rawSettings);
+    }
+
+    // Attempt cloud restore if on Capacitor
     if (this.platform.is("capacitor")) {
-      await this.storage.defineDriver(CapacitorSqliteDriverService);
-      await this.storage.create();
-      console.log("Storage created (capacitor)");
-      setTimeout(async () => {
-        console.log(
-          "new storage keys are: " + JSON.stringify(await this.storage.keys())
-        );
-      }, 2_000);
-    } else {
-      // Web: create immediately using IndexedDB/localStorage fallback
-      await this.storage.create();
-      console.log("Storage created (web)");
+      try {
+        const exists = await this.cloudSettings.exists();
+        if (exists) {
+          const loadedFromCloud = await this.cloudSettings.load();
+          this.toast
+            .create({
+              message: "Previous settings loaded from backup",
+              duration: 3000,
+              position: "middle",
+              buttons: [{ text: "OK", role: "cancel" }],
+            })
+            .then((t) => t.present());
+
+          delete (loadedFromCloud as any)?.constructor;
+          await this.storage.set(SettingsService.storageKey, loadedFromCloud);
+          return this.hydrateSettings(loadedFromCloud);
+        }
+      } catch (error) {
+        this.toast
+          .create({
+            message: `Could not load previous settings: ${error}`,
+            duration: 6000,
+            position: "middle",
+            cssClass: "error",
+            buttons: [{ text: "OK", role: "cancel" }],
+          })
+          .then((t) => t.present());
+      }
     }
 
-    // Log which driver is in use
-    console.log("Using storage driver " + this.storage.driver);
-
-    // Attempt migration from legacy storage (if present). Block init until migration
-    // completes so callers that rely on `ready` will see migrated data.
-    try {
-      await this.migrateLegacySettings();
-      console.log("Migrated if necessary");
-    } catch (err) {
-      console.error("Migration error", err);
-      // Show a friendly toast but keep full details in console for diagnostics
-      await this.toast
-        .create({
-          message: "Settings migration failed (see console for details)",
-          duration: 6_000,
-          position: "middle",
-          cssClass: "error",
-        })
-        .then((t) => t.present());
-
-      console.log("Migration catch block");
-    }
-
-    // Mark ready after migration completes (successful or not)
-    this.ready = true;
+    // Default fallback
+    return new SettingsSimple();
   }
 
   private async migrateLegacySettings(): Promise<boolean> {
     if (!this.legacyStorage) {
-      console.log("skipped migrate actually, no legacy storage");
-      return false; // No legacy provider configured
+      return false;
     }
 
     try {
-      // Legacy storage should use the ionic/storage default drivers (IndexedDB, etc.).
-      // Don't attempt to register the SQLite driver for the legacy provider — that
-      // driver is only for the new storage instance.
       if (typeof this.legacyStorage.create === "function") {
         try {
           await this.legacyStorage.create();
-        } catch (e) {
-          console.log("Legacy storage create failed", e);
+        } catch {
           // ignore create errors from legacy storage
         }
       }
 
-      console.log(
-        "legacy storage keys are: " +
-          JSON.stringify(await this.legacyStorage.keys())
-      );
-
-      const legacyValue = await this.legacyStorage.get(
-        SettingsService.storageKey
-      );
+      const legacyValue = await this.legacyStorage.get(SettingsService.storageKey);
       if (legacyValue === null || legacyValue === undefined) {
-        console.log("No legacy value found");
         return false; // nothing to migrate
       }
 
-      console.log("legacy value found", legacyValue);
-
       const newValue = await this.storage.get(SettingsService.storageKey);
-      // If new storage already has settings, avoid overwriting unless different
       if (newValue !== null && newValue !== undefined) {
-        // If identical, just remove legacy key; if different, do not overwrite — log and skip
         const same = JSON.stringify(newValue) === JSON.stringify(legacyValue);
         if (same) {
-          console.log("no-op, same value");
-
           if (this.legacyStorage.driver === this.storage.driver) {
-            console.log("Same driver for both, will not migrate");
             return false;
           }
-
           await this.legacyStorage.remove(SettingsService.storageKey);
-          await this.toast
-            .create({
-              message:
-                "Legacy settings removed (already present in new storage)",
-              duration: 6_000,
-              position: "middle",
-            })
-            .then((t) => t.present());
           return true;
         }
-
-        // Do not overwrite user's newer settings
-        console.warn(
-          "Legacy settings exist but new storage already contains different settings. Skipping migration."
-        );
         return false;
       }
 
-      // Perform migration: write into new storage, confirm, then delete legacy copy
-      console.log("migrating legacy settings", legacyValue);
       await this.storage.set(SettingsService.storageKey, legacyValue);
-      // verify write
       const verify = await this.storage.get(SettingsService.storageKey);
       if (JSON.stringify(verify) === JSON.stringify(legacyValue)) {
         await this.legacyStorage.remove(SettingsService.storageKey);
-
         return true;
       }
 
@@ -188,237 +198,116 @@ export class SettingsService {
     }
   }
 
-  public save(settings: Settings): Promise<any> {
+  public async save(settings: Settings): Promise<any> {
     if (!settings) {
       return Promise.reject("No settings data");
     }
 
-    this.currentPromise = undefined;
-    this.currentSettings = undefined; // Ensure future `getCurrentSettings()` don't get old values
-
-    // Trying to clone this breaks the storage `set()` and almost certainly Cloud Settings `save()`.
+    // Ensure clean serialization
     Reflect.deleteProperty(settings, "constructor");
 
-    console.log("save is about to use", settings);
-    const savePromise = this.storage.set(SettingsService.storageKey, settings);
+    // Persist to storage
+    const savePromise = await this.storage.set(SettingsService.storageKey, settings);
 
-    // Tell listening pages (e.g. Home) that the settings changed
-    savePromise.then(() => {
-      this.saveSubject.next();
-      if (this.platform.is("capacitor")) {
-        // No cloud settings without a device
-        this.cloudSettings.save(settings, true);
-      }
-    });
+    // Update signal state immediately so all consumers update reactively
+    this._settings.set(settings);
+
+    // Notify legacy listeners and sync to cloud
+    this.saveSubject.next();
+    if (this.platform.is("capacitor")) {
+      this.cloudSettings.save(settings, true);
+    }
 
     return savePromise;
   }
 
-  public saveProfile(profile: Profile): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getCurrentSettings().then((settings) => {
-        if (settings instanceof SettingsSimple) {
-          settings = new SettingsAdvanced(settings);
-        }
+  public async saveProfile(profile: Profile): Promise<any> {
+    let settings = await this.getCurrentSettings();
 
-        if (!(settings instanceof SettingsAdvanced)) {
-          return reject("Settings not of an expected type");
-        }
+    if (settings instanceof SettingsSimple) {
+      settings = new SettingsAdvanced(settings);
+    }
 
-        const clashingNameProfileIndex: number = settings.profiles.findIndex(
-          (thisProfile) =>
-            thisProfile.name === profile.name &&
-            thisProfile.profile_id !== profile.profile_id
-        );
-        if (clashingNameProfileIndex > -1) {
-          reject(`Profile name "${profile.name}" is already in use`);
-        }
+    if (!(settings instanceof SettingsAdvanced)) {
+      throw new Error("Settings not of an expected type");
+    }
 
-        const existingProfileIndex: number = settings.profiles.findIndex(
-          (thisProfile) => thisProfile.profile_id === profile.profile_id
-        );
-        const isExistingProfile: boolean = existingProfileIndex > -1;
+    const clashingNameProfileIndex = settings.profiles.findIndex(
+      (p) => p.name === profile.name && p.profile_id !== profile.profile_id
+    );
+    if (clashingNameProfileIndex > -1) {
+      throw new Error(`Profile name "${profile.name}" is already in use`);
+    }
 
-        if (isExistingProfile) {
-          settings.profiles.splice(existingProfileIndex, 1, profile);
-        } else {
-          settings.profiles.push(profile);
-        }
+    const existingProfileIndex = settings.profiles.findIndex(
+      (p) => p.profile_id === profile.profile_id
+    );
+    const isExistingProfile = existingProfileIndex > -1;
 
-        this.save(settings).then((saveResolveValue) => {
-          resolve({
-            saveResolveValue,
-            action: isExistingProfile ? "updated" : "created",
-          });
-        });
-      });
-    });
+    if (isExistingProfile) {
+      settings.profiles.splice(existingProfileIndex, 1, profile);
+    } else {
+      settings.profiles.push(profile);
+    }
+
+    const saveResolveValue = await this.save(settings);
+    return {
+      saveResolveValue,
+      action: isExistingProfile ? "updated" : "created",
+    };
   }
 
-  public deleteProfile(profileId: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getCurrentSettings().then((settings) => {
-        if (!(settings instanceof SettingsAdvanced)) {
-          return reject("Settings not of the expected type");
-        }
+  public async deleteProfile(profileId: number): Promise<any> {
+    const settings = await this.getCurrentSettings();
 
-        const existingProfileIndex: number = settings.profiles.findIndex(
-          (thisProfile) => thisProfile.profile_id === profileId
-        );
-        settings.profiles.splice(existingProfileIndex, 1);
+    if (!(settings instanceof SettingsAdvanced)) {
+      throw new Error("Settings not of the expected type");
+    }
 
-        // Ensure some surviving Profile is selected for the Make screen's next use
-        settings.setActiveProfile(settings.profiles[0].profile_id);
+    const existingProfileIndex = settings.profiles.findIndex(
+      (p) => p.profile_id === profileId
+    );
+    settings.profiles.splice(existingProfileIndex, 1);
 
-        this.save(settings).then((saveResolveValue) => {
-          resolve(saveResolveValue);
-        });
-      });
-    });
+    if (settings.profiles.length > 0) {
+      settings.setActiveProfile(settings.profiles[0].profile_id);
+    }
+
+    return this.save(settings);
   }
 
   /**
-   * `instanceof` is safe for runtime users of the return value from this fn's promise, because
-   * this fn constructs a new copy of the serialised settings and so the prototype chain is correct.
-   * Don't use `storage.get()` without doing this as it will break the ability to distinguish
-   * between Settings subclasses.
+   * Backward-compatible helper method.
+   * Resolves immediately from the signal if already initialized,
+   * or awaits initialization if accessed prematurely.
    */
-  getCurrentSettings(): Promise<Settings> {
-    if (this.currentPromise instanceof Promise) {
-      return this.currentPromise;
-    }
-
-    if (this.currentSettings) {
-      return Promise.resolve(this.currentSettings);
-    }
-
+  async getCurrentSettings(): Promise<Settings> {
     if (!this.ready) {
-      console.log("getCurrentSettings called when we were not ready yet");
-
-      return new Promise<Settings>((resolve) => {
-        setTimeout(() => {
-          if (!this.ready) {
-            throw new Error("Storage not ready after 30 seconds");
-          }
-        }, 30000);
-        // Not ready yet -> try again in 1s and resolve with result.
-        setTimeout(
-          () => this.getCurrentSettings().then((result) => resolve(result)),
-          1000
-        );
-      });
+      await this.init();
     }
-
-    const settingsService = this;
-
-    console.log("Using storage " + this.storage.driver);
-    console.log("Using storage class " + this.storage.constructor.name);
-    console.log("Using storage", this.storage);
-
-    this.currentPromise = this.storage
-      .get(SettingsService.storageKey)
-      .then((settings) => {
-        if (settings === null) {
-          console.log("No existing settings found");
-
-          return new Promise((resolve) => {
-            if (!this.platform.is("capacitor")) {
-              // No cloud settings without a device
-              return resolve(this.loadDefaults());
-            }
-
-            this.cloudSettings
-              .exists()
-              .then((exists) => {
-                if (exists) {
-                  this.cloudSettings
-                    .load()
-                    .then(async (loadedFromCloud) => {
-                      // Success: load past settings
-                      this.toast
-                        .create({
-                          message: "Previous settings loaded from backup",
-                          duration: 3000,
-                          position: "middle",
-                          buttons: [{ text: "OK", role: "cancel" }],
-                        })
-                        .then((successToast) => successToast.present());
-
-                      // Persist the raw settings object for subsequent app launches.
-                      // (Avoid cloning: that has historically caused issues with storage/cloud plugins.)
-                      delete (loadedFromCloud as any)?.constructor;
-                      await this.storage.set(
-                        SettingsService.storageKey,
-                        loadedFromCloud
-                      );
-
-                      // Return a hydrated Settings instance so callers can safely use methods like
-                      // `getCommonSettingsProperties()`.
-                      const hydrated = this.hydrateSettings(loadedFromCloud);
-                      settingsService.currentSettings = hydrated;
-                      resolve(hydrated);
-                    })
-                    .catch((error) => {
-                      // Load error
-                      this.toast
-                        .create({
-                          message: `Could not load previous settings: ${error}`,
-                          duration: 6000,
-                          position: "middle",
-                          cssClass: "error",
-                          buttons: [{ text: "OK", role: "cancel" }],
-                        })
-                        .then((errorToast) => errorToast.present());
-
-                      resolve(this.loadDefaults());
-                    });
-                  return;
-                }
-
-                // Else existence check worked but no past settings in the cloud
-                resolve(this.loadDefaults());
-              })
-              .catch(() => resolve(this.loadDefaults())); // Existence check error
-          });
-        }
-
-        // Set up the correct class, and 'upgrade' settings data to add defaults for any
-        // newly-supported keys since the last save
-        const loadedSettings = this.hydrateSettings(settings);
-        settingsService.currentSettings = loadedSettings;
-        return settingsService.currentSettings;
-      });
-
-    return this.currentPromise;
+    const current = this._settings();
+    if (current) {
+      return current;
+    }
+    // Fallback if settings somehow remained uninitialized
+    const loaded = await this.loadInitialSettings();
+    this._settings.set(loaded);
+    return loaded;
   }
 
-  getNextProfileId(): Promise<number> {
-    return new Promise((resolve) => {
-      this.getCurrentSettings().then((settings) => {
-        if (!(settings instanceof SettingsAdvanced)) {
-          resolve(1);
-          return;
-        }
+  async getNextProfileId(): Promise<number> {
+    const settings = await this.getCurrentSettings();
+    if (!(settings instanceof SettingsAdvanced)) {
+      return 1;
+    }
 
-        const highestExistingProfileId = Math.max.apply(
-          Math,
-          settings.profiles.map((profile) => profile.profile_id)
-        );
-        resolve(highestExistingProfileId + 1);
-      });
-    });
+    const highestExistingProfileId = Math.max(
+      ...settings.profiles.map((profile) => profile.profile_id)
+    );
+    return highestExistingProfileId + 1;
   }
 
   get storageDriver(): string | null {
     return this.storage.driver;
-  }
-
-  /**
-   * Initialise entire dictionary with default settings
-   */
-  private loadDefaults() {
-    console.log("Loading default settings");
-    this.currentSettings = new SettingsSimple();
-    return this.currentSettings;
   }
 }

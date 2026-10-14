@@ -1,7 +1,6 @@
 import {
   ComponentFixture,
   TestBed,
-  fakeAsync,
   tick,
 } from "@angular/core/testing";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -69,7 +68,7 @@ describe("SettingsPageComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  it("should set up auto-save subscription after settings are loaded", fakeAsync(() => {
+  it("should set up auto-save subscription after settings are loaded", async () => {
     // Mock getCurrentSettings to return a SettingsSimple instance
     spyOn(settingsService, "getCurrentSettings").and.returnValue(
       Promise.resolve(new SettingsSimple())
@@ -79,9 +78,9 @@ describe("SettingsPageComponent", () => {
     tick(); // Resolve all pending promises
 
     expect(component["formChangesSubscription"]).toBeDefined();
-  }));
+  });
 
-  it("should auto-save settings when form changes and is valid", fakeAsync(() => {
+  it("should auto-save settings when form changes and is valid", async () => {
     const mockSettings = new SettingsSimple();
     spyOn(settingsService, "getCurrentSettings").and.returnValue(
       Promise.resolve(mockSettings)
@@ -96,9 +95,9 @@ describe("SettingsPageComponent", () => {
     tick(); // Resolve save promise
 
     expect(settingsService.save).toHaveBeenCalled();
-  }));
+  });
 
-  it("should not auto-save when form is invalid", fakeAsync(() => {
+  it("should not auto-save when form is invalid", async () => {
     const mockSettings = new SettingsSimple();
     spyOn(settingsService, "getCurrentSettings").and.returnValue(
       Promise.resolve(mockSettings)
@@ -113,9 +112,9 @@ describe("SettingsPageComponent", () => {
     tick(); // Process any pending operations
 
     expect(settingsService.save).not.toHaveBeenCalled();
-  }));
+  });
 
-  it("should clean up subscription on destroy", fakeAsync(() => {
+  it("should clean up subscription on destroy", async () => {
     const mockSettings = new SettingsSimple();
     spyOn(settingsService, "getCurrentSettings").and.returnValue(
       Promise.resolve(mockSettings)
@@ -131,5 +130,5 @@ describe("SettingsPageComponent", () => {
     component.ngOnDestroy();
 
     expect(subscription!.unsubscribe).toHaveBeenCalled();
-  }));
+  });
 });
