@@ -9,21 +9,46 @@ import { SettingsSimple } from "../models/SettingsSimple";
 
 describe("AppComponent", () => {
   let platformIsSpy, platformReadySpy, storageSpy;
-  let platformSpy: jasmine.SpyObj<Platform>;
+  let platformSpy: any;
   const mockSettings = new SettingsSimple();
 
   beforeEach(async () => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
     platformIsSpy = false;
     platformReadySpy = Promise.resolve();
-    platformSpy = jasmine.createSpyObj("Platform", {
-      is: platformIsSpy, // not capacitor / mobile
-      ready: platformReadySpy,
-    });
-    storageSpy = jasmine.createSpyObj("Storage", {
-      create: () => Promise.resolve(true),
-      get: () => mockSettings,
-      set: () => true,
-    });
+    platformSpy = {
+      is: vi.fn().mockName("Platform.is").mockReturnValue(platformIsSpy),
+      ready: vi
+        .fn()
+        .mockName("Platform.ready")
+        .mockReturnValue(platformReadySpy),
+    };
+    storageSpy = {
+      create: vi
+        .fn()
+        .mockName("Storage.create")
+        .mockReturnValue(() => Promise.resolve(true)),
+      get: vi
+        .fn()
+        .mockName("Storage.get")
+        .mockReturnValue(() => mockSettings),
+      set: vi
+        .fn()
+        .mockName("Storage.set")
+        .mockReturnValue(() => true),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
