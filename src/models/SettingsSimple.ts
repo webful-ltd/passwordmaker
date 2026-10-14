@@ -40,7 +40,7 @@ export class SettingsSimple extends Settings {
 
   getPostProcessingSuffix(): string {
     if (this.added_number_on) {
-      return String(this.added_number);
+      return String(this.added_number ?? 0);
     }
 
     return '';

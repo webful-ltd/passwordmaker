@@ -23,7 +23,7 @@ jobs:
             - node24-{{ checksum "package-lock.json" }}
       - run:
           name: Install dependencies
-          command: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 npm install --quiet
+          command: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 npm install --legacy-peer-deps --quiet
       - save_cache:
           paths:
             - node_modules

@@ -1,20 +1,26 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
-import { IonInput, IonSelect, IonToggle, IonTextarea, provideIonicAngular } from '@ionic/angular/standalone';
-import { Drivers } from '@ionic/storage';
-import { IonicStorageModule } from '@ionic/storage-angular';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
+import {
+  IonInput,
+  IonSelect,
+  IonToggle,
+  IonTextarea,
+  provideIonicAngular,
+} from "@ionic/angular";
+import { Drivers } from "@ionic/storage";
+import { IonicStorageModule } from "@ionic/storage-angular";
 
-import { CapacitorSqliteDriverService } from '../capacitor-sqlite-driver.service';
-import { Profile } from '../../models/Profile';
-import { ProfilePageComponent } from './profile.page';
+import { CapacitorSqliteDriverService } from "../capacitor-sqlite-driver.service";
+import { Profile } from "../../models/Profile";
+import { ProfilePageComponent } from "./profile.page";
 
-describe('ProfilePageComponent', () => {
+describe("ProfilePageComponent", () => {
   let component: ProfilePageComponent;
   let fixture: ComponentFixture<ProfilePageComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ProfilePageComponent],
       imports: [
         FormsModule,
@@ -23,25 +29,25 @@ describe('ProfilePageComponent', () => {
         IonToggle,
         IonTextarea,
         IonicStorageModule.forRoot({
-          driverOrder: [CapacitorSqliteDriverService._driver, Drivers.IndexedDB],
+          driverOrder: [
+            CapacitorSqliteDriverService._driver,
+            Drivers.IndexedDB,
+          ],
         }),
         ReactiveFormsModule,
       ],
-      providers: [
-        CloudSettings,
-        provideIonicAngular(),
-      ]
+      providers: [CloudSettings, provideIonicAngular()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProfilePageComponent);
     component = fixture.componentInstance;
     component.profileModel = new Profile();
     component.profileModel.profile_id = 1;
-    component.profileModel.name = 'Default';
+    component.profileModel.name = "Default";
     fixture.detectChanges();
-  }));
+  });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

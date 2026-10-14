@@ -3,8 +3,8 @@ import {
   OnInit,
   OnDestroy,
   inject,
-  ChangeDetectionStrategy,
-} from "@angular/core";
+  ChangeDetectionStrategy, signal,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Browser } from "@capacitor/browser";
 import {
@@ -12,7 +12,7 @@ import {
   ModalController,
   Platform,
   ToastController,
-} from "@ionic/angular/standalone";
+} from "@ionic/angular";
 import { addIcons } from "ionicons";
 import {
   addCircleOutline,
@@ -53,9 +53,9 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
   toast = inject(ToastController);
 
   settingsForm: FormGroup;
-  advanced_mode = false;
+  advanced_mode = signal(false);
   profiles: Profile[] = [];
-  settingsLoaded = false;
+  settingsLoaded = signal(false);
   private formChangesSubscription?: Subscription;
 
   advancedConfirmationButtons = [
@@ -128,7 +128,9 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     } catch (err) {
       this.toast
         .create({
-          message: `Could not load settings for profile creation: ${err instanceof Error ? err.message : String(err)}`,
+          message: `Could not load settings for profile creation: ${
+            err instanceof Error ? err.message : String(err)
+          }`,
           position: "middle",
           cssClass: "error",
           buttons: [{ text: "OK", role: "cancel" }],
@@ -206,7 +208,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     }
 
     let saveReadyValue = value;
-    if (this.advanced_mode) {
+    if (this.advanced_mode()) {
       saveReadyValue = await this.settingsService.getCurrentSettings();
 
       // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
@@ -414,7 +416,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     try {
       const settings = await this.settingsService.getCurrentSettings();
 
-      this.advanced_mode = settings instanceof SettingsAdvanced;
+      this.advanced_mode.set(settings instanceof SettingsAdvanced);
 
       // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
       // e.g. `master_password_hash` and `remember_minutes`.
@@ -425,11 +427,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
 
       if (settings instanceof SettingsSimple) {
         formValues.added_number_on = settings.added_number_on;
-        if (settings.added_number_on) {
-          formValues.added_number = settings.added_number;
-        } else {
-          formValues.added_number = undefined;
-        }
+        formValues.added_number = settings.added_number ?? 0;
         formValues.algorithm = settings.getAlgorithm();
         formValues.domain_only = settings.isDomainOnly();
         formValues.output_character_set = settings.getOutputCharacterSet();
@@ -439,7 +437,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       }
 
       this.settingsForm.patchValue(formValues);
-      this.settingsLoaded = true;
+      this.settingsLoaded.set(true);
     } catch (err) {
       const message =
         err && (err as any).message ? (err as any).message : String(err);
@@ -486,19 +484,23 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
   private async autoSave() {
     const value = this.settingsForm.value;
 
-    let saveReadyValue = value;
-    if (this.advanced_mode) {
+    let saveReadyValue: any = value;
+    if (this.advanced_mode()) {
       saveReadyValue = await this.settingsService.getCurrentSettings();
 
-      // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
       for (const key of saveReadyValue.getCommonSettingsProperties()) {
         (saveReadyValue as any)[key] = (value as any)[key];
+      }
+    } else {
+      const current = this.settingsService.settings() ?? await this.settingsService.getCurrentSettings();
+      if (current instanceof SettingsSimple) {
+        saveReadyValue = new SettingsSimple();
+        Object.assign(saveReadyValue, current, value);
       }
     }
 
     this.settingsService.save(saveReadyValue).then(
       () => {
-        // Silent save - no toast notification for auto-save
         console.log("Settings auto-saved");
       },
       (reason) => {

@@ -1,16 +1,28 @@
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonInput, IonIcon, IonSelect, IonSelectOption, IonLabel, IonButton } from '@ionic/angular/standalone';
+import { RouterModule } from "@angular/router";
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonItem,
+  IonInput,
+  IonIcon,
+  IonSelect,
+  IonSelectOption,
+  IonLabel,
+  IonButton,
+} from "@ionic/angular";
 
-import { HomePageComponent } from './home.page';
+import { HomePageComponent } from "./home.page";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule.forChild([{ path: '', component: HomePageComponent }]),
+    RouterModule.forChild([{ path: "", component: HomePageComponent }]),
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -21,8 +33,8 @@ import { HomePageComponent } from './home.page';
     IonSelect,
     IonSelectOption,
     IonLabel,
-    IonButton
+    IonButton,
   ],
-  declarations: [HomePageComponent]
+  declarations: [HomePageComponent],
 })
-export class HomePageModule { }
+export class HomePageModule {}

@@ -1,7 +1,6 @@
 import {
   ChangeDetectorRef,
   Component,
-  NgZone,
   OnInit,
   effect,
   inject,
@@ -9,11 +8,7 @@ import {
 } from "@angular/core";
 import { Clipboard } from "@capacitor/clipboard";
 import { Keyboard } from "@capacitor/keyboard";
-import {
-  LoadingController,
-  Platform,
-  ToastController,
-} from "@ionic/angular/standalone";
+import { LoadingController, Platform, ToastController } from "@ionic/angular";
 import { addIcons } from "ionicons";
 import { informationCircleOutline, warning, copy } from "ionicons/icons";
 
@@ -29,7 +24,7 @@ import { ShareService } from "../share.service";
   selector: "app-home",
   styleUrls: ["./home.page.scss"],
   templateUrl: "home.page.html",
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
 export class HomePageComponent implements OnInit {
@@ -41,12 +36,10 @@ export class HomePageComponent implements OnInit {
   private settingsService = inject(SettingsService);
   private shareService = inject(ShareService);
   toast = inject(ToastController);
-  private zone = inject(NgZone);
 
   advanced_mode = false;
   clipboard_available = false;
   input: Input = new Input();
-  literal_input_warning = false;
   non_domain_warning = false;
   output_password?: string;
   settings: Settings | undefined;
@@ -86,32 +79,43 @@ export class HomePageComponent implements OnInit {
       });
       this.platform.resume.subscribe(() => {
         this.contextChange();
-        this.updateView();
       });
     }
 
-    this.update();
+    await this.update();
 
     this.settingsService.saveSubject.subscribe(() => {
       this.update();
     });
   }
 
+  get literalInputWarning() {
+    return this.settings && typeof this.settings.isDomainOnly === "function"
+      ? !this.settings.isDomainOnly()
+      : false;
+  }
+
   async update() {
     let settings: Settings;
     try {
-      settings = await this.settingsService.getCurrentSettings();
+      // Synchronously retrieve from the signal if available, avoiding microtask delays
+      const current = this.settingsService.settings();
+      settings = current ?? (await this.settingsService.getCurrentSettings());
     } catch (err) {
       this.toast
         .create({
-          message: `Could not load settings: ${err instanceof Error ? err.message : String(err)}`,
+          message: `Could not load settings: ${
+            err instanceof Error ? err.message : String(err)
+          }`,
           position: "middle",
           cssClass: "error",
           buttons: [{ text: "OK", role: "cancel" }],
         })
         .then((errorToast) => errorToast.present());
-      this.loading?.dismiss();
-
+      if (this.loading) {
+        await this.loading.dismiss().catch(() => {});
+      }
+      this.changeDetector.markForCheck();
       return;
     }
 
@@ -124,6 +128,8 @@ export class HomePageComponent implements OnInit {
       if (!this.userChangedProfile && this.input.host.length > 0) {
         this.autoSelectProfileForHost(settings);
       }
+    } else {
+      this.advanced_mode = false;
     }
 
     if (
@@ -133,9 +139,9 @@ export class HomePageComponent implements OnInit {
       this.output_password = undefined;
       this.non_domain_warning = false;
       if (this.loading) {
-        this.loading.dismiss();
+        await this.loading.dismiss().catch(() => {});
       }
-
+      this.changeDetector.markForCheck();
       return;
     }
 
@@ -153,8 +159,6 @@ export class HomePageComponent implements OnInit {
       this.updateExpiryTimer();
     }
 
-    this.literal_input_warning = !settings.isDomainOnly();
-
     if (!settings.isDomainOnly()) {
       // If we're showing the general literal input warning, the non-domain warning is not really relevant
       // as we're not going to pull out a domain anyway.
@@ -168,8 +172,10 @@ export class HomePageComponent implements OnInit {
     );
 
     if (this.loading) {
-      this.loading.dismiss();
+      await this.loading.dismiss().catch(() => {});
     }
+
+    this.changeDetector.markForCheck();
   }
 
   switchProfile(event: any) {
@@ -245,21 +251,23 @@ export class HomePageComponent implements OnInit {
       this.expiry_timer_id = undefined;
     }
 
-    this.settingsService.getCurrentSettings().then((settings) => {
+    const currentSettings = this.settingsService.settings();
+    const handleSettings = (settings: Settings) => {
       if (settings.remember_minutes > 0) {
-        // "Don't let me into my zone": Because the expire flag is always used in conjunction with
-        // other UI events, we don't need Angular to be tracking for this timeout. And if we allow
-        // it to do so, e2e tests break with default values (non-zero save password minutes) because
-        // they're always waiting several minutes for Angular to finish resolving this event.
-        this.zone.runOutsideAngular(() => {
-          this.expiry_timer_id = window.setTimeout(() => {
-            this.expire_password_on_context_change = true;
-          }, settings.remember_minutes * 60000);
-        });
+        this.expiry_timer_id = window.setTimeout(() => {
+          this.expire_password_on_context_change = true;
+          this.updateView();
+        }, settings.remember_minutes * 60000);
       } else {
         this.expire_password_on_context_change = true;
       }
-    });
+    };
+
+    if (currentSettings) {
+      handleSettings(currentSettings);
+    } else {
+      this.settingsService.getCurrentSettings().then(handleSettings);
+    }
   }
 
   private contextChange() {
@@ -269,9 +277,11 @@ export class HomePageComponent implements OnInit {
       this.output_password = undefined;
       this.master_password_hash = undefined;
     }
+
+    this.updateView();
   }
 
   private updateView() {
-    this.changeDetector.detectChanges();
+    this.changeDetector.markForCheck();
   }
 }

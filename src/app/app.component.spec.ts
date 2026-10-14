@@ -1,31 +1,56 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
-import { Platform } from '@ionic/angular/standalone';
-import { CloudSettings } from '@awesome-cordova-plugins/cloud-settings/ngx';
-import { Storage } from '@ionic/storage-angular';
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { TestBed } from "@angular/core/testing";
+import { Platform } from "@ionic/angular";
+import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
+import { Storage } from "@ionic/storage-angular";
 
-import { AppComponent } from './app.component';
-import { SettingsSimple } from '../models/SettingsSimple';
+import { AppComponent } from "./app.component";
+import { SettingsSimple } from "../models/SettingsSimple";
 
-describe('AppComponent', () => {
+describe("AppComponent", () => {
   let platformIsSpy, platformReadySpy, storageSpy;
-  let platformSpy: jasmine.SpyObj<Platform>;
+  let platformSpy: any;
   const mockSettings = new SettingsSimple();
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
     platformIsSpy = false;
     platformReadySpy = Promise.resolve();
-    platformSpy = jasmine.createSpyObj('Platform', {
-      is: platformIsSpy, // not capacitor / mobile
-      ready: platformReadySpy,
-    });
-    storageSpy = jasmine.createSpyObj('Storage', {
-      create: () => Promise.resolve(true),
-      get: () => mockSettings,
-      set: () => true,
-    });
+    platformSpy = {
+      is: vi.fn().mockName("Platform.is").mockReturnValue(platformIsSpy),
+      ready: vi
+        .fn()
+        .mockName("Platform.ready")
+        .mockReturnValue(platformReadySpy),
+    };
+    storageSpy = {
+      create: vi
+        .fn()
+        .mockName("Storage.create")
+        .mockReturnValue(() => Promise.resolve(true)),
+      get: vi
+        .fn()
+        .mockName("Storage.get")
+        .mockReturnValue(() => mockSettings),
+      set: vi
+        .fn()
+        .mockName("Storage.set")
+        .mockReturnValue(() => true),
+    };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -34,15 +59,15 @@ describe('AppComponent', () => {
         { provide: Storage, useValue: storageSpy },
       ],
     }).compileComponents();
-  }));
+  });
 
-  it('should create the app', () => {
+  it("should create the app", () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  it('should initialise the app', async () => {
+  it("should initialise the app", async () => {
     await TestBed.createComponent(AppComponent);
 
     expect(platformSpy.ready).toHaveBeenCalled();
