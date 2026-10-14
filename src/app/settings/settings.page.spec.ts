@@ -75,9 +75,8 @@ describe("SettingsPageComponent", () => {
 
   it("should auto-save settings when form changes and is valid", async () => {
     const mockSettings = new SettingsSimple();
-    vi.spyOn(settingsService, "getCurrentSettings").mockResolvedValue(
-      mockSettings
-    );
+    vi.spyOn(settingsService, "settings").mockReturnValue(mockSettings);
+    vi.spyOn(settingsService, "getCurrentSettings").mockResolvedValue(mockSettings);
     vi.spyOn(settingsService, "save").mockResolvedValue(undefined);
 
     await component.ngOnInit();
