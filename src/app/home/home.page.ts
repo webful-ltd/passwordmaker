@@ -1,7 +1,6 @@
 import {
   ChangeDetectorRef,
   Component,
-  NgZone,
   OnInit,
   effect,
   inject,
@@ -37,7 +36,6 @@ export class HomePageComponent implements OnInit {
   private settingsService = inject(SettingsService);
   private shareService = inject(ShareService);
   toast = inject(ToastController);
-  private zone = inject(NgZone);
 
   advanced_mode = false;
   clipboard_available = false;
@@ -82,7 +80,6 @@ export class HomePageComponent implements OnInit {
       });
       this.platform.resume.subscribe(() => {
         this.contextChange();
-        this.updateView();
       });
     }
 
@@ -131,7 +128,7 @@ export class HomePageComponent implements OnInit {
       this.output_password = undefined;
       this.non_domain_warning = false;
       if (this.loading) {
-        this.loading.dismiss();
+        await this.loading.dismiss();
       }
 
       return;
@@ -166,7 +163,7 @@ export class HomePageComponent implements OnInit {
     );
 
     if (this.loading) {
-      this.loading.dismiss();
+      await this.loading.dismiss();
     }
   }
 
@@ -245,15 +242,10 @@ export class HomePageComponent implements OnInit {
 
     this.settingsService.getCurrentSettings().then((settings) => {
       if (settings.remember_minutes > 0) {
-        // "Don't let me into my zone": Because the expire flag is always used in conjunction with
-        // other UI events, we don't need Angular to be tracking for this timeout. And if we allow
-        // it to do so, e2e tests break with default values (non-zero save password minutes) because
-        // they're always waiting several minutes for Angular to finish resolving this event.
-        this.zone.runOutsideAngular(() => {
-          this.expiry_timer_id = window.setTimeout(() => {
-            this.expire_password_on_context_change = true;
-          }, settings.remember_minutes * 60000);
-        });
+        this.expiry_timer_id = window.setTimeout(() => {
+          this.expire_password_on_context_change = true;
+          this.updateView();
+        }, settings.remember_minutes * 60000);
       } else {
         this.expire_password_on_context_change = true;
       }
@@ -267,6 +259,8 @@ export class HomePageComponent implements OnInit {
       this.output_password = undefined;
       this.master_password_hash = undefined;
     }
+
+    this.updateView();
   }
 
   private updateView() {
