@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
-import { TestBed, waitForAsync } from "@angular/core/testing";
+import { TestBed } from "@angular/core/testing";
 import { Platform } from "@ionic/angular";
 import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
 import { Storage } from "@ionic/storage-angular";
@@ -12,7 +12,7 @@ describe("AppComponent", () => {
   let platformSpy: jasmine.SpyObj<Platform>;
   const mockSettings = new SettingsSimple();
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     platformIsSpy = false;
     platformReadySpy = Promise.resolve();
     platformSpy = jasmine.createSpyObj("Platform", {
@@ -25,7 +25,7 @@ describe("AppComponent", () => {
       set: () => true,
     });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -34,7 +34,7 @@ describe("AppComponent", () => {
         { provide: Storage, useValue: storageSpy },
       ],
     }).compileComponents();
-  }));
+  });
 
   it("should create the app", () => {
     const fixture = TestBed.createComponent(AppComponent);

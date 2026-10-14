@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
 import {
@@ -19,8 +19,8 @@ describe("ProfilePageComponent", () => {
   let component: ProfilePageComponent;
   let fixture: ComponentFixture<ProfilePageComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ProfilePageComponent],
       imports: [
         FormsModule,
@@ -45,7 +45,7 @@ describe("ProfilePageComponent", () => {
     component.profileModel.profile_id = 1;
     component.profileModel.name = "Default";
     fixture.detectChanges();
-  }));
+  });
 
   it("should create", () => {
     expect(component).toBeTruthy();
