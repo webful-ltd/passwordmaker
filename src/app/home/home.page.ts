@@ -24,7 +24,7 @@ import { ShareService } from "../share.service";
   selector: "app-home",
   styleUrls: ["./home.page.scss"],
   templateUrl: "home.page.html",
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
 export class HomePageComponent implements OnInit {
@@ -40,7 +40,6 @@ export class HomePageComponent implements OnInit {
   advanced_mode = false;
   clipboard_available = false;
   input: Input = new Input();
-  literal_input_warning = false;
   non_domain_warning = false;
   output_password?: string;
   settings: Settings | undefined;
@@ -83,17 +82,25 @@ export class HomePageComponent implements OnInit {
       });
     }
 
-    this.update();
+    await this.update();
 
     this.settingsService.saveSubject.subscribe(() => {
       this.update();
     });
   }
 
+  get literalInputWarning() {
+    return this.settings && typeof this.settings.isDomainOnly === "function"
+      ? !this.settings.isDomainOnly()
+      : false;
+  }
+
   async update() {
     let settings: Settings;
     try {
-      settings = await this.settingsService.getCurrentSettings();
+      // Synchronously retrieve from the signal if available, avoiding microtask delays
+      const current = this.settingsService.settings();
+      settings = current ?? (await this.settingsService.getCurrentSettings());
     } catch (err) {
       this.toast
         .create({
@@ -105,8 +112,10 @@ export class HomePageComponent implements OnInit {
           buttons: [{ text: "OK", role: "cancel" }],
         })
         .then((errorToast) => errorToast.present());
-      this.loading?.dismiss();
-
+      if (this.loading) {
+        await this.loading.dismiss().catch(() => {});
+      }
+      this.changeDetector.markForCheck();
       return;
     }
 
@@ -119,6 +128,8 @@ export class HomePageComponent implements OnInit {
       if (!this.userChangedProfile && this.input.host.length > 0) {
         this.autoSelectProfileForHost(settings);
       }
+    } else {
+      this.advanced_mode = false;
     }
 
     if (
@@ -128,9 +139,9 @@ export class HomePageComponent implements OnInit {
       this.output_password = undefined;
       this.non_domain_warning = false;
       if (this.loading) {
-        await this.loading.dismiss();
+        await this.loading.dismiss().catch(() => {});
       }
-
+      this.changeDetector.markForCheck();
       return;
     }
 
@@ -148,8 +159,6 @@ export class HomePageComponent implements OnInit {
       this.updateExpiryTimer();
     }
 
-    this.literal_input_warning = !settings.isDomainOnly();
-
     if (!settings.isDomainOnly()) {
       // If we're showing the general literal input warning, the non-domain warning is not really relevant
       // as we're not going to pull out a domain anyway.
@@ -163,8 +172,10 @@ export class HomePageComponent implements OnInit {
     );
 
     if (this.loading) {
-      await this.loading.dismiss();
+      await this.loading.dismiss().catch(() => {});
     }
+
+    this.changeDetector.markForCheck();
   }
 
   switchProfile(event: any) {
@@ -240,7 +251,8 @@ export class HomePageComponent implements OnInit {
       this.expiry_timer_id = undefined;
     }
 
-    this.settingsService.getCurrentSettings().then((settings) => {
+    const currentSettings = this.settingsService.settings();
+    const handleSettings = (settings: Settings) => {
       if (settings.remember_minutes > 0) {
         this.expiry_timer_id = window.setTimeout(() => {
           this.expire_password_on_context_change = true;
@@ -249,7 +261,13 @@ export class HomePageComponent implements OnInit {
       } else {
         this.expire_password_on_context_change = true;
       }
-    });
+    };
+
+    if (currentSettings) {
+      handleSettings(currentSettings);
+    } else {
+      this.settingsService.getCurrentSettings().then(handleSettings);
+    }
   }
 
   private contextChange() {
@@ -264,6 +282,6 @@ export class HomePageComponent implements OnInit {
   }
 
   private updateView() {
-    this.changeDetector.detectChanges();
+    this.changeDetector.markForCheck();
   }
 }

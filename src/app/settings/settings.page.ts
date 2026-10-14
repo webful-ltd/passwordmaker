@@ -427,11 +427,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
 
       if (settings instanceof SettingsSimple) {
         formValues.added_number_on = settings.added_number_on;
-        if (settings.added_number_on) {
-          formValues.added_number = settings.added_number;
-        } else {
-          formValues.added_number = undefined;
-        }
+        formValues.added_number = settings.added_number ?? 0;
         formValues.algorithm = settings.getAlgorithm();
         formValues.domain_only = settings.isDomainOnly();
         formValues.output_character_set = settings.getOutputCharacterSet();
@@ -488,19 +484,23 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
   private async autoSave() {
     const value = this.settingsForm.value;
 
-    let saveReadyValue = value;
+    let saveReadyValue: any = value;
     if (this.advanced_mode()) {
       saveReadyValue = await this.settingsService.getCurrentSettings();
 
-      // Patch each setting common to the 2 Settings types and therefore set directly on `Settings`,
       for (const key of saveReadyValue.getCommonSettingsProperties()) {
         (saveReadyValue as any)[key] = (value as any)[key];
+      }
+    } else {
+      const current = this.settingsService.settings() ?? await this.settingsService.getCurrentSettings();
+      if (current instanceof SettingsSimple) {
+        saveReadyValue = new SettingsSimple();
+        Object.assign(saveReadyValue, current, value);
       }
     }
 
     this.settingsService.save(saveReadyValue).then(
       () => {
-        // Silent save - no toast notification for auto-save
         console.log("Settings auto-saved");
       },
       (reason) => {

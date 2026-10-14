@@ -39,7 +39,11 @@ export class SettingsService {
 
   private initPromise?: Promise<void>;
 
-  private hydrateSettings(settings: any): Settings {
+  public hydrateSettings(settings: any): Settings {
+    if (settings instanceof SettingsSimple || settings instanceof SettingsAdvanced) {
+      return settings;
+    }
+
     let loadedSettings: Settings;
 
     if (settings && settings.class === SettingsAdvanced.name) {
@@ -55,10 +59,21 @@ export class SettingsService {
       >;
       for (const key of Object.keys(loadedSettingsRecord)) {
         if (settings[key] !== undefined) {
-          loadedSettingsRecord[key] = settings[key];
+          if (key === "output_length" && typeof settings[key] === "string") {
+            loadedSettingsRecord[key] = parseInt(settings[key], 10);
+          } else {
+            loadedSettingsRecord[key] = settings[key];
+          }
         }
       }
-      loadedSettings.class = settings.class;
+      if (settings.profiles && loadedSettings instanceof SettingsAdvanced) {
+        loadedSettings.profiles = settings.profiles;
+      }
+      loadedSettings.class =
+        settings.class ||
+        (loadedSettings instanceof SettingsAdvanced
+          ? SettingsAdvanced.name
+          : SettingsSimple.name);
     }
 
     return loadedSettings;
@@ -198,24 +213,27 @@ export class SettingsService {
     }
   }
 
-  public async save(settings: Settings): Promise<any> {
+  public async save(settings: Settings | any): Promise<any> {
     if (!settings) {
       return Promise.reject("No settings data");
     }
 
+    // Always ensure we have a full Settings class instance with prototype methods
+    const hydrated = this.hydrateSettings(settings);
+
     // Ensure clean serialization
-    Reflect.deleteProperty(settings, "constructor");
+    Reflect.deleteProperty(hydrated, "constructor");
 
     // Persist to storage
-    const savePromise = await this.storage.set(SettingsService.storageKey, settings);
+    const savePromise = await this.storage.set(SettingsService.storageKey, hydrated);
 
-    // Update signal state immediately so all consumers update reactively
-    this._settings.set(settings);
+    // Update signal state immediately so all consumers receive a valid Settings instance
+    this._settings.set(hydrated);
 
     // Notify legacy listeners and sync to cloud
     this.saveSubject.next();
     if (this.platform.is("capacitor")) {
-      this.cloudSettings.save(settings, true);
+      this.cloudSettings.save(hydrated, true);
     }
 
     return savePromise;
