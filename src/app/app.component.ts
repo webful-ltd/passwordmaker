@@ -4,7 +4,7 @@ import {
   CapacitorShareTarget,
   ShareReceivedEvent,
 } from "@capgo/capacitor-share-target";
-import { Platform } from "@ionic/angular/standalone";
+import { Platform } from "@ionic/angular";
 import { ShareService } from "./share.service";
 
 @Component({

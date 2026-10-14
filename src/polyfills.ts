@@ -43,13 +43,6 @@
 // import 'core-js/esnext/reflect'; // We use AOT so OK to drop?
 
 /***************************************************************************************************
- * Zone JS is required by Angular itself.
- */
-import 'zone.js';  // Included with Angular CLI.
-
-
-
-/***************************************************************************************************
  * APPLICATION IMPORTS
  */
 

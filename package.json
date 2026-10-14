@@ -39,7 +39,7 @@
     "@capacitor/keyboard": "^8.0.0",
     "@capacitor/status-bar": "^8.0.0",
     "@capgo/capacitor-share-target": "^8.0.27",
-    "@ionic/angular": "^8.2.5",
+    "@ionic/angular": "^9.0.0",
     "@ionic/storage-angular": "^4.0.0",
     "@webful/passwordmaker-lib": "~0.1.13",
     "2ldcheck": "~0.0.6",
@@ -91,8 +91,7 @@
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "puppeteer": "24.37.3",
-    "typescript": "6.0.3",
-    "zone.js": "~0.15.0"
+    "typescript": "6.0.3"
   },
   "overrides": {
     "optionator": "0.9.3"
@@ -114,7 +113,7 @@
   "browserslist": [
     "Chrome >=119",
     "ChromeAndroid >=119",
-    "Safari >=15",
-    "iOS >=15"
+    "Safari >=16",
+    "iOS >=16"
   ]
 }

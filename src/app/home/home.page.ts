@@ -9,11 +9,7 @@ import {
 } from "@angular/core";
 import { Clipboard } from "@capacitor/clipboard";
 import { Keyboard } from "@capacitor/keyboard";
-import {
-  LoadingController,
-  Platform,
-  ToastController,
-} from "@ionic/angular/standalone";
+import { LoadingController, Platform, ToastController } from "@ionic/angular";
 import { addIcons } from "ionicons";
 import { informationCircleOutline, warning, copy } from "ionicons/icons";
 
@@ -104,7 +100,9 @@ export class HomePageComponent implements OnInit {
     } catch (err) {
       this.toast
         .create({
-          message: `Could not load settings: ${err instanceof Error ? err.message : String(err)}`,
+          message: `Could not load settings: ${
+            err instanceof Error ? err.message : String(err)
+          }`,
           position: "middle",
           cssClass: "error",
           buttons: [{ text: "OK", role: "cancel" }],

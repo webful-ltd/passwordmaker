@@ -11,7 +11,7 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
-import { ModalController, ToastController } from "@ionic/angular/standalone";
+import { ModalController, ToastController } from "@ionic/angular";
 import { addIcons } from "ionicons";
 import {
   close,
@@ -212,7 +212,7 @@ export class ProfilePageComponent implements OnInit {
 
   delete() {
     if (!this.profileId) {
-      console.error('delete() missing profileId');
+      console.error("delete() missing profileId");
       return;
     }
 
@@ -305,7 +305,8 @@ export class ProfilePageComponent implements OnInit {
     }
 
     if (
-      outputCharacterSetCustomControl.parent.get("output_character_set_preset")?.value === "none"
+      outputCharacterSetCustomControl.parent.get("output_character_set_preset")
+        ?.value === "none"
     ) {
       return Validators.required(outputCharacterSetCustomControl);
     }

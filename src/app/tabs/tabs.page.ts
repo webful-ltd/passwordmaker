@@ -7,7 +7,7 @@ import {
   ChangeDetectionStrategy,
 } from "@angular/core";
 import { App } from "@capacitor/app";
-import { IonTabs, Platform } from "@ionic/angular/standalone";
+import { IonTabs, Platform } from "@ionic/angular";
 import { addIcons } from "ionicons";
 import { key, settings } from "ionicons/icons";
 import { ShareService } from "../share.service";

@@ -12,7 +12,7 @@ import {
   ModalController,
   Platform,
   ToastController,
-} from "@ionic/angular/standalone";
+} from "@ionic/angular";
 import { addIcons } from "ionicons";
 import {
   addCircleOutline,
@@ -128,7 +128,9 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     } catch (err) {
       this.toast
         .create({
-          message: `Could not load settings for profile creation: ${err instanceof Error ? err.message : String(err)}`,
+          message: `Could not load settings for profile creation: ${
+            err instanceof Error ? err.message : String(err)
+          }`,
           position: "middle",
           cssClass: "error",
           buttons: [{ text: "OK", role: "cancel" }],
