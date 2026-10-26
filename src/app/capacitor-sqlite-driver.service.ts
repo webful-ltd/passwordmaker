@@ -1,4 +1,5 @@
-import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection } from '@capacitor-community/sqlite';
+import type { SQLiteDBConnection } from '@capacitor-community/sqlite';
+import { CapacitorSQLite, SQLiteConnection } from '@capacitor-community/sqlite';
 
 // Custom Capacitor SQLite driver for localforage
 export const CapacitorSqliteDriverService = {

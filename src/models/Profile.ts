@@ -1,4 +1,4 @@
-import { Pattern } from './Pattern';
+import type { Pattern } from './Pattern';
 
 export class Profile {
   public profile_id = 0;

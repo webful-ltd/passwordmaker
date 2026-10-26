@@ -1,6 +1,6 @@
 import { Profile } from './Profile';
 import { Settings } from './Settings';
-import { SettingsSimple } from './SettingsSimple';
+import type { SettingsSimple } from './SettingsSimple';
 
 export class SettingsAdvanced extends Settings {
   profiles: Profile[] = [];

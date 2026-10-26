@@ -13,7 +13,7 @@ export const LegacyStorageConfigToken = new InjectionToken<any>('LEGACY_STORAGE_
  */
 export const LEGACY_STORAGE = new InjectionToken<Storage>('LEGACY_STORAGE');
 
-function provideLegacyStorage(platformId: Object, storageConfig: any) {
+function provideLegacyStorage(platformId: object, storageConfig: any) {
   return new Storage(storageConfig);
 }
 
