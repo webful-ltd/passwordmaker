@@ -1,7 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import { PatternMatcherService } from "./pattern-matcher.service";
 import { Profile } from "../models/Profile";
-import { Pattern } from "../models/Pattern";
+import type { Pattern } from "../models/Pattern";
 
 describe("PatternMatcherService", () => {
   let service: PatternMatcherService;

@@ -55,6 +55,7 @@ export class PasswordsService {
     try {
       parsedUrl = new URL(content);
     } catch (ex) {
+      console.error('Failed to parse URL:', ex);
       return '';
     }
 

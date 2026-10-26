@@ -549,25 +549,23 @@ export class ImportService {
     if (mapped) return mapped;
 
     // Validate that the algorithm is one of our supported types
-    const validAlgorithms: Array<
-      | "hmac-sha256"
+    const validAlgorithms: (| "hmac-sha256"
       | "sha256"
       | "hmac-sha1"
       | "sha1"
       | "hmac-md5"
       | "md5"
       | "hmac-ripemd160"
-      | "ripemd160"
-    > = [
-      "hmac-sha256",
-      "sha256",
-      "hmac-sha1",
-      "sha1",
-      "hmac-md5",
-      "md5",
-      "hmac-ripemd160",
-      "ripemd160",
-    ];
+      | "ripemd160")[] = [
+        "hmac-sha256",
+        "sha256",
+        "hmac-sha1",
+        "sha1",
+        "hmac-md5",
+        "md5",
+        "hmac-ripemd160",
+        "ripemd160",
+      ];
 
     if (validAlgorithms.includes(importedAlgorithm as any)) {
       return importedAlgorithm as any;

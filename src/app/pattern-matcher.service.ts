@@ -45,7 +45,7 @@ export class PatternMatcherService {
     // If domain_only is checked, extract domain from host before matching
     const hostToMatch = profile.domain_only ? this.extractDomain(host) : host;
 
-    return profile.patterns.some(pattern => 
+    return profile.patterns.some(pattern =>
       pattern.enabled && this.patternMatches(pattern, hostToMatch)
     );
   }
@@ -57,7 +57,7 @@ export class PatternMatcherService {
    * @returns true if the pattern matches
    */
   private patternMatches(pattern: Pattern, host: string): boolean {
-    if (!pattern || !pattern.pattern || !host) {
+    if (!pattern?.pattern || !host) {
       return false;
     }
 
@@ -72,7 +72,7 @@ export class PatternMatcherService {
         const escapedPattern = pattern.pattern
           .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
           .replace(/\*/g, '.*');
-        
+
         const regex = new RegExp(`^${escapedPattern}$`, 'i'); // Case-insensitive
         return regex.test(host);
       }
@@ -98,10 +98,11 @@ export class PatternMatcherService {
         const url = new URL(input);
         return url.hostname;
       }
-      
+
       // Otherwise assume it's already a domain
       return input;
     } catch (error) {
+      console.error('Failed to parse URL:', error);
       // If URL parsing fails, return the original input
       return input;
     }
