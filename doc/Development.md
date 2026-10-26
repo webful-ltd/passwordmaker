@@ -59,14 +59,10 @@ These are git-ignored and a distinct one is needed for the main app and for the
 
 ## Plugins
 
-In addition to the Ionic-standard Capacitor plugins and Clipboard (for copying passwords),
-we need to build with Cordova in order to get the Cloud Settings plugin.
+We now only need Ionic-standard Capacitor plugins and Clipboard (for copying passwords).
 
-There is an additional Cordova dependency of that plugin, `cordova-plugin-file`. If you have
-not done a settings restore, the Android build seems to work fine without the Files & Media
-permission which this plugin presumably adds as an option (at least on Android 11) – but
-there might be a need for the permission if you _do_ restore settings, so we have not made
-efforts to override the permission request from the plugin.
+Cloud Settings use was never proven totally reliable and required Cordova legacy building,
+so is now removed.
 
 ## Resources update
 

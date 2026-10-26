@@ -1,6 +1,5 @@
 import { Injectable, inject, signal, computed } from "@angular/core";
 import { Platform, ToastController } from "@ionic/angular";
-import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
 import { Storage } from "@ionic/storage-angular";
 import { LEGACY_STORAGE } from "./legacy-storage.module";
 import { Subject } from "rxjs";
@@ -15,7 +14,6 @@ import { SettingsSimple } from "../models/SettingsSimple";
   providedIn: "root",
 })
 export class SettingsService {
-  private cloudSettings = inject(CloudSettings);
   private platform = inject(Platform);
   private storage = inject(Storage);
   // Optional legacy storage instance for migration. Code can reference
@@ -129,38 +127,6 @@ export class SettingsService {
       return this.hydrateSettings(rawSettings);
     }
 
-    // Attempt cloud restore if on Capacitor
-    if (this.platform.is("capacitor")) {
-      try {
-        const exists = await this.cloudSettings.exists();
-        if (exists) {
-          const loadedFromCloud = await this.cloudSettings.load();
-          this.toast
-            .create({
-              message: "Previous settings loaded from backup",
-              duration: 3000,
-              position: "middle",
-              buttons: [{ text: "OK", role: "cancel" }],
-            })
-            .then((t) => t.present());
-
-          delete (loadedFromCloud as any)?.constructor;
-          await this.storage.set(SettingsService.storageKey, loadedFromCloud);
-          return this.hydrateSettings(loadedFromCloud);
-        }
-      } catch (error) {
-        this.toast
-          .create({
-            message: `Could not load previous settings: ${error}`,
-            duration: 6000,
-            position: "middle",
-            cssClass: "error",
-            buttons: [{ text: "OK", role: "cancel" }],
-          })
-          .then((t) => t.present());
-      }
-    }
-
     // Default fallback
     return new SettingsSimple();
   }
@@ -230,11 +196,8 @@ export class SettingsService {
     // Update signal state immediately so all consumers receive a valid Settings instance
     this._settings.set(hydrated);
 
-    // Notify legacy listeners and sync to cloud
+    // Notify legacy listeners
     this.saveSubject.next();
-    if (this.platform.is("capacitor")) {
-      this.cloudSettings.save(hydrated, true);
-    }
 
     return savePromise;
   }

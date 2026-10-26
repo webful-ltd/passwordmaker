@@ -9,7 +9,6 @@ import {
 } from "@ionic/angular";
 import { Drivers } from "@ionic/storage";
 import { IonicStorageModule } from "@ionic/storage-angular";
-import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -34,7 +33,6 @@ import { SettingsService } from "./settings.service";
     IonRouterOutlet,
   ],
   providers: [
-    CloudSettings,
     SettingsService,
     provideAppInitializer(() => inject(SettingsService).init()),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

@@ -24,8 +24,6 @@
     "@angular/platform-browser": "^22.2.0",
     "@angular/platform-browser-dynamic": "^22.2.0",
     "@angular/router": "^22.2.0",
-    "@awesome-cordova-plugins/cloud-settings": "^8.1.0",
-    "@awesome-cordova-plugins/core": "^8.1.0",
     "@capacitor-community/privacy-screen": "^6.0.0",
     "@capacitor-community/sqlite": "^8.0.0",
     "@capacitor/android": "^8.0.0",
@@ -43,10 +41,6 @@
     "@ionic/storage-angular": "^4.0.0",
     "@webful/passwordmaker-lib": "~0.1.14",
     "2ldcheck": "~0.0.6",
-    "cordova-android": "^13.0.0",
-    "cordova-ios": "^7.1.0",
-    "cordova-plugin-cloud-settings": "git://github.com/webful-ltd/cordova-plugin-cloud-settings.git#6c8a220d57fd004a9a2f4b618ea00c3fde4bb989",
-    "cordova-plugin-file": "^8.0.0",
     "core-js": "^3.31.0",
     "jscodeshift": "^0.15.2",
     "localforage": "^1.9.0",
@@ -70,7 +64,6 @@
     "@capacitor/cli": "^8.0.0",
     "@ionic/angular-toolkit": "^12.0.0",
     "@ionic/eslint-config": "~0.4.0",
-    "@ionic/cordova-builders": "^13.0.0",
     "@types/jasmine": "^5.1.4",
     "@types/node": "^22.13",
     "@typescript-eslint/eslint-plugin": "^8.58.1",
@@ -101,15 +94,6 @@
     "npm": ">=10"
   },
   "description": "Deterministically generate per-site passwords on your phone & the web",
-  "cordova": {
-    "plugins": {
-      "cordova-plugin-cloud-settings": {}
-    },
-    "platforms": [
-      "ios",
-      "android"
-    ]
-  },
   "browserslist": [
     "Chrome >=119",
     "ChromeAndroid >=119",

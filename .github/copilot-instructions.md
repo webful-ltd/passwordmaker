@@ -95,8 +95,7 @@ ionic capacitor build ios --prod           # iOS build
 
 ## Build & Platform Notes
 
-- **Capacitor** is the primary mobile runtime
-- **Cordova** is used only for Cloud Settings plugin
+- **Capacitor** is the mobile runtime
 - Clipboard features work on mobile but not in browser
 - Target browsers: Chrome >=89, Firefox >=75, Safari >=14, iOS >=14
 - Set version codes in platform-specific files before building:

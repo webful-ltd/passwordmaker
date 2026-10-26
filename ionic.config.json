@@ -1,8 +1,7 @@
 {
   "name": "PasswordMaker",
   "integrations": {
-    "capacitor": {},
-    "cordova": {}
+    "capacitor": {}
   },
   "type": "angular"
 }
