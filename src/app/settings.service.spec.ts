@@ -1,5 +1,4 @@
 import { TestBed, inject } from "@angular/core/testing";
-import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
 import { Storage } from "@ionic/storage-angular";
 
 import { SettingsService } from "./settings.service";
@@ -22,7 +21,6 @@ describe("SettingsService", () => {
     };
     TestBed.configureTestingModule({
       providers: [
-        CloudSettings,
         SettingsService,
         { provide: Storage, useValue: storageSpy },
       ],

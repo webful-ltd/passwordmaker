@@ -1,7 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { Platform } from "@ionic/angular";
-import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
 import { Storage } from "@ionic/storage-angular";
 
 import { AppComponent } from "./app.component";
@@ -54,7 +53,6 @@ describe("AppComponent", () => {
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        CloudSettings,
         { provide: Platform, useValue: platformSpy },
         { provide: Storage, useValue: storageSpy },
       ],

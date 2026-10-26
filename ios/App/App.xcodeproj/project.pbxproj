@@ -64,7 +64,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		59FA1C582F26D9E300438282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		59FA1C582F26D9E300438282 /* Exceptions for "ShareExtension" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -74,7 +74,18 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		59FA1C4E2F26D9E300438282 /* ShareExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (59FA1C582F26D9E300438282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ShareExtension; sourceTree = "<group>"; };
+		59FA1C4E2F26D9E300438282 /* ShareExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				59FA1C582F26D9E300438282 /* Exceptions for "ShareExtension" folder in "ShareExtension" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = ShareExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,7 +175,6 @@
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
 				9592DBEFFC6D2A0C8D5DEB22 /* [CP] Embed Pods Frameworks */,
-				B3D6F66F01657F49B9BFAD17 /* [CP] Copy Pods Resources */,
 				59FA1C442F26D48500438282 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -193,8 +203,6 @@
 				59FA1C4E2F26D9E300438282 /* ShareExtension */,
 			);
 			name = ShareExtension;
-			packageProductDependencies = (
-			);
 			productName = ShareExtension;
 			productReference = 59FA1C4D2F26D9E300438282 /* ShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -293,21 +301,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Webful PasswordMaker/Pods-Webful PasswordMaker-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B3D6F66F01657F49B9BFAD17 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Webful PasswordMaker/Pods-Webful PasswordMaker-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

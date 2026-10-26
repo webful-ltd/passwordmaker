@@ -1,7 +1,6 @@
 import type { ComponentFixture} from "@angular/core/testing";
 import { TestBed } from "@angular/core/testing";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { CloudSettings } from "@awesome-cordova-plugins/cloud-settings/ngx";
 import {
   IonInput,
   IonSelect,
@@ -37,7 +36,7 @@ describe("ProfilePageComponent", () => {
         }),
         ReactiveFormsModule,
       ],
-      providers: [CloudSettings, provideIonicAngular()],
+      providers: [provideIonicAngular()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProfilePageComponent);
