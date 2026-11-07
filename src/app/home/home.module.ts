@@ -17,9 +17,11 @@ import {
 } from "@ionic/angular";
 
 import { HomePageComponent } from "./home.page";
+import {AutofillDirective} from '../autofill.directive';
 
 @NgModule({
   imports: [
+    AutofillDirective,
     CommonModule,
     FormsModule,
     RouterModule.forChild([{ path: "", component: HomePageComponent }]),

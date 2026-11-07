@@ -13,7 +13,6 @@ import { IonicStorageModule } from "@ionic/storage-angular";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { CapacitorSqliteDriverService } from "./capacitor-sqlite-driver.service";
-import { LegacyStorageModule } from "./legacy-storage.module";
 import { SettingsService } from "./settings.service";
 
 @NgModule({
@@ -22,11 +21,6 @@ import { SettingsService } from "./settings.service";
     BrowserModule,
     IonicStorageModule.forRoot({
       driverOrder: [CapacitorSqliteDriverService._driver, Drivers.IndexedDB],
-    }),
-    // Provide a separate legacy storage instance so both old and new storage
-    // implementations can be injected during a migration.
-    LegacyStorageModule.forRoot({
-      driverOrder: [Drivers.IndexedDB],
     }),
     AppRoutingModule,
     IonApp,

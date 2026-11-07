@@ -53,7 +53,7 @@
 		}
 	},
 	"server": {
-		"androidScheme": "http",
-		"iosScheme": "ionic"
+		"hostname": "passwordmaker.webful.uk",
+		"androidScheme": "https"
 	}
 }
