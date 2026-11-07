@@ -55,7 +55,11 @@ We currently run:
 
 It's necessary to use manual ones on the individual team with no real iPhones.
 These are git-ignored and a distinct one is needed for the main app and for the
-`ShareExtension`. Both require the App Groups capability.
+`ShareExtension`. Both require the App Groups capability and the main app needs
+Associated Domains.
+
+When these need renewing, start at [https://developer.apple.com/account/resources/profiles/add](https://developer.apple.com/account/resources/profiles/add)
+and choose _Distribution > App Store Connect_ then the relevant specific app ID.
 
 ## Plugins
 

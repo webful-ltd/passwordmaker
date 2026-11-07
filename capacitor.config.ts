@@ -63,8 +63,8 @@ const config: CapacitorConfig = {
     },
   },
   server: {
-    androidScheme: 'http', // https://capacitorjs.com/docs/updating/5-0#update-androidscheme
-    iosScheme: 'ionic',
+    hostname: 'passwordmaker.webful.uk',
+    androidScheme: 'https',
   }
 };
 

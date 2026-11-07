@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -53,6 +53,7 @@
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		504EC3131FED79650016851F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
+		593AE6A5309F5A9B00D7A01B /* Webful PasswordMakerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Webful PasswordMakerRelease.entitlements"; sourceTree = "<group>"; };
 		59FA1C4D2F26D9E300438282 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		59FA1C5C2F26DC8600438282 /* Webful PasswordMaker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Webful PasswordMaker.entitlements"; sourceTree = "<group>"; };
 		6B6854B257764378BC1D04DE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -64,7 +65,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		59FA1C582F26D9E300438282 /* Exceptions for "ShareExtension" folder in "ShareExtension" target */ = {
+		59FA1C582F26D9E300438282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -74,18 +75,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		59FA1C4E2F26D9E300438282 /* ShareExtension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				59FA1C582F26D9E300438282 /* Exceptions for "ShareExtension" folder in "ShareExtension" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = ShareExtension;
-			sourceTree = "<group>";
-		};
+		59FA1C4E2F26D9E300438282 /* ShareExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (59FA1C582F26D9E300438282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ShareExtension; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +108,7 @@
 		504EC2FB1FED79650016851F = {
 			isa = PBXGroup;
 			children = (
+				593AE6A5309F5A9B00D7A01B /* Webful PasswordMakerRelease.entitlements */,
 				59FA1C5C2F26DC8600438282 /* Webful PasswordMaker.entitlements */,
 				504EC3061FED79650016851F /* App */,
 				59FA1C4E2F26D9E300438282 /* ShareExtension */,
@@ -481,7 +472,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = uk.webful.passwordmaker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "PasswordMaker App Store provisioning";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "PasswordMaker App Store provisioning 26/27";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -493,7 +484,7 @@
 			baseConfigurationReference = CF241BE1BA9577E81CFB14AA /* Pods-Webful PasswordMaker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Webful PasswordMaker.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Webful PasswordMakerRelease.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2.7.2;
@@ -509,7 +500,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = uk.webful.passwordmaker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "PasswordMaker App Store provisioning";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "PasswordMaker App Store provisioning 26/27";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -550,7 +541,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = uk.webful.passwordmaker.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "PasswordMaker ShareExtension store provisioning";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = PasswordMaker_ShareExtension_store_provisioning;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -595,7 +586,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = uk.webful.passwordmaker.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "PasswordMaker ShareExtension store provisioning";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = PasswordMaker_ShareExtension_store_provisioning;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
