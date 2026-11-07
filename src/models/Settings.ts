@@ -7,12 +7,13 @@ export abstract class Settings {
 
   master_password_hash = false;
   remember_minutes = 5;
+  show_home_help = true;
 
   /**
    * Properties that are defined directly on the Settings base class (excluding 'class' which is for serialization).
    * Update this list whenever new properties are added to the Settings class.
    */
-  private static readonly COMMON_SETTINGS_PROPERTIES = ['master_password_hash', 'remember_minutes'] as const;
+  private static readonly COMMON_SETTINGS_PROPERTIES = ['master_password_hash', 'remember_minutes', 'show_home_help'] as const;
 
   abstract getAlgorithm(): 'hmac-sha256' | 'sha256' | 'hmac-sha1' | 'sha1' | 'hmac-md5' | 'md5' | 'hmac-ripemd160' | 'ripemd160';
   abstract getLeetLocation(): 'none' | 'before-hashing' | 'after-hashing' | 'both';
@@ -25,7 +26,7 @@ export abstract class Settings {
   abstract getSuffix(): string;
   abstract isDomainOnly(): boolean;
 
-  getCommonSettingsProperties(): readonly ('master_password_hash' | 'remember_minutes')[] {
+  getCommonSettingsProperties(): readonly ('master_password_hash' | 'remember_minutes' | 'show_home_help')[] {
     return Settings.COMMON_SETTINGS_PROPERTIES;
   }
 }

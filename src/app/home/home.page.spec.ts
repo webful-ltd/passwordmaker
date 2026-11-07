@@ -6,6 +6,8 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { CapacitorSqliteDriverService } from '../capacitor-sqlite-driver.service';
 import { HomePageComponent } from './home.page';
+import { SettingsService } from '../settings.service';
+import { SettingsSimple } from '../../models/SettingsSimple';
 
 declare global {
   interface Window {
@@ -40,5 +42,35 @@ describe('HomePageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show help paragraphs when show_home_help is true', async () => {
+    const settingsService = TestBed.inject(SettingsService);
+    const settings = new SettingsSimple();
+    settings.show_home_help = true;
+    vi.spyOn(settingsService, 'settings').mockReturnValue(settings);
+    vi.spyOn(settingsService, 'getCurrentSettings').mockResolvedValue(settings);
+
+    await component.update();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const helpParagraphs = compiled.querySelectorAll('p.help');
+    expect(helpParagraphs.length).toBe(2);
+  });
+
+  it('should hide help paragraphs when show_home_help is false', async () => {
+    const settingsService = TestBed.inject(SettingsService);
+    const settings = new SettingsSimple();
+    settings.show_home_help = false;
+    vi.spyOn(settingsService, 'settings').mockReturnValue(settings);
+    vi.spyOn(settingsService, 'getCurrentSettings').mockResolvedValue(settings);
+
+    await component.update();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const helpParagraphs = compiled.querySelectorAll('p.help');
+    expect(helpParagraphs.length).toBe(0);
   });
 });

@@ -142,6 +142,16 @@
         Whether to display a 3 character hash of your master password when you enter it, to help you confirm you've typed it correctly.
       </p>
 
+      <ion-item>
+        <ion-toggle
+            name="show_home_help"
+            formControlName="show_home_help"
+            [checked]="settingsForm.get('show_home_help')?.value ?? true"
+            color="primary"
+            enable-on-off-labels="true"
+        >Show usage hints</ion-toggle>
+      </ion-item>
+
       @if (settingsForm.invalid) {
         <p class="warning">
           <ion-icon name="warning"></ion-icon>

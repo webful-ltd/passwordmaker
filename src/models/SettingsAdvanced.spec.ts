@@ -12,6 +12,7 @@ describe('SettingsAdvanced', () => {
     settingsSimple.output_character_set = '0123456789';
     settingsSimple.output_length = 13;
     settingsSimple.remember_minutes = 3;
+    settingsSimple.show_home_help = false;
 
     // This constructor should set up the first profile with ID 1 and set that to be active.
     const settingsAdvanced = new SettingsAdvanced(settingsSimple);
@@ -25,6 +26,7 @@ describe('SettingsAdvanced', () => {
     expect(settingsAdvanced.getOutputLength()).toBe(13);
     expect(settingsAdvanced.getPostProcessingSuffix()).toBe('4');
     expect(settingsAdvanced.remember_minutes).toBe(3);
+    expect(settingsAdvanced.show_home_help).toBe(false);
 
     // ...and check defaults are as expected
     expect(settingsAdvanced.getLeetLevel()).toBe(0);
@@ -48,6 +50,7 @@ describe('SettingsAdvanced', () => {
     expect(settings.getPostProcessingSuffix()).toBe('');
     expect(settings.getPrefix()).toBe('');
     expect(settings.remember_minutes).toBe(5);
+    expect(settings.show_home_help).toBe(true);
     expect(settings.getSuffix()).toBe('');
     expect(settings.isDomainOnly()).toBe(true);
   });
