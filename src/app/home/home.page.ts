@@ -95,6 +95,10 @@ export class HomePageComponent implements OnInit {
       : false;
   }
 
+  get show_home_help(): boolean {
+    return this.settings?.show_home_help ?? true;
+  }
+
   async update() {
     let settings: Settings;
     try {

@@ -13,6 +13,7 @@ describe('SettingsSimple', () => {
     expect(settings.getPostProcessingSuffix()).toBe('');
     expect(settings.getPrefix()).toBe('');
     expect(settings.remember_minutes).toBe(5);
+    expect(settings.show_home_help).toBe(true);
     expect(settings.getSuffix()).toBe('');
     expect(settings.isDomainOnly()).toBe(true);
   });

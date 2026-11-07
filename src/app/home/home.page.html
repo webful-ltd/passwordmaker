@@ -18,10 +18,12 @@
         (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
-    <p class="help">
-      <ion-icon name="information-circle-outline"></ion-icon>
-      Which site or app are you logging into? e.g. <em>when.fm</em>
-    </p>
+    @if (show_home_help) {
+      <p class="help">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Which site or app are you logging into? e.g. <em>when.fm</em>
+      </p>
+    }
     <ion-item>
       <ion-input
         appAutofill
@@ -35,11 +37,13 @@
         (keyup.enter)="hideKeyboard()"
       ></ion-input>
     </ion-item>
-    <p class="help">
-      <ion-icon name="information-circle-outline"></ion-icon>
-      Think of it as your digital skeleton key &ndash; a super secret, memorable password, that will enable you
-      to generate and recall separate login details for each service you use
-    </p>
+    @if (show_home_help) {
+      <p class="help">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Think of it as your digital skeleton key &ndash; a super secret, memorable password, that will enable you
+        to generate and recall separate login details for each service you use
+      </p>
+    }
 
     @if (non_domain_warning) {
       <p class="warning">

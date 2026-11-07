@@ -87,6 +87,22 @@ describe("SettingsPageComponent", () => {
     expect(settingsService.save).toHaveBeenCalled();
   });
 
+  it("should auto-save settings when show_home_help is toggled", async () => {
+    const mockSettings = new SettingsSimple();
+    vi.spyOn(settingsService, "settings").mockReturnValue(mockSettings);
+    vi.spyOn(settingsService, "getCurrentSettings").mockResolvedValue(mockSettings);
+    vi.spyOn(settingsService, "save").mockResolvedValue(undefined);
+
+    await component.ngOnInit();
+
+    // Toggle show_home_help
+    component.settingsForm.patchValue({ show_home_help: false });
+
+    expect(settingsService.save).toHaveBeenCalledWith(
+      expect.objectContaining({ show_home_help: false })
+    );
+  });
+
   it("should not auto-save when form is invalid", async () => {
     const mockSettings = new SettingsSimple();
     vi.spyOn(settingsService, "getCurrentSettings").mockResolvedValue(

@@ -99,6 +99,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       remember_minutes: [5, Validators.required],
       added_number_on: [false],
       added_number: [0],
+      show_home_help: [true],
     });
     addIcons({
       addCircleOutline,
