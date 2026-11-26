@@ -1,11 +1,12 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
   effect,
   inject,
-  ChangeDetectionStrategy,
-} from "@angular/core";
+  signal,
+} from '@angular/core';
 import { Clipboard } from "@capacitor/clipboard";
 import { Keyboard } from "@capacitor/keyboard";
 import { LoadingController, Platform, ToastController } from "@ionic/angular";
@@ -43,6 +44,8 @@ export class HomePageComponent implements OnInit {
   non_domain_warning = false;
   output_password?: string;
   settings: Settings | undefined;
+
+  protected initDone = signal(false);
 
   private expire_password_on_context_change = false;
   private expiry_timer_id?: number;
@@ -118,6 +121,7 @@ export class HomePageComponent implements OnInit {
         .then((errorToast) => errorToast.present());
       if (this.loading) {
         await this.loading.dismiss().catch(() => {});
+        this.initDone.set(true);
       }
       this.changeDetector.markForCheck();
       return;
@@ -144,6 +148,7 @@ export class HomePageComponent implements OnInit {
       this.non_domain_warning = false;
       if (this.loading) {
         await this.loading.dismiss().catch(() => {});
+        this.initDone.set(true);
       }
       this.changeDetector.markForCheck();
       return;
