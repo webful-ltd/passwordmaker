@@ -26,11 +26,11 @@
     --background: var(--ion-color-danger);
     --button-color: var(--ion-color-danger-contrast) ;
     --color: var(--ion-color-danger-contrast);
-  
+
     &::part(button) {
       color: var(--ion-color-danger-contrast);
     }
-  } 
+  }
 }
 
 p > ion-icon {
@@ -62,7 +62,7 @@ p.warning {
  * Dark Colors – Adapted from https://ionicframework.com/docs/theming/dark-mode#ionic-dark-theme
  * with some existing light mode colours kept as they are.
  */
-body.dark {
+@mixin dark-theme-overrides {
   // We use the dark purple and quite dark pink as our primary + secondary colours
   // in dark mode *but* swap them, for better visiblity on things like the tab bar.
   --ion-color-primary: #ff4f79;
@@ -122,4 +122,20 @@ body.dark {
   --ion-color-light-contrast-rgb: 255, 255, 255;
   --ion-color-light-shade: #1e2023;
   --ion-color-light-tint: #383a3e;
+
+  ion-button[color="secondary"][fill="outline"]::part(native),
+  ion-button.ion-color-secondary.button-outline::part(native) {
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+  }
+}
+
+body.dark {
+  @include dark-theme-overrides;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    @include dark-theme-overrides;
+  }
 }
